@@ -1,0 +1,73 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "assistant": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-3-5-sonnet-20240620"
+    },
+    "version": "2"
+  },
+  "show_inline_completions": true,
+  "inline_completions": {},
+  "languages": {
+    "JSONC": {
+      "show_inline_completions": true
+    },
+    "TypeScript": {
+      "show_inline_completions": true
+    },
+    "Python": {
+      "show_inline_completions": false
+    }
+  },
+  "base_keymap": "VSCode",
+  "ui_font_size": 14,
+  "buffer_font_size": 14,
+  "ui_font_features": {
+    "ligatures": true
+  },
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Catppuccin Mocha"
+  },
+  "soft_wrap": "editor_width",
+  "line_numbers": "on",
+  "current_line_highlight": "line",
+  "font_family": "Fira Code",
+  "ui_font_family": "Fira Code",
+  "ui_font_weight": 400,
+  "buffer_font_weight": 400,
+  "buffer_font_family": "Fira Code",
+  "autosave": "on_focus_change",
+  "confirm_quit": true,
+  "format_on_save": "on",
+  "format_on_paste": true,
+  "formatter": "prettier",
+  "terminal": {
+    "alternate_scroll": "off",
+    "font_family": "Iosevka Nerd Font Mono",
+    "ui_font_size": 14,
+    "font_size": 14,
+    "shell": "system",
+    "copy_on_select": true,
+    "working_directory": "current_project_directory",
+    "blinking": "on"
+  },
+
+  "lsp": {
+    "wakatime": {
+      "settings": {
+        "api-key": " "
+      }
+    }
+  }
+}
+
