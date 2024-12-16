@@ -36,4 +36,4 @@ vim.schedule(function()
   require "mappings"
 end)
 
-vim.opt.guicursor = "n-v-c:block-blinkon1,i:block-blinkon1"
+vim.opt.guicursor = "n-v-c:block,i:block-blinkon1"
