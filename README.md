@@ -1,22 +1,25 @@
-# My dotfiles repo
+# My Dotfiles Repo
 
 This repo contains my dotfiles configs for various tools.
 
-## Organizing the configuration files
+---
 
-Ensure that the dotfiles are in the dotfiles repo and they maintain their functionality in their original locations
+## Organizing the Configuration Files
 
-    1. Move the files to the dotfiles directory:
-        ```
-            mv ~/.tmux.conf ~/dotfiles/
-            mv ~/.config/nvim ~/dotfiles/nvim
-        ```
+Ensure that the dotfiles are in the dotfiles repo and maintain their functionality in their original locations.
 
-    2. Link the files to their original locations to ensure the applications will still find the files in their original paths:
-        ```
-            ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
-            ln -s ~/dotfiles/nvim ~/.config/nvim
+### 1. Move the Files to the Dotfiles Directory
 
-        ```
+```bash
+mv ~/.tmux.conf ~/dotfiles/
+mv ~/.config/nvim ~/dotfiles/nvim
 
-## Set up github to track changes
+2. Link the Files to Their Original Locations
+
+This ensures the applications will still find the files in their original paths:
+
+ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
+ln -s ~/dotfiles/nvim ~/.config/nvim
+
+Set Up GitHub to Track Changes
+```
