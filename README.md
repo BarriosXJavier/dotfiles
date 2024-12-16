@@ -25,7 +25,3 @@ This ensures the applications will still find the files in their original paths:
 ```
 
 3. Set Up GitHub to Track Changes
-
-```
-
-```
