@@ -180,4 +180,21 @@ return {
       { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
     },
   },
+
+  {
+    "olrtg/nvim-emmet",
+    config = function()
+      vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
+    end,
+  },
+
+  {
+    "jinzhongjia/LspUI.nvim",
+    branch = "main",
+    config = function()
+      require("LspUI").setup {
+        -- config options go here
+      }
+    end,
+  },
 }
