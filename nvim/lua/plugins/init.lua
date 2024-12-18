@@ -198,5 +198,15 @@ return {
     end,
   },
 
-  { "akinsho/toggleterm.nvim", version = "*", config = true },
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    config = true,
+    opts = {
+      direction = "float",
+    },
+    keys = {
+      { "<leader>tt", "<cmd>ToggleTerm<CR>", desc = "Toggle terminal" },
+    },
+  },
 }
