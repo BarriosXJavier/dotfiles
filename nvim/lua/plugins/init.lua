@@ -197,4 +197,6 @@ return {
       }
     end,
   },
+
+  { "akinsho/toggleterm.nvim", version = "*", config = true },
 }

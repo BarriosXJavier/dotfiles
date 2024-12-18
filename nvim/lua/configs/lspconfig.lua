@@ -3,11 +3,10 @@ require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
 
--- EXAMPLE
-local servers = { "html", "cssls" }
+local servers = { "html", "cssls", "ts_ls", "clangd", "pyright", "rust_analyzer", "tailwindcss" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
-require('lspconfig').clangd.setup {}
+require("lspconfig").clangd.setup {}
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
