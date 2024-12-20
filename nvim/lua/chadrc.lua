@@ -14,7 +14,7 @@ local options = {
     integrations = {},
     changed_themes = {},
     transparency = true,
-    theme_toggle = { "catppuccin", "catppuccin" },
+    theme_toggle = { "catppuccin", "tokyonight" },
   },
 
   ui = {
