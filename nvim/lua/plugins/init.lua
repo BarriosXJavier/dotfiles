@@ -78,10 +78,6 @@ return {
 
   { "nvim-tree/nvim-web-devicons" },
 
-  { "nvchad/volt", lazy = true },
-
-  { "nvchad/menu", lazy = true },
-
   {
     "vhyrro/luarocks.nvim",
     priority = 1001,
@@ -207,6 +203,23 @@ return {
     },
     keys = {
       { "<leader>tt", "<cmd>ToggleTerm<CR>", desc = "Toggle terminal" },
+    },
+  },
+
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    config = function()
+      require("lspsaga").setup {
+        lightbulb = {
+          enable = false,
+        },
+      }
+      vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
+    end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
     },
   },
 }
