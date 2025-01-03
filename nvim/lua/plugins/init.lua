@@ -1,13 +1,8 @@
 return {
   {
     "stevearc/conform.nvim",
-<<<<<<< HEAD
-    event = { "BufWritePre", "BufNewFile" },
-    opts = require "configs.conform",
-=======
     event = { "BufWritePre", "BufNewFile", "LspAttach" },
     opts = { require "configs.conform", format_on_save = { timeout_ms = 2500, lsp_fallback = true } },
->>>>>>> 3765cd2 (	new file:   .tmux.conf)
   },
 
   {
