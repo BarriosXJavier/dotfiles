@@ -3,11 +3,7 @@
 local options = {
 
   base46 = {
-<<<<<<< HEAD
     theme = "catppuccin", -- default theme
-=======
-    theme = "tokyonight", -- default theme
->>>>>>> 3765cd2 (	new file:   .tmux.conf)
     hl_add = {
       LineNr = { fg = "#d0be98" },
       CursorLineNr = { fg = "#87d9e8" },
