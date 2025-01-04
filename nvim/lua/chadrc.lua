@@ -3,7 +3,9 @@
 local options = {
 
   base46 = {
+
     theme = "catppuccin", -- default theme
+
     hl_add = {
       LineNr = { fg = "#d0be98" },
       CursorLineNr = { fg = "#87d9e8" },
