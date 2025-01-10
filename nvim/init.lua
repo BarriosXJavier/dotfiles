@@ -4,6 +4,13 @@ vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.textwidth = 80
 
+vim.keymap.set("n", "<leader>fm", function()
+  require("conform").format {
+    timeout_ms = 2500, -- Adjust timeout if necessary
+    lsp_fallback = true,
+  }
+end, { desc = "Format file with conform" })
+
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 

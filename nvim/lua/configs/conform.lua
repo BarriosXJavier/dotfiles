@@ -1,6 +1,5 @@
 local options = {
   formatters_by_ft = {
-    lua = { "stylua" },
     css = { "prettier" },
     html = { "prettier" },
     javascript = { "prettier" },
@@ -10,17 +9,16 @@ local options = {
     typescriptreact = { "prettier" },
     yaml = { "prettier" },
     markdown = { "prettier" },
+
+    lua = { "stylua" },
     rust = { "rustfmt" },
-    jsx = { "prettier" },
-    tsx = { "prettier" },
-    python = { "prettier" },
-    go = { "prettier" },
-    c = { "prettier" },
-    cpp = { "prettier" },
+    python = { "black" },
+    go = { "gofmt" },
+    c = { "clang-format" },
+    cpp = { "clang-format" },
   },
 
   format_on_save = {
-    -- These options will be passed to conform.format()
     timeout_ms = 500,
     lsp_fallback = true,
   },

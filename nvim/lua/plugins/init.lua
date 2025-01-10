@@ -2,9 +2,12 @@ return {
   {
     "stevearc/conform.nvim",
     event = { "BufWritePre", "BufNewFile", "LspAttach" },
-    opts = { require "configs.conform", format_on_save = { timeout_ms = 2500, lsp_fallback = true } },
+    opts = function()
+      local config = require "configs.conform"
+      config.format_on_save = { timeout_ms = 500, lsp_fallback = true }
+      return config
+    end,
   },
-
   {
     "neovim/nvim-lspconfig",
     config = function()

@@ -4,28 +4,28 @@ local options = {
 
   base46 = {
 
-    theme = "catppuccin", -- default theme
+    theme = "github_dark", -- default theme
 
     hl_add = {
       LineNr = { fg = "#d0be98" },
       CursorLineNr = { fg = "#87d9e8" },
     },
     hl_override = {
-      Comment = { fg = "#c0c0c0", italic = true },
+      Comment = { fg = "#b0c0cc", italic = true },
     },
     integrations = {},
     changed_themes = {},
     transparency = true,
-    theme_toggle = { "catppuccin", "tokyonight" },
+    theme_toggle = { "github_dark", "catppuccin" },
   },
 
   ui = {
     cmp = {
-      icons_left = true, -- only for non-atom styles!
+      icons_left = true,   -- only for non-atom styles!
       lspkind_text = true,
-      style = "default", -- default/flat_light/flat_dark/atom/atom_colored
+      style = "flat_dark", -- default/flat_light/flat_dark/atom/atom_colored
       format_colors = {
-        tailwind = true, -- will work for css lsp too
+        tailwind = true,   -- will work for css lsp too
         icon = "󱓻",
       },
     },
