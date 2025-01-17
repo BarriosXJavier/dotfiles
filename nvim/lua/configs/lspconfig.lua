@@ -3,7 +3,29 @@ require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
 
-local servers = { "html", "cssls", "ts_ls", "clangd", "pyright", "rust_analyzer", "tailwindcss" }
+local servers = {
+  "html",
+  "cssls",
+  "ts_ls",
+  "clangd",
+  "pyright",
+  "rust_analyzer",
+  "tailwindcss",
+  "bashls",
+  "gopls",
+  "dockerls",
+  "yamlls",
+  "jsonls",
+  "marksman",
+  "lua_ls",
+  "jdtls",
+  "solargraph",
+  "elixirls",
+  "dartls",
+  "zls",
+  "sqlls",
+  "graphql",
+}
 local nvlsp = require "nvchad.configs.lspconfig"
 
 require("lspconfig").clangd.setup {}
