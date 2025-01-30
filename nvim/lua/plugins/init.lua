@@ -157,8 +157,6 @@ return {
     },
   },
 
-  { "CRAG666/code_runner.nvim", config = true },
-
   {
     "kdheepak/lazygit.nvim",
     lazy = true,
@@ -226,23 +224,66 @@ return {
     },
   },
 
-  { "anuvyklack/hydra.nvim" },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup {}
+    end,
+  },
 
   {
-    "smoka7/multicursors.nvim",
-    event = "VeryLazy",
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
     dependencies = {
-      "nvimtools/hydra.nvim",
-    },
-    opts = {},
-    cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
-    keys = {
+      -- GitHub Copilot integration
       {
-        mode = { "v", "n" },
-        "<Leader>m",
-        "<cmd>MCstart<cr>",
-        desc = "Create a selection for selected text or word under the cursor",
+        "github/copilot.vim", -- Base Copilot plugin
+      },
+      {
+        "zbirenbaum/copilot-cmp", -- CMP source for Copilot
+        config = function()
+          require("copilot_cmp").setup()
+        end,
+      },
+
+      -- Command line completion
+      {
+        "hrsh7th/cmp-cmdline",
+        event = "CmdlineEnter",
+        config = function()
+          local cmp = require "cmp"
+          cmp.setup.cmdline("/", {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = { { name = "buffer" } },
+          })
+
+          cmp.setup.cmdline(":", {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
+            matching = { disallow_symbol_nonprefix_matching = false },
+          })
+        end,
       },
     },
+
+    opts = function(_, opts)
+      -- Add Copilot as a completion source
+      table.insert(opts.sources, 1, {
+        name = "copilot",
+        group_index = 1,
+        priority = 100,
+      })
+
+      -- Optional: Configure trigger characters if needed
+      opts.sources[1].trigger_characters = { "-" }
+    end,
   },
 }

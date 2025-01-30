@@ -3,6 +3,7 @@ vim.g.mapleader = " "
 vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.textwidth = 80
+vim.opt.scrolloff = 8
 
 vim.keymap.set("n", "<leader>fm", function()
   require("conform").format {
