@@ -21,16 +21,16 @@ local options = {
 
   ui = {
     cmp = {
-      icons_left = true,   -- only for non-atom styles!
+      icons_left = true, -- only for non-atom styles!
       lspkind_text = true,
       style = "flat_dark", -- default/flat_light/flat_dark/atom/atom_colored
       format_colors = {
-        tailwind = true,   -- will work for css lsp too
+        tailwind = true, -- will work for css lsp too
         icon = "󱓻",
       },
     },
 
-    telescope = { style = "borderless" }, -- borderless / bordered
+    telescope = { style = "bordered" }, -- borderless / bordered
 
     statusline = {
       enabled = true,
@@ -103,7 +103,7 @@ local options = {
   lsp = { signature = true },
 
   cheatsheet = {
-    theme = "grid",                                                     -- simple/grid
+    theme = "grid", -- simple/grid
     excluded_groups = { "terminal (t)", "autopairs", "Nvim", "Opens" }, -- can add group name or with mode
   },
 
