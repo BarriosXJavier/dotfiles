@@ -1,10 +1,10 @@
 return {
   {
     "stevearc/conform.nvim",
-    event = { "BufWritePre", "BufNewFile", "LspAttach" },
+    event = { "BufWritePre", "BufNewFile", "LspAttach", BufReadPost },
     opts = function()
       local config = require "configs.conform"
-      config.format_on_save = { timeout_ms = 500, lsp_fallback = true }
+      config.format_on_save = { timeout_ms = 500, lsp_fallback = true, async = true }
       return config
     end,
   },
@@ -298,5 +298,14 @@ return {
       -- See Configuration section for options
     },
     -- See Commands section for default commands if you want to lazy load on them
+  },
+
+  {
+    "BarriosXJavier/tag-replacer.nvim",
+    lazy = false,
+    cmd = { "ReplaceTag", "ReplaceTagVisual" },
+    config = function()
+      require("tag-replacer").setup()
+    end,
   },
 }

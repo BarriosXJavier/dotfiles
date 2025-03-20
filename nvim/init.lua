@@ -7,6 +7,7 @@ vim.opt.scrolloff = 8
 
 vim.keymap.set("n", "<leader>fm", function()
   require("conform").format {
+    async = true,
     timeout_ms = 2500, -- Adjust timeout if necessary
     lsp_fallback = true,
   }
@@ -35,6 +36,8 @@ require("lazy").setup({
 
   { import = "plugins" },
 }, lazy_config)
+
+require("tag-replacer").setup()
 
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
