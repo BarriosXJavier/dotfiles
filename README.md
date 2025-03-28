@@ -11,8 +11,8 @@ Ensure that the dotfiles are in the dotfiles repo and maintain their functionali
 ### 1. Move the Files to the Dotfiles Directory
 
 ```
-    mv ~/.tmux.conf ~/dotfiles/
-    mv ~/.config/nvim ~/dotfiles/nvim
+    mv ~/.tmux.conf ~/dotfiles/.config/
+    mv ~/.config/nvim ~/dotfiles/.config/nvim
     mv ~/.config/starship.toml ~/dotfiles/.config/
 ```
 
@@ -21,9 +21,9 @@ Ensure that the dotfiles are in the dotfiles repo and maintain their functionali
 This ensures the applications will still find the files in their original paths:
 
 ```
-    ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
-    ln -s ~/dotfiles/nvim ~/.config/nvim
-    ln -s ~/dotfiles/config/starship.toml ~/.config/starship.toml
+    ln -s ~/dotfiles/.config/.tmux.conf ~/.tmux.conf
+    ln -s ~/dotfiles/.config/nvim ~/.config/nvim
+    ln -s ~/dotfiles/.config/starship.toml ~/.config/starship.toml
 ```
 
-3. Set Up GitHub to Track Changes
+3. Set Up Git to Track Changes
