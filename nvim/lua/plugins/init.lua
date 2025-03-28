@@ -36,7 +36,6 @@ return {
     event = "BufEnter",
   },
   ]]
-
   {
     "ellisonleao/carbon-now.nvim",
     lazy = true,
@@ -82,14 +81,6 @@ return {
   },
 
   { "nvim-tree/nvim-web-devicons" },
-
-  -- {
-  --   "vhyrro/luarocks.nvim",
-  --   priority = 1001,
-  --   opts = {
-  --     rocks = { "magick" },
-  --   },
-  -- },
 
   {
     "Pocco81/auto-save.nvim",
@@ -276,6 +267,68 @@ return {
   --     opts.sources[1].trigger_characters = { "-" }
   --   end,
   -- },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup {}
+    end,
+  },
+
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      -- GitHub Copilot integration
+      {
+        "github/copilot.vim", -- Base Copilot plugin
+      },
+      {
+        "zbirenbaum/copilot-cmp", -- CMP source for Copilot
+        config = function()
+          require("copilot_cmp").setup()
+        end,
+      },
+
+      -- Command line completion
+      {
+        "hrsh7th/cmp-cmdline",
+        event = "CmdlineEnter",
+        config = function()
+          local cmp = require "cmp"
+          cmp.setup.cmdline("/", {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = { { name = "buffer" } },
+          })
+
+          cmp.setup.cmdline(":", {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
+            matching = { disallow_symbol_nonprefix_matching = false },
+          })
+        end,
+      },
+    },
+
+    opts = function(_, opts)
+      -- Add Copilot as a completion source
+      table.insert(opts.sources, 1, {
+        name = "copilot",
+        group_index = 1,
+        priority = 100,
+      })
+
+      -- Optional: Configure trigger characters if needed
+      opts.sources[1].trigger_characters = { "-" }
+    end,
+  },
 
   {
     "CopilotC-Nvim/CopilotChat.nvim",
