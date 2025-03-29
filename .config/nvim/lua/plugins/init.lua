@@ -198,6 +198,7 @@ return {
   },
 
   -- Completion (Updated nvim-cmp config)
+
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -210,15 +211,17 @@ return {
       local cmp = require "cmp"
       local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 
+      -- Autopairs integration
       cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
+      -- Regular completion setup
       cmp.setup {
         mapping = cmp.mapping.preset.insert {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm { select = true }, -- Proper Enter key mapping
+          ["<CR>"] = cmp.mapping.confirm { select = true },
           ["<Tab>"] = cmp.mapping.select_next_item(),
           ["<S-Tab>"] = cmp.mapping.select_prev_item(),
         },
@@ -229,16 +232,18 @@ return {
         },
       }
 
-      -- Command line completion
+      -- / search pattern completion
       cmp.setup.cmdline("/", {
         mapping = cmp.mapping.preset.cmdline(),
-        sources = { { name = "buffer" } },
+        sources = {
+          { name = "buffer" },
+        },
       })
 
+      -- : command completion
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
-        matching = { disallow_symbol_nonprefix_matching = false },
       })
     end,
     opts = function(_, opts)
