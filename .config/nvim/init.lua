@@ -58,4 +58,3 @@ vim.opt.guicursor = {
   "i-ci:blinkon100-blinkoff100-blinkwait1000-block-Cursor", -- Blinking block in Insert/Command-line Insert
   "r:blinkon100-blinkoff100-blinkwait500-hor100-Cursor", -- Blinking thick horizontal in Replace mode
 }
-vim.opt.guicursor = "n-v-c:block,i:block-blinkon1"
