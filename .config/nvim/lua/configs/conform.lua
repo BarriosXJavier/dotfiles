@@ -13,7 +13,7 @@ local options = {
 
     lua = { "stylua" },
     rust = { "rustfmt" },
-    python = { "black" },
+    python = { "autopep8" },
     go = { "gofmt" },
     c = { "clang-format" },
     cpp = { "clang-format" },
