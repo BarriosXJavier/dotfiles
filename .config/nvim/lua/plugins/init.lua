@@ -7,25 +7,19 @@ return {
     end,
   },
 
-  {
-    "williamboman/mason-lspconfig.nvim",
-  },
+  { "williamboman/mason-lspconfig.nvim" },
 
   {
     "stevearc/conform.nvim",
     event = { "BufWritePre", "BufNewFile", "LspAttach", "BufReadPost" },
     opts = function()
       local config = require "configs.conform"
-      config.format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-        async = true,
-      }
+      config.format_on_save = { timeout_ms = 500, lsp_fallback = true, async = true }
       return config
     end,
   },
 
-  -- UI enhancements
+  -- UI Enhancements
   {
     "NvChad/ui",
     config = function()
@@ -41,10 +35,7 @@ return {
     end,
   },
 
-  {
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
+  { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 
   {
     "akinsho/bufferline.nvim",
@@ -56,20 +47,9 @@ return {
     end,
   },
 
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim",
-        "lua",
-        "vimdoc",
-        "html",
-        "css",
-      },
-    },
-  },
+  { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = { "vim", "lua", "vimdoc", "html", "css" } } },
 
-  -- Editing helpers
+  -- Editing Helpers
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
@@ -77,7 +57,6 @@ return {
       require("nvim-autopairs").setup()
     end,
   },
-
   {
     "Pocco81/auto-save.nvim",
     lazy = false,
@@ -85,14 +64,12 @@ return {
       require("auto-save").setup()
     end,
   },
-
   {
     "olrtg/nvim-emmet",
     config = function()
       vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
     end,
   },
-
   {
     "BarriosXJavier/tag-replacer.nvim",
     lazy = false,
@@ -102,24 +79,16 @@ return {
     end,
   },
 
-  -- LSP enhancements
+  -- LSP Enhancements
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     config = function()
-      require("lspsaga").setup {
-        lightbulb = {
-          enable = false,
-        },
-      }
+      require("lspsaga").setup { lightbulb = { enable = false } }
       vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
     end,
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
   },
-
   {
     "jinzhongjia/LspUI.nvim",
     branch = "main",
@@ -129,53 +98,26 @@ return {
   },
 
   -- Debugging
-  {
-    "mfussenegger/nvim-dap",
-  },
+  { "mfussenegger/nvim-dap" },
 
-  -- Rust specific
-  {
-    "mrcjkb/rustaceanvim",
-    version = "^4",
-    lazy = false,
-  },
+  -- Rust Specific
+  { "mrcjkb/rustaceanvim", version = "^4", lazy = false },
 
-  -- Productivity tools
+  -- Productivity Tools
   {
     "kdheepak/lazygit.nvim",
     lazy = true,
-    cmd = {
-      "LazyGit",
-      "LazyGitConfig",
-      "LazyGitCurrentFile",
-      "LazyGitFilter",
-      "LazyGitFilterCurrentFile",
-    },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    keys = {
-      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
-    },
+    cmd = { "LazyGit", "LazyGitConfig", "LazyGitCurrentFile", "LazyGitFilter", "LazyGitFilterCurrentFile" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = { { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" } },
   },
-
-  {
-    "ellisonleao/carbon-now.nvim",
-    lazy = true,
-    cmd = "CarbonNow",
-    opts = {},
-  },
-
+  { "ellisonleao/carbon-now.nvim", lazy = true, cmd = "CarbonNow", opts = {} },
   {
     "akinsho/toggleterm.nvim",
     version = "*",
     config = true,
-    opts = {
-      direction = "float",
-    },
-    keys = {
-      { "<leader>tt", "<cmd>ToggleTerm<CR>", desc = "Toggle terminal" },
-    },
+    opts = { direction = "float" },
+    keys = { { "<leader>tt", "<cmd>ToggleTerm<CR>", desc = "Toggle terminal" } },
   },
 
   -- Diagnostics
@@ -197,15 +139,9 @@ return {
     },
   },
 
-  -- Completion (Updated nvim-cmp config)
-
-  {
-    "L3MON4D3/LuaSnip",
-    -- follow latest release.
-    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-    -- install jsregexp (optional!).
-    build = "make install_jsregexp",
-  },
+  -- Completion & Snippets
+  { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
+  { "rafamadriz/friendly-snippets" }, -- Added second snippet option
 
   {
     "hrsh7th/nvim-cmp",
@@ -214,15 +150,12 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
+      "rafamadriz/friendly-snippets",
     },
     config = function()
       local cmp = require "cmp"
       local cmp_autopairs = require "nvim-autopairs.completion.cmp"
-
-      -- Autopairs integration
       cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
-      -- Regular completion setup
       cmp.setup {
         mapping = cmp.mapping.preset.insert {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -237,18 +170,11 @@ return {
           { name = "nvim_lsp" },
           { name = "buffer" },
           { name = "path" },
+          { name = "luasnip" },
+          { name = "friendly-snippets" },
         },
       }
-
-      -- / search pattern completion
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = "buffer" },
-        },
-      })
-
-      -- : command completion
+      cmp.setup.cmdline("/", { mapping = cmp.mapping.preset.cmdline(), sources = { { name = "buffer" } } })
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),

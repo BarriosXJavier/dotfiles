@@ -4,7 +4,7 @@ local options = {
 
   base46 = {
 
-    theme = "github_dark", -- default theme
+    theme = "tokyonight", -- default theme
 
     hl_add = {
       LineNr = { fg = "#d0be98" },
@@ -16,7 +16,7 @@ local options = {
     integrations = {},
     changed_themes = {},
     transparency = true,
-    theme_toggle = { "vscode_dark", "github_dark" },
+    theme_toggle = { "vscode_dark", "tokyonight" },
   },
 
   ui = {
