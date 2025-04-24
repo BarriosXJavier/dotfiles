@@ -98,30 +98,20 @@ return {
     end,
   },
 
-  -- code action
   {
     "rachartier/tiny-code-action.nvim",
     dependencies = {
-      { "nvim-lua/plenary.nvim" },
-
-      -- optional picker via telescope
-      { "nvim-telescope/telescope.nvim" },
-      -- optional picker via fzf-lua
-      { "ibhagwan/fzf-lua" },
-      -- .. or via snacks
-      {
-        "folke/snacks.nvim",
-        opts = {
-          terminal = {},
-        },
-      },
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
     },
     event = "LspAttach",
-    opts = {},
+    config = function()
+      require("tiny-code-action").setup {}
+    end,
+    vim.keymap.set("n", "<leader>ca", function()
+      require("tiny-code-action").code_action()
+    end, { desc = "Code action" }),
   },
-
-  -- Debugging
-  { "mfussenegger/nvim-dap" },
 
   -- Rust Specific
   { "mrcjkb/rustaceanvim", version = "^4", lazy = false },
