@@ -98,6 +98,7 @@ return {
     end,
   },
 
+  -- LSP code actions
   {
     "rachartier/tiny-code-action.nvim",
     dependencies = {
@@ -111,6 +112,16 @@ return {
     vim.keymap.set("n", "<leader>ca", function()
       require("tiny-code-action").code_action()
     end, { desc = "Code action" }),
+  },
+
+  -- Cool animations
+  {
+    "rachartier/tiny-glimmer.nvim",
+    event = "VeryLazy",
+    priority = 10, -- Needs to be a really low priority, to catch others plugins keybindings.
+    opts = {
+      -- your configuration
+    },
   },
 
   -- Rust Specific
