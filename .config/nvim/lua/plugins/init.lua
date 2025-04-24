@@ -80,6 +80,13 @@ return {
     end,
   },
 
+  {
+    "catgoose/nvim-colorizer.lua",
+    event = "BufReadPre",
+    opts = { -- set to setup table
+    },
+  },
+
   -- LSP Enhancements
   {
     "nvimdev/lspsaga.nvim",
