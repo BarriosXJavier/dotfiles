@@ -14,7 +14,7 @@ return {
     event = { "BufWritePre", "BufNewFile", "LspAttach", "BufReadPost" },
     opts = function()
       local config = require "configs.conform"
-      config.format_on_save = { timeout_ms = 500, lsp_fallback = true, async = true }
+      config.format_on_save = { timeout_ms = 2500, lsp_fallback = true, async = true }
       return config
     end,
   },
@@ -84,6 +84,25 @@ return {
     "catgoose/nvim-colorizer.lua",
     event = "BufReadPre",
     opts = { -- set to setup table
+    },
+  },
+
+  -- lazy.nvim:
+  {
+    "smoka7/multicursors.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvimtools/hydra.nvim",
+    },
+    opts = {},
+    cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
+    keys = {
+      {
+        mode = { "v", "n" },
+        "<Leader>m",
+        "<cmd>MCstart<cr>",
+        desc = "Create a selection for selected text or word under the cursor",
+      },
     },
   },
 
