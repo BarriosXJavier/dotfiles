@@ -140,6 +140,8 @@ return {
     end, { desc = "Code action" }),
   },
 
+  { "onsails/lspkind.nvim" },
+
   -- Cool animations
   {
     "rachartier/tiny-glimmer.nvim",
@@ -162,13 +164,6 @@ return {
     keys = { { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" } },
   },
   { "ellisonleao/carbon-now.nvim", lazy = true, cmd = "CarbonNow", opts = {} },
-  {
-    "akinsho/toggleterm.nvim",
-    version = "*",
-    config = true,
-    opts = { direction = "float" },
-    keys = { { "<leader>tt", "<cmd>ToggleTerm<CR>", desc = "Toggle terminal" } },
-  },
 
   -- Diagnostics
   {
@@ -189,10 +184,6 @@ return {
     },
   },
 
-  -- Completion & Snippets
-  { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
-  { "rafamadriz/friendly-snippets" }, -- Added second snippet option
-
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -201,11 +192,15 @@ return {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "rafamadriz/friendly-snippets",
+      "onsails/lspkind.nvim",
     },
     config = function()
       local cmp = require "cmp"
+      local lspkind = require "lspkind"
       local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+
       cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+
       cmp.setup {
         mapping = cmp.mapping.preset.insert {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -222,6 +217,41 @@ return {
           documentation = cmp.config.window.bordered(),
         },
 
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = "symbol_text",
+            maxwidth = 50,
+            ellipsis_char = "...",
+            symbol_map = {
+              Text = "",
+              Method = "",
+              Function = "",
+              Constructor = "",
+              Field = "",
+              Variable = "",
+              Class = "",
+              Interface = "",
+              Module = "",
+              Property = "",
+              Unit = "",
+              Value = "",
+              Enum = "",
+              Keyword = "",
+              Snippet = "",
+              Color = "",
+              File = "",
+              Reference = "",
+              Folder = "",
+              EnumMember = "",
+              Constant = "",
+              Struct = "",
+              Event = "",
+              Operator = "",
+              TypeParameter = "",
+            },
+          },
+        },
+
         sources = cmp.config.sources {
           { name = "nvim_lsp" },
           { name = "buffer" },
@@ -230,7 +260,12 @@ return {
           { name = "friendly-snippets" },
         },
       }
-      cmp.setup.cmdline("/", { mapping = cmp.mapping.preset.cmdline(), sources = { { name = "buffer" } } })
+
+      cmp.setup.cmdline("/", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = { { name = "buffer" } },
+      })
+
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
@@ -240,6 +275,10 @@ return {
       opts.sources[1].trigger_characters = { "-" }
     end,
   },
+
+  -- Completion & Snippets
+  { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
+  { "rafamadriz/friendly-snippets" }, -- Added second snippet option
 
   -- Misc
   { "wakatime/vim-wakatime", lazy = false },
