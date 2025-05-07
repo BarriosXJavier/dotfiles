@@ -35,6 +35,14 @@ return {
     end,
   },
 
+  {
+    "zbirenbaum/neodim",
+    event = "LspAttach",
+    config = function()
+      require("neodim").setup()
+    end,
+  },
+
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 
   { "akinsho/git-conflict.nvim", version = "*", config = true },
