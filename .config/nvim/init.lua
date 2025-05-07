@@ -6,13 +6,7 @@ vim.opt.textwidth = 80
 vim.opt.scrolloff = 8
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.termguicolors = true
-vim.opt.guicursor = {
-  "n-v-c:block-Cursor", -- Steady block in Normal/Visual/Command-line
-  "i-ci:blinkon100-blinkoff100-blinkwait1000-block-Cursor", -- Blinking block in Insert/Command-line Insert
-  "r:blinkon100-blinkoff100-blinkwait500-hor100-Cursor", -- Blinking thick horizontal in Replace mode
-}
-vim.opt.rtp:prepend(lazypath)
+
 vim.keymap.set("n", "<leader>fm", function()
   require("conform").format {
     async = true,
@@ -29,6 +23,8 @@ if not vim.uv.fs_stat(lazypath) then
   vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
 end
 
+vim.opt.rtp:prepend(lazypath)
+
 local lazy_config = require "configs.lazy"
 
 -- load plugins
@@ -43,7 +39,6 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
-require("tag-replacer").setup()
 
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
@@ -55,3 +50,9 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+vim.opt.guicursor = {
+  "n-v-c:block-Cursor", -- Steady block in Normal/Visual/Command-line
+  "i-ci:blinkon100-blinkoff100-blinkwait1000-block-Cursor", -- Blinking block in Insert/Command-line Insert
+  "r:blinkon100-blinkoff100-blinkwait500-hor100-Cursor", -- Blinking thick horizontal in Replace mode
+}
