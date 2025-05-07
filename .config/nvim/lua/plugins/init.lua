@@ -75,18 +75,19 @@ return {
     end,
   },
   {
+    "kylechui/nvim-surround",
+    version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
+  {
     "olrtg/nvim-emmet",
     config = function()
       vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
-    end,
-  },
-
-  {
-    "BarriosXJavier/tag-replacer.nvim",
-    lazy = false,
-    cmd = { "ReplaceTag", "ReplaceTagVisual" },
-    config = function()
-      require("tag-replacer").setup()
     end,
   },
 
@@ -288,7 +289,7 @@ return {
 
   -- Completion & Snippets
   { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
-  { "rafamadriz/friendly-snippets" }, -- Added second snippet option
+  { "rafamadriz/friendly-snippets" },
 
   -- Misc
   { "wakatime/vim-wakatime", lazy = false },
