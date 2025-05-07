@@ -149,6 +149,19 @@ style_user = "fg:color_username"
 style_root = "bold fg:color_danger"
 format = '[ $user ]($style)➤'
 
+# [directory]
+# style = "fg:color_directory"
+# read_only_style = "fg:color_directory"
+# repo_root_style = "bold fg:color_directory"
+# format = "[ $path ]($style)"
+# read_only = " "
+# home_symbol = "~"
+# truncation_symbol = "…/"
+# truncation_length = 0
+# truncate_to_repo = true
+# fish_style_pwd_dir_length = 0
+# use_logical_path = true
+
 [directory]
 style = "fg:color_directory"
 read_only_style = "fg:color_directory"
@@ -157,9 +170,9 @@ format = "[ $path ]($style)"
 read_only = " "
 home_symbol = "~"
 truncation_symbol = "…/"
-truncation_length = 0
-truncate_to_repo = true
-fish_style_pwd_dir_length = 0
+truncation_length = 3
+truncate_to_repo = false
+fish_style_pwd_dir_length = 1
 use_logical_path = true
 
 [git_branch]
