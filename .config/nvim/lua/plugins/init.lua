@@ -1,12 +1,11 @@
 return {
-  -- Core plugins
+  -- Core
   {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
     end,
   },
-
   { "williamboman/mason-lspconfig.nvim" },
 
   {
@@ -19,14 +18,13 @@ return {
     end,
   },
 
-  -- UI Enhancements
+  -- UI
   {
     "NvChad/ui",
     config = function()
       require "nvchad"
     end,
   },
-
   {
     "nvchad/base46",
     lazy = true,
@@ -34,7 +32,6 @@ return {
       require("base46").load_all_highlights()
     end,
   },
-
   {
     "zbirenbaum/neodim",
     event = "LspAttach",
@@ -42,11 +39,8 @@ return {
       require("neodim").setup()
     end,
   },
-
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
-
   { "akinsho/git-conflict.nvim", version = "*", config = true },
-
   {
     "akinsho/bufferline.nvim",
     version = "*",
@@ -56,10 +50,14 @@ return {
       require("bufferline").setup()
     end,
   },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = { "vim", "lua", "vimdoc", "html", "css" },
+    },
+  },
 
-  { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = { "vim", "lua", "vimdoc", "html", "css" } } },
-
-  -- Editing Helpers
+  -- Editing
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
@@ -79,9 +77,7 @@ return {
     event = "VeryLazy",
     opts = true,
     config = function()
-      require("nvim-surround").setup {
-        -- Configuration here, or leave empty to use defaults
-      }
+      require("nvim-surround").setup {}
     end,
   },
   {
@@ -90,15 +86,21 @@ return {
       vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
     end,
   },
-
   {
     "catgoose/nvim-colorizer.lua",
     event = "BufReadPre",
-    opts = { -- set to setup table
+    opts = {},
+  },
+  {
+    "rachartier/tiny-glimmer.nvim",
+    event = "VeryLazy",
+    priority = 10, -- Needs to be a really low priority, to catch others plugins keybindings.
+    opts = {
+      -- your configuration
     },
   },
 
-  -- lazy.nvim:
+  -- Multicursor
   {
     "smoka7/multicursors.nvim",
     event = "VeryLazy",
@@ -117,11 +119,14 @@ return {
     },
   },
 
-  -- LSP Enhancements
+  -- LSP Extras
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
     config = function()
       require("lspsaga").setup { lightbulb = { enable = false } }
       vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
@@ -134,8 +139,6 @@ return {
       require("LspUI").setup()
     end,
   },
-
-  -- LSP code actions
   {
     "rachartier/tiny-code-action.nvim",
     dependencies = {
@@ -146,55 +149,19 @@ return {
     config = function()
       require("tiny-code-action").setup {}
     end,
-    vim.keymap.set("n", "<leader>ca", function()
-      require("tiny-code-action").code_action()
-    end, { desc = "Code action" }),
-  },
-
-  { "onsails/lspkind.nvim" },
-
-  -- Cool animations
-  {
-    "rachartier/tiny-glimmer.nvim",
-    event = "VeryLazy",
-    priority = 10, -- Needs to be a really low priority, to catch others plugins keybindings.
-    opts = {
-      -- your configuration
-    },
-  },
-
-  -- Rust Specific
-  { "mrcjkb/rustaceanvim", version = "^4", lazy = false },
-
-  -- Productivity Tools
-  {
-    "kdheepak/lazygit.nvim",
-    lazy = true,
-    cmd = { "LazyGit", "LazyGitConfig", "LazyGitCurrentFile", "LazyGitFilter", "LazyGitFilterCurrentFile" },
-    dependencies = { "nvim-lua/plenary.nvim" },
-    keys = { { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" } },
-  },
-  { "ellisonleao/carbon-now.nvim", lazy = true, cmd = "CarbonNow", opts = {} },
-
-  -- Diagnostics
-  {
-    "folke/trouble.nvim",
-    cmd = "Trouble",
-    opts = {},
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
-      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
       {
-        "<leader>cl",
-        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-        desc = "LSP Definitions / references / ... (Trouble)",
+        "n",
+        "<leader>ca",
+        function()
+          require("tiny-code-action").code_action()
+        end,
+        desc = "Code action",
       },
-      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
     },
   },
 
+  -- Completion
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -202,7 +169,6 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
-      "rafamadriz/friendly-snippets",
       "onsails/lspkind.nvim",
     },
     config = function()
@@ -222,12 +188,10 @@ return {
           ["<Tab>"] = cmp.mapping.select_next_item(),
           ["<S-Tab>"] = cmp.mapping.select_prev_item(),
         },
-
         window = {
           completion = cmp.config.window.bordered(),
           documentation = cmp.config.window.bordered(),
         },
-
         formatting = {
           format = lspkind.cmp_format {
             mode = "symbol_text",
@@ -262,13 +226,11 @@ return {
             },
           },
         },
-
         sources = cmp.config.sources {
           { name = "nvim_lsp" },
           { name = "buffer" },
           { name = "path" },
           { name = "luasnip" },
-          { name = "friendly-snippets" },
         },
       }
 
@@ -287,11 +249,46 @@ return {
     end,
   },
 
-  -- Completion & Snippets
-  { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
-  { "rafamadriz/friendly-snippets" },
+  {
+    "L3MON4D3/LuaSnip",
+    version = "v2.*",
+    build = "make install_jsregexp",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
 
   -- Misc
   { "wakatime/vim-wakatime", lazy = false },
-  { "nvim-tree/nvim-web-devicons" },
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = { "LazyGit", "LazyGit*" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = { { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" } },
+  },
+  { "ellisonleao/carbon-now.nvim", lazy = true, cmd = "CarbonNow", opts = {} },
+
+  -- Trouble Diagnostics
+  {
+    "folke/trouble.nvim",
+    cmd = "Trouble",
+    opts = {},
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+      {
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+    },
+  },
+
+  -- Rust
+  { "mrcjkb/rustaceanvim", version = "^4", lazy = false },
 }
