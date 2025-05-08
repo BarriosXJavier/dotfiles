@@ -91,6 +91,9 @@ return {
     event = "BufReadPre",
     opts = {},
   },
+
+  -- { import = "nvchad.blink.lazyspec" },
+
   {
     "rachartier/tiny-glimmer.nvim",
     event = "VeryLazy",
@@ -109,14 +112,14 @@ return {
     },
     opts = {},
     cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
-    keys = {
-      {
-        mode = { "v", "n" },
-        "<Leader>m",
+    config = function()
+      vim.keymap.set(
+        "v",
+        "<leader>m",
         "<cmd>MCstart<cr>",
-        desc = "Create a selection for selected text or word under the cursor",
-      },
-    },
+        { desc = "Create a selection for selected text or word under the cursor" }
+      )
+    end,
   },
 
   -- LSP Extras
@@ -149,103 +152,160 @@ return {
     config = function()
       require("tiny-code-action").setup {}
     end,
-    keys = {
-      {
-        "n",
-        "<leader>ca",
-        function()
-          require("tiny-code-action").code_action()
-        end,
-        desc = "Code action",
-      },
-    },
+
+    vim.keymap.set("n", "<leader>ca", function()
+      require("tiny-code-action").code_action()
+    end, { desc = "Code actions", noremap = true, silent = true }),
   },
 
-  -- Completion
   {
-    "hrsh7th/nvim-cmp",
+    "saghen/blink.cmp",
+    event = "InsertEnter",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
-      "onsails/lspkind.nvim",
+      "L3MON4D3/LuaSnip",
     },
-    config = function()
-      local cmp = require "cmp"
-      local lspkind = require "lspkind"
-      local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+    opts = function(_, opts)
+      local trigger_text = ";"
 
-      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      opts.enabled = function()
+        local ft = vim.bo[0].filetype
+        return not vim.tbl_contains({ "TelescopePrompt", "minifiles", "snacks_picker_input" }, ft)
+      end
 
-      cmp.setup {
-        mapping = cmp.mapping.preset.insert {
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm { select = true },
-          ["<Tab>"] = cmp.mapping.select_next_item(),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-        },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        formatting = {
-          format = lspkind.cmp_format {
-            mode = "symbol_text",
-            maxwidth = 50,
-            ellipsis_char = "...",
-            symbol_map = {
-              Text = "",
-              Method = "",
-              Function = "",
-              Constructor = "",
-              Field = "",
-              Variable = "",
-              Class = "",
-              Interface = "",
-              Module = "",
-              Property = "",
-              Unit = "",
-              Value = "",
-              Enum = "",
-              Keyword = "",
-              Snippet = "",
-              Color = "",
-              File = "",
-              Reference = "",
-              Folder = "",
-              EnumMember = "",
-              Constant = "",
-              Struct = "",
-              Event = "",
-              Operator = "",
-              TypeParameter = "",
+      opts.snippets = {
+        preset = "luasnip",
+      }
+
+      opts.sources = {
+        default = { "lsp", "snippets", "buffer", "path" },
+        providers = {
+          lsp = {
+            module = "blink.cmp.sources.lsp",
+            name = "LSP",
+            score_offset = 90,
+            min_keyword_length = 2,
+          },
+          path = {
+            module = "blink.cmp.sources.path",
+            name = "Path",
+            score_offset = 25,
+            fallbacks = { "snippets", "buffer" },
+            opts = {
+              label_trailing_slash = true,
+              get_cwd = function(ctx)
+                return vim.fn.expand(("#%d:p:h"):format(ctx.bufnr))
+              end,
+              show_hidden_files_by_default = true,
             },
           },
-        },
-        sources = cmp.config.sources {
-          { name = "nvim_lsp" },
-          { name = "buffer" },
-          { name = "path" },
-          { name = "luasnip" },
+          buffer = {
+            module = "blink.cmp.sources.buffer",
+            name = "Buffer",
+            max_items = 3,
+            min_keyword_length = 2,
+            score_offset = 15,
+          },
+          snippets = {
+            module = "blink.cmp.sources.snippets",
+            name = "Snippets",
+            max_items = 15,
+            min_keyword_length = 2,
+            score_offset = 85,
+            should_show_items = function()
+              local col = vim.api.nvim_win_get_cursor(0)[2]
+              local before = vim.api.nvim_get_current_line():sub(1, col)
+              return before:match(trigger_text .. "%w*$") ~= nil
+            end,
+            transform_items = function(_, items)
+              local line = vim.api.nvim_get_current_line()
+              local col = vim.api.nvim_win_get_cursor(0)[2]
+              local before = line:sub(1, col)
+              local start_pos, end_pos = before:find(trigger_text .. "[^" .. trigger_text .. "]*$")
+              if start_pos then
+                for _, item in ipairs(items) do
+                  if not item.trigger_text_modified then
+                    item.trigger_text_modified = true
+                    item.textEdit = {
+                      newText = item.insertText or item.label,
+                      range = {
+                        start = { line = vim.fn.line "." - 1, character = start_pos - 1 },
+                        ["end"] = { line = vim.fn.line "." - 1, character = end_pos },
+                      },
+                    }
+                  end
+                end
+              end
+              return items
+            end,
+          },
         },
       }
 
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = { { name = "buffer" } },
-      })
+      opts.formatting = {
+        format_item = function(item)
+          local icons = {
+            Text = "",
+            Method = "",
+            Function = "",
+            Constructor = "",
+            Field = "",
+            Variable = "",
+            Class = "",
+            Interface = "",
+            Module = "",
+            Property = "",
+            Unit = "",
+            Value = "",
+            Enum = "",
+            Keyword = "",
+            Snippet = "",
+            Color = "",
+            File = "",
+            Reference = "",
+            Folder = "",
+            EnumMember = "",
+            Constant = "",
+            Struct = "",
+            Event = "",
+            Operator = "",
+            TypeParameter = "",
+          }
+          item.label = (icons[item.kind] or "") .. " " .. item.label
+          return item
+        end,
+      }
 
-      cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
-      })
-    end,
-    opts = function(_, opts)
-      opts.sources[1].trigger_characters = { "-" }
+      opts.cmdline = {
+        enabled = true,
+        sources = {
+          [":"] = { "path", "cmdline" },
+          ["/"] = { "buffer" },
+        },
+      }
+
+      opts.completion = {
+        menu = { border = "single" },
+        documentation = {
+          auto_show = true,
+          window = { border = "single" },
+        },
+      }
+
+      opts.keymap = {
+        preset = "none",
+        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+        ["<Up>"] = { "select_prev", "fallback" },
+        ["<Down>"] = { "select_next", "fallback" },
+        ["<C-p>"] = { "select_prev", "fallback" },
+        ["<C-n>"] = { "select_next", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
+        ["<C-e>"] = { "hide", "fallback" },
+        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+        ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+      }
+      return opts
     end,
   },
 
@@ -261,13 +321,6 @@ return {
 
   -- Misc
   { "wakatime/vim-wakatime", lazy = false },
-  {
-    "kdheepak/lazygit.nvim",
-    lazy = true,
-    cmd = { "LazyGit", "LazyGit*" },
-    dependencies = { "nvim-lua/plenary.nvim" },
-    keys = { { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" } },
-  },
   { "ellisonleao/carbon-now.nvim", lazy = true, cmd = "CarbonNow", opts = {} },
 
   -- Trouble Diagnostics
@@ -288,7 +341,4 @@ return {
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
     },
   },
-
-  -- Rust
-  { "mrcjkb/rustaceanvim", version = "^4", lazy = false },
 }
