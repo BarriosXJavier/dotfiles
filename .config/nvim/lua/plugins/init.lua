@@ -6,6 +6,7 @@ return {
       require "configs.lspconfig"
     end,
   },
+
   { "williamboman/mason-lspconfig.nvim" },
 
   {
@@ -15,6 +16,47 @@ return {
       local config = require "configs.conform"
       config.format_on_save = { timeout_ms = 2500, lsp_fallback = true, async = true }
       return config
+    end,
+  },
+
+  {
+    "nvimtools/none-ls.nvim",
+    event = "VeryLazy",
+    opts = function()
+      local null_ls = require "null-ls"
+      local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+      return {
+        sources = {
+          null_ls.builtins.formatting.prettier,
+          null_ls.builtins.formatting.stylua,
+          null_ls.builtins.formatting.black,
+          null_ls.builtins.formatting.shfmt,
+          null_ls.builtins.formatting.clang_format,
+          null_ls.builtins.formatting.isort,
+        },
+        on_attach = function(client, bufnr)
+          if client.supports_method "textDocument/formatting" then
+            vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              group = augroup,
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format { bufnr = bufnr }
+              end,
+            })
+          end
+        end,
+      }
+    end,
+  },
+
+  {
+    "windwp/nvim-ts-autotag",
+    ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte", "vue", "astro" },
+    opts = {},
+    config = function(_, opts)
+      require("nvim-ts-autotag").setup(opts)
     end,
   },
 
@@ -91,16 +133,11 @@ return {
     event = "BufReadPre",
     opts = {},
   },
-
-  -- { import = "nvchad.blink.lazyspec" },
-
   {
     "rachartier/tiny-glimmer.nvim",
     event = "VeryLazy",
-    priority = 10, -- Needs to be a really low priority, to catch others plugins keybindings.
-    opts = {
-      -- your configuration
-    },
+    priority = 10,
+    opts = {},
   },
 
   -- Multicursor
@@ -131,7 +168,17 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      require("lspsaga").setup { lightbulb = { enable = false } }
+      require("lspsaga").setup {
+        ui = {
+          border = "rounded",
+          title = true,
+          winblend = 10,
+          devicon = true,
+        },
+        lightbulb = {
+          enable = false,
+        },
+      }
       vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
     end,
   },
@@ -151,171 +198,104 @@ return {
     event = "LspAttach",
     config = function()
       require("tiny-code-action").setup {}
+      vim.keymap.set("n", "<leader>ca", function()
+        require("tiny-code-action").code_action()
+      end, { desc = "Code actions", noremap = true, silent = true })
     end,
-
-    vim.keymap.set("n", "<leader>ca", function()
-      require("tiny-code-action").code_action()
-    end, { desc = "Code actions", noremap = true, silent = true }),
   },
 
   {
-    "saghen/blink.cmp",
-    event = "InsertEnter",
+    "hrsh7th/nvim-cmp",
+    event = "VeryLazy",
     dependencies = {
-      "L3MON4D3/LuaSnip",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "rafamadriz/friendly-snippets",
+      "onsails/lspkind.nvim",
+      { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
     },
-    opts = function(_, opts)
-      local trigger_text = ";"
+    config = function()
+      local cmp = require "cmp"
+      local lspkind = require "lspkind"
+      local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 
-      opts.enabled = function()
-        local ft = vim.bo[0].filetype
-        return not vim.tbl_contains({ "TelescopePrompt", "minifiles", "snacks_picker_input" }, ft)
-      end
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
-      opts.snippets = {
-        preset = "luasnip",
-      }
+      cmp.setup {
+        mapping = cmp.mapping.preset.insert {
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm { select = true },
+          ["<Tab>"] = cmp.mapping.select_next_item(),
+          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+        },
 
-      opts.sources = {
-        default = { "lsp", "snippets", "buffer", "path" },
-        providers = {
-          lsp = {
-            module = "blink.cmp.sources.lsp",
-            name = "LSP",
-            score_offset = 90,
-            min_keyword_length = 2,
-          },
-          path = {
-            module = "blink.cmp.sources.path",
-            name = "Path",
-            score_offset = 25,
-            fallbacks = { "snippets", "buffer" },
-            opts = {
-              label_trailing_slash = true,
-              get_cwd = function(ctx)
-                return vim.fn.expand(("#%d:p:h"):format(ctx.bufnr))
-              end,
-              show_hidden_files_by_default = true,
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
+
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = "symbol_text",
+            maxwidth = 50,
+            ellipsis_char = "...",
+            symbol_map = {
+              Text = "󰉿",
+              Method = "󰆧",
+              Function = "󰊕",
+              Constructor = "",
+              Field = "󰜢",
+              Variable = "󰀫",
+              Class = "󰠱",
+              Interface = "",
+              Module = "",
+              Property = "󰜢",
+              Unit = "󰑭",
+              Value = "󰎠",
+              Enum = "",
+              Keyword = "󰌋",
+              Snippet = "",
+              Color = "󰏘",
+              File = "󰈙",
+              Reference = "󰈇",
+              Folder = "󰉋",
+              EnumMember = "",
+              Constant = "󰏿",
+              Struct = "󰙅",
+              Event = "",
+              Operator = "󰆕",
+              TypeParameter = "",
             },
           },
-          buffer = {
-            module = "blink.cmp.sources.buffer",
-            name = "Buffer",
-            max_items = 3,
-            min_keyword_length = 2,
-            score_offset = 15,
-          },
-          snippets = {
-            module = "blink.cmp.sources.snippets",
-            name = "Snippets",
-            max_items = 15,
-            min_keyword_length = 2,
-            score_offset = 85,
-            should_show_items = function()
-              local col = vim.api.nvim_win_get_cursor(0)[2]
-              local before = vim.api.nvim_get_current_line():sub(1, col)
-              return before:match(trigger_text .. "%w*$") ~= nil
-            end,
-            transform_items = function(_, items)
-              local line = vim.api.nvim_get_current_line()
-              local col = vim.api.nvim_win_get_cursor(0)[2]
-              local before = line:sub(1, col)
-              local start_pos, end_pos = before:find(trigger_text .. "[^" .. trigger_text .. "]*$")
-              if start_pos then
-                for _, item in ipairs(items) do
-                  if not item.trigger_text_modified then
-                    item.trigger_text_modified = true
-                    item.textEdit = {
-                      newText = item.insertText or item.label,
-                      range = {
-                        start = { line = vim.fn.line "." - 1, character = start_pos - 1 },
-                        ["end"] = { line = vim.fn.line "." - 1, character = end_pos },
-                      },
-                    }
-                  end
-                end
-              end
-              return items
-            end,
-          },
+        },
+
+        sources = cmp.config.sources {
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+          { name = "friendly-snippets" },
+          { name = "buffer" },
+          { name = "path" },
         },
       }
 
-      opts.formatting = {
-        format_item = function(item)
-          local icons = {
-            Text = "",
-            Method = "",
-            Function = "",
-            Constructor = "",
-            Field = "",
-            Variable = "",
-            Class = "",
-            Interface = "",
-            Module = "",
-            Property = "",
-            Unit = "",
-            Value = "",
-            Enum = "",
-            Keyword = "",
-            Snippet = "",
-            Color = "",
-            File = "",
-            Reference = "",
-            Folder = "",
-            EnumMember = "",
-            Constant = "",
-            Struct = "",
-            Event = "",
-            Operator = "",
-            TypeParameter = "",
-          }
-          item.label = (icons[item.kind] or "") .. " " .. item.label
-          return item
-        end,
-      }
+      cmp.setup.cmdline("/", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = { { name = "buffer" } },
+      })
 
-      opts.cmdline = {
-        enabled = true,
-        sources = {
-          [":"] = { "path", "cmdline" },
-          ["/"] = { "buffer" },
-        },
-      }
-
-      opts.completion = {
-        menu = { border = "single" },
-        documentation = {
-          auto_show = true,
-          window = { border = "single" },
-        },
-      }
-
-      opts.keymap = {
-        preset = "none",
-        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
-        ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
-        ["<Up>"] = { "select_prev", "fallback" },
-        ["<Down>"] = { "select_next", "fallback" },
-        ["<C-p>"] = { "select_prev", "fallback" },
-        ["<C-n>"] = { "select_next", "fallback" },
-        ["<CR>"] = { "accept", "fallback" },
-        ["<C-e>"] = { "hide", "fallback" },
-        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<C-b>"] = { "scroll_documentation_up", "fallback" },
-        ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-      }
-      return opts
+      cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
+      })
     end,
-  },
 
-  {
-    "L3MON4D3/LuaSnip",
-    version = "v2.*",
-    build = "make install_jsregexp",
-    dependencies = { "rafamadriz/friendly-snippets" },
-    config = function()
-      require("luasnip.loaders.from_vscode").lazy_load()
+    opts = function(_, opts)
+      opts.sources[1].trigger_characters = { "-" }
     end,
   },
 
@@ -339,6 +319,23 @@ return {
       },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+    },
+  },
+
+  -- LazyGit
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
     },
   },
 }
