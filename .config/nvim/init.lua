@@ -7,14 +7,6 @@ vim.opt.scrolloff = 8
 vim.opt.number = true
 vim.opt.relativenumber = true
 
-vim.keymap.set("n", "<leader>fm", function()
-  require("conform").format {
-    async = true,
-    timeout_ms = 2500, -- Adjust timeout if necessary
-    lsp_fallback = true,
-  }
-end, { desc = "Format file with conform" })
-
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
@@ -39,7 +31,6 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
-
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
@@ -52,7 +43,7 @@ vim.schedule(function()
 end)
 
 vim.opt.guicursor = {
-  "n-v-c:block-Cursor", -- Steady block in Normal/Visual/Command-line
+  "n-v-c:block-Cursor",                                     -- Steady block in Normal/Visual/Command-line
   "i-ci:blinkon100-blinkoff100-blinkwait1000-block-Cursor", -- Blinking block in Insert/Command-line Insert
-  "r:blinkon100-blinkoff100-blinkwait500-hor100-Cursor", -- Blinking thick horizontal in Replace mode
+  "r:blinkon100-blinkoff100-blinkwait500-hor100-Cursor",    -- Blinking thick horizontal in Replace mode
 }

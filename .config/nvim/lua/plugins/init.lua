@@ -10,6 +10,14 @@ return {
   { "williamboman/mason-lspconfig.nvim" },
 
   {
+    "okuuva/auto-save.nvim",
+    version = "^1.0.0",                       -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
+    cmd = "ASToggle",                         -- optional for lazy loading on command
+    event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
+    opts = {},
+  },
+
+  {
     "nvimtools/none-ls.nvim",
     event = { "BufWritePre", "BufNewFile", "LspAttach", "BufReadPost" }, -- Match conform events
     opts = function()
@@ -31,11 +39,10 @@ return {
               group = augroup,
               buffer = bufnr,
               callback = function()
-                -- Add timeout and async options to match conform behavior
                 vim.lsp.buf.format {
                   bufnr = bufnr,
                   timeout_ms = 2500,
-                  async = true
+                  async = false,
                 }
               end,
             })
@@ -94,19 +101,6 @@ return {
   },
 
   {
-    "Pocco81/auto-save.nvim",
-    lazy = false,
-    config = function()
-      require("auto-save").setup {
-        condition = function(buf)
-          local mode = vim.fn.mode()
-          return not (mode:match("[vVsS]"))
-        end,
-      }
-    end,
-  },
-
-  {
     "olrtg/nvim-emmet",
     config = function()
       vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
@@ -122,25 +116,6 @@ return {
     event = "VeryLazy",
     priority = 10,
     opts = {},
-  },
-
-  -- Multicursor
-  {
-    "smoka7/multicursors.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "nvimtools/hydra.nvim",
-    },
-    opts = {},
-    cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
-    config = function()
-      vim.keymap.set(
-        "v",
-        "<leader>m",
-        "<cmd>MCstart<cr>",
-        { desc = "Create a selection for selected text or word under the cursor" }
-      )
-    end,
   },
 
   -- LSP Extras
@@ -316,4 +291,3 @@ return {
     },
   },
 }
-
