@@ -10,22 +10,11 @@ return {
   { "williamboman/mason-lspconfig.nvim" },
 
   {
-    "stevearc/conform.nvim",
-    event = { "BufWritePre", "BufNewFile", "LspAttach", "BufReadPost" },
-    opts = function()
-      local config = require "configs.conform"
-      config.format_on_save = { timeout_ms = 2500, lsp_fallback = true, async = true }
-      return config
-    end,
-  },
-
-  {
     "nvimtools/none-ls.nvim",
-    event = "VeryLazy",
+    event = { "BufWritePre", "BufNewFile", "LspAttach", "BufReadPost" }, -- Match conform events
     opts = function()
       local null_ls = require "null-ls"
       local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
       return {
         sources = {
           null_ls.builtins.formatting.prettier,
@@ -42,7 +31,12 @@ return {
               group = augroup,
               buffer = bufnr,
               callback = function()
-                vim.lsp.buf.format { bufnr = bufnr }
+                -- Add timeout and async options to match conform behavior
+                vim.lsp.buf.format {
+                  bufnr = bufnr,
+                  timeout_ms = 2500,
+                  async = true
+                }
               end,
             })
           end
@@ -50,7 +44,6 @@ return {
       }
     end,
   },
-
   {
     "windwp/nvim-ts-autotag",
     ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte", "vue", "astro" },
@@ -74,15 +67,7 @@ return {
       require("base46").load_all_highlights()
     end,
   },
-  {
-    "zbirenbaum/neodim",
-    event = "LspAttach",
-    config = function()
-      require("neodim").setup()
-    end,
-  },
-  { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
-  { "akinsho/git-conflict.nvim", version = "*", config = true },
+  { "nvim-lualine/lualine.nvim",        dependencies = { "nvim-tree/nvim-web-devicons" } },
   {
     "akinsho/bufferline.nvim",
     version = "*",
@@ -107,21 +92,20 @@ return {
       require("nvim-autopairs").setup()
     end,
   },
+
   {
     "Pocco81/auto-save.nvim",
     lazy = false,
     config = function()
-      require("auto-save").setup()
+      require("auto-save").setup {
+        condition = function(buf)
+          local mode = vim.fn.mode()
+          return not (mode:match("[vVsS]"))
+        end,
+      }
     end,
   },
-  {
-    "kylechui/nvim-surround",
-    event = "VeryLazy",
-    opts = true,
-    config = function()
-      require("nvim-surround").setup {}
-    end,
-  },
+
   {
     "olrtg/nvim-emmet",
     config = function()
@@ -183,13 +167,6 @@ return {
     end,
   },
   {
-    "jinzhongjia/LspUI.nvim",
-    branch = "main",
-    config = function()
-      require("LspUI").setup()
-    end,
-  },
-  {
     "rachartier/tiny-code-action.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -203,7 +180,6 @@ return {
       end, { desc = "Code actions", noremap = true, silent = true })
     end,
   },
-
   {
     "hrsh7th/nvim-cmp",
     event = "VeryLazy",
@@ -218,12 +194,19 @@ return {
     },
     config = function()
       local cmp = require "cmp"
+      local luasnip = require "luasnip"
       local lspkind = require "lspkind"
       local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 
-      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      require("luasnip.loaders.from_vscode").lazy_load()
 
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
       cmp.setup {
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
         mapping = cmp.mapping.preset.insert {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -233,12 +216,14 @@ return {
           ["<Tab>"] = cmp.mapping.select_next_item(),
           ["<S-Tab>"] = cmp.mapping.select_prev_item(),
         },
-
         window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
+          completion = cmp.config.window.bordered {
+            border = "rounded",
+          },
+          documentation = cmp.config.window.bordered {
+            border = "rounded",
+          },
         },
-
         formatting = {
           format = lspkind.cmp_format {
             mode = "symbol_text",
@@ -248,59 +233,51 @@ return {
               Text = "󰉿",
               Method = "󰆧",
               Function = "󰊕",
-              Constructor = "",
+              Constructor = "",
               Field = "󰜢",
               Variable = "󰀫",
               Class = "󰠱",
-              Interface = "",
-              Module = "",
+              Interface = "",
+              Module = "",
               Property = "󰜢",
               Unit = "󰑭",
               Value = "󰎠",
-              Enum = "",
+              Enum = "",
               Keyword = "󰌋",
-              Snippet = "",
+              Snippet = "",
               Color = "󰏘",
               File = "󰈙",
               Reference = "󰈇",
               Folder = "󰉋",
-              EnumMember = "",
+              EnumMember = "",
               Constant = "󰏿",
               Struct = "󰙅",
-              Event = "",
+              Event = "",
               Operator = "󰆕",
               TypeParameter = "",
             },
           },
         },
-
         sources = cmp.config.sources {
           { name = "nvim_lsp" },
           { name = "luasnip" },
-          { name = "friendly-snippets" },
           { name = "buffer" },
           { name = "path" },
         },
       }
-
       cmp.setup.cmdline("/", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = { { name = "buffer" } },
       })
-
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
       })
     end,
-
-    opts = function(_, opts)
-      opts.sources[1].trigger_characters = { "-" }
-    end,
   },
 
   -- Misc
-  { "wakatime/vim-wakatime", lazy = false },
+  { "wakatime/vim-wakatime",       lazy = false },
   { "ellisonleao/carbon-now.nvim", lazy = true, cmd = "CarbonNow", opts = {} },
 
   -- Trouble Diagnostics
@@ -309,16 +286,16 @@ return {
     cmd = "Trouble",
     opts = {},
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",      desc = "Symbols (Trouble)" },
       {
         "<leader>cl",
         "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
         desc = "LSP Definitions / references / ... (Trouble)",
       },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List (Trouble)" },
     },
   },
 
@@ -339,3 +316,4 @@ return {
     },
   },
 }
+
