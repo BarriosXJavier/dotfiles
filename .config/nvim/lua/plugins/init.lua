@@ -1,25 +1,16 @@
 return {
-  -- Core
+  -- CORE / LSP
   {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
     end,
   },
-
   { "williamboman/mason-lspconfig.nvim" },
 
   {
-    "okuuva/auto-save.nvim",
-    version = "^1.0.0",                       -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
-    cmd = "ASToggle",                         -- optional for lazy loading on command
-    event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
-    opts = {},
-  },
-
-  {
     "nvimtools/none-ls.nvim",
-    event = { "BufWritePre", "BufNewFile", "LspAttach", "BufReadPost" }, -- Match conform events
+    event = { "BufWritePre", "BufNewFile", "LspAttach", "BufReadPost" },
     opts = function()
       local null_ls = require "null-ls"
       local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -51,74 +42,8 @@ return {
       }
     end,
   },
-  {
-    "windwp/nvim-ts-autotag",
-    ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte", "vue", "astro" },
-    opts = {},
-    config = function(_, opts)
-      require("nvim-ts-autotag").setup(opts)
-    end,
-  },
 
-  -- UI
-  {
-    "NvChad/ui",
-    config = function()
-      require "nvchad"
-    end,
-  },
-  {
-    "nvchad/base46",
-    lazy = true,
-    build = function()
-      require("base46").load_all_highlights()
-    end,
-  },
-  { "nvim-lualine/lualine.nvim",        dependencies = { "nvim-tree/nvim-web-devicons" } },
-  {
-    "akinsho/bufferline.nvim",
-    version = "*",
-    lazy = false,
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = function()
-      require("bufferline").setup()
-    end,
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = { "vim", "lua", "vimdoc", "html", "css" },
-    },
-  },
-
-  -- Editing
-  {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    config = function()
-      require("nvim-autopairs").setup()
-    end,
-  },
-
-  {
-    "olrtg/nvim-emmet",
-    config = function()
-      vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
-    end,
-  },
-  {
-    "catgoose/nvim-colorizer.lua",
-    event = "BufReadPre",
-    opts = {},
-  },
-  {
-    "rachartier/tiny-glimmer.nvim",
-    event = "VeryLazy",
-    priority = 10,
-    opts = {},
-  },
-
-  -- LSP Extras
+  -- LSP UX
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
@@ -134,20 +59,19 @@ return {
           winblend = 10,
           devicon = true,
         },
-        lightbulb = {
-          enable = false,
-        },
+        lightbulb = { enable = false },
       }
       vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
     end,
   },
+
   {
     "rachartier/tiny-code-action.nvim",
+    event = "LspAttach",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
     },
-    event = "LspAttach",
     config = function()
       require("tiny-code-action").setup {}
       vim.keymap.set("n", "<leader>ca", function()
@@ -155,107 +79,104 @@ return {
       end, { desc = "Code actions", noremap = true, silent = true })
     end,
   },
+
   {
-    "hrsh7th/nvim-cmp",
-    event = "VeryLazy",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
-      "rafamadriz/friendly-snippets",
-      "onsails/lspkind.nvim",
-      { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
-    },
+    "rcarriga/nvim-notify",
+    lazy = false,   -- Load early
+    priority = 100, -- High priority
     config = function()
-      local cmp = require "cmp"
-      local luasnip = require "luasnip"
-      local lspkind = require "lspkind"
-      local cmp_autopairs = require "nvim-autopairs.completion.cmp"
-
-      require("luasnip.loaders.from_vscode").lazy_load()
-
-      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert {
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm { select = true },
-          ["<Tab>"] = cmp.mapping.select_next_item(),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-        },
-        window = {
-          completion = cmp.config.window.bordered {
-            border = "rounded",
-          },
-          documentation = cmp.config.window.bordered {
-            border = "rounded",
-          },
-        },
-        formatting = {
-          format = lspkind.cmp_format {
-            mode = "symbol_text",
-            maxwidth = 50,
-            ellipsis_char = "...",
-            symbol_map = {
-              Text = "󰉿",
-              Method = "󰆧",
-              Function = "󰊕",
-              Constructor = "",
-              Field = "󰜢",
-              Variable = "󰀫",
-              Class = "󰠱",
-              Interface = "",
-              Module = "",
-              Property = "󰜢",
-              Unit = "󰑭",
-              Value = "󰎠",
-              Enum = "",
-              Keyword = "󰌋",
-              Snippet = "",
-              Color = "󰏘",
-              File = "󰈙",
-              Reference = "󰈇",
-              Folder = "󰉋",
-              EnumMember = "",
-              Constant = "󰏿",
-              Struct = "󰙅",
-              Event = "",
-              Operator = "󰆕",
-              TypeParameter = "",
-            },
-          },
-        },
-        sources = cmp.config.sources {
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "buffer" },
-          { name = "path" },
-        },
+      require("notify").setup {
+        background_color = "#000000",
       }
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = { { name = "buffer" } },
-      })
-      cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
-      })
     end,
   },
 
-  -- Misc
-  { "wakatime/vim-wakatime",       lazy = false },
-  { "ellisonleao/carbon-now.nvim", lazy = true, cmd = "CarbonNow", opts = {} },
+  -- COMPLETION (Blink wraps cmp)
+  {
+    "saghen/blink.cmp",
+    lazy = false,
+    version = "1.*",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = {
+      keymap = { preset = "default" },
+      appearance = { nerd_font_variant = "mono" },
+      completion = { documentation = { auto_show = true } },
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+      },
+      cmdline = {
+        enabled = true,
+        sources = {
+          [":"] = { "path", "cmdline" },
+          ["/"] = { "buffer" },
+          ["?"] = { "buffer" },
+        },
+        keymap = {
+          ["<Tab>"] = { "show", "accept" },
+        },
+        completion = {
+          menu = { auto_show = true },
+          ghost_text = { enabled = true },
+        },
+      },
+      fuzzy = { implementation = "prefer_rust_with_warning" },
+    },
+    opts_extend = { "sources.default", "cmdline.sources" },
+  },
 
-  -- Trouble Diagnostics
+  -- EDITING & DEV UX
+  { "windwp/nvim-autopairs",            event = "InsertEnter", config = true },
+  {
+    "okuuva/auto-save.nvim",
+    version = "^1.0.0",
+    cmd = "ASToggle",
+    event = { "InsertLeave", "TextChanged" },
+    opts = {},
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte", "vue", "astro" },
+    opts = {},
+  },
+  {
+    "olrtg/nvim-emmet",
+    config = function()
+      vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
+    end,
+  },
+  { "catgoose/nvim-colorizer.lua",  event = "BufReadPre", opts = {} },
+  { "rachartier/tiny-glimmer.nvim", event = "VeryLazy",   priority = 10, opts = {} },
+
+  -- UI
+  {
+    "NvChad/ui",
+    config = function()
+      require "nvchad"
+    end,
+  },
+  {
+    "nvchad/base46",
+    lazy = true,
+    build = function()
+      require("base46").load_all_highlights()
+    end,
+  },
+  { "nvim-lualine/lualine.nvim",   dependencies = { "nvim-tree/nvim-web-devicons" } },
+  {
+    "akinsho/bufferline.nvim",
+    version = "*",
+    lazy = false,
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = true,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = { "vim", "lua", "vimdoc", "html", "css" },
+    },
+  },
+
+  -- DIAGNOSTICS
   {
     "folke/trouble.nvim",
     cmd = "Trouble",
@@ -274,7 +195,9 @@ return {
     },
   },
 
-  -- LazyGit
+  -- TOOLS
+  { "wakatime/vim-wakatime",       lazy = false },
+  { "ellisonleao/carbon-now.nvim", lazy = true,                                     cmd = "CarbonNow", opts = {} },
   {
     "kdheepak/lazygit.nvim",
     lazy = true,
