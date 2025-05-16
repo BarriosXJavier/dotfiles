@@ -2,10 +2,13 @@ vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 vim.opt.wrap = true
 vim.opt.linebreak = true
-vim.opt.textwidth = 80
+-- vim.opt.textwidth = 80
+vim.opt.textwidth = 0
+vim.opt.breakindent = true
 vim.opt.scrolloff = 8
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.o.cursorlineopt = "both"
 
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
@@ -45,5 +48,6 @@ end)
 vim.opt.guicursor = {
   "n-v-c:block-Cursor",                                     -- Steady block in Normal/Visual/Command-line
   "i-ci:blinkon100-blinkoff100-blinkwait1000-block-Cursor", -- Blinking block in Insert/Command-line Insert
+  "r:blinkon100-blinkoff100-blinkwait500-hor100-Cursor",    -- Blinking thick horizontal in Replace modeert
   "r:blinkon100-blinkoff100-blinkwait500-hor100-Cursor",    -- Blinking thick horizontal in Replace mode
 }
