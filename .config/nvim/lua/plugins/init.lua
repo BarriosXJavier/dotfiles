@@ -1,5 +1,7 @@
 return {
-  -- CORE / LSP
+
+  --󰒓 CORE / LSP ----------------------------------------------------------------
+
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -18,7 +20,6 @@ return {
         sources = {
           null_ls.builtins.formatting.prettier,
           null_ls.builtins.formatting.stylua,
-          null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.shfmt,
           null_ls.builtins.formatting.clang_format,
           null_ls.builtins.formatting.isort,
@@ -43,7 +44,8 @@ return {
     end,
   },
 
-  -- LSP UX
+  -- LSP UX --------------------------------------------------------------------
+
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
@@ -53,12 +55,7 @@ return {
     },
     config = function()
       require("lspsaga").setup {
-        ui = {
-          border = "rounded",
-          title = true,
-          winblend = 10,
-          devicon = true,
-        },
+        ui = { border = "rounded", title = true, winblend = 10, devicon = true },
         lightbulb = { enable = false },
       }
       vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
@@ -80,18 +77,10 @@ return {
     end,
   },
 
-  {
-    "rcarriga/nvim-notify",
-    lazy = false,   -- Load early
-    priority = 100, -- High priority
-    config = function()
-      require("notify").setup {
-        background_color = "#000000",
-      }
-    end,
-  },
+  -- COMPLETION ----------------------------------------------------------------
 
-  -- COMPLETION (Blink wraps cmp)
+  { "hrsh7th/nvim-cmp" },
+
   {
     "saghen/blink.cmp",
     lazy = false,
@@ -106,48 +95,74 @@ return {
       },
       cmdline = {
         enabled = true,
-        sources = {
-          [":"] = { "path", "cmdline" },
-          ["/"] = { "buffer" },
-          ["?"] = { "buffer" },
-        },
-        keymap = {
-          ["<Tab>"] = { "show", "accept" },
-        },
-        completion = {
-          menu = { auto_show = true },
-          ghost_text = { enabled = true },
-        },
+        completion = { documentation = { auto_show = true } },
       },
+
       fuzzy = { implementation = "prefer_rust_with_warning" },
     },
     opts_extend = { "sources.default", "cmdline.sources" },
   },
 
-  -- EDITING & DEV UX
-  { "windwp/nvim-autopairs",            event = "InsertEnter", config = true },
+  -- UI / THEMING -------------------------------------------------------------
   {
-    "okuuva/auto-save.nvim",
-    version = "^1.0.0",
-    cmd = "ASToggle",
-    event = { "InsertLeave", "TextChanged" },
-    opts = {},
-  },
-  {
-    "windwp/nvim-ts-autotag",
-    ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte", "vue", "astro" },
-    opts = {},
-  },
-  {
-    "olrtg/nvim-emmet",
-    config = function()
-      vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
-    end,
-  },
-  { "catgoose/nvim-colorizer.lua",  event = "BufReadPre", opts = {} },
-  { "rachartier/tiny-glimmer.nvim", event = "VeryLazy",   priority = 10, opts = {} },
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = { "MunifTanjim/nui.nvim" },
 
-  -- UI
+    lsp = {
+      override = {
+        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+        ["vim.lsp.util.stylize_markdown"] = true,
+        ["cmp.entry.get_documentation"] = true,
+      },
+    },
+
+    opts = {
+      presets = {
+        bottom_search = false,
+        command_palette = true,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = true,
+      },
+
+      messages = {
+        enabled = true,
+        view = "split",
+        view_error = "notify",
+        view_warn = "notify",
+        view_history = "messages",
+        view_search = "virtualtext",
+      },
+
+      cmdline = {
+        enabled = true,
+      },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            any = {
+              { kind = "",            find = "written" },
+              { kind = "search_count" },
+              { find = "lines" },
+              { find = "bytes" },
+            },
+          },
+          opts = { skip = false }, -- force show
+        },
+        {
+          filter = { event = "msg_showmode" },
+          view = "notify", -- already in your config
+        },
+        {
+          filter = { event = "msg_showcmd" },
+          view = "mini",
+        },
+      },
+    },
+  },
+
   {
     "NvChad/ui",
     config = function()
@@ -161,14 +176,7 @@ return {
       require("base46").load_all_highlights()
     end,
   },
-  { "nvim-lualine/lualine.nvim",   dependencies = { "nvim-tree/nvim-web-devicons" } },
-  {
-    "akinsho/bufferline.nvim",
-    version = "*",
-    lazy = false,
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = true,
-  },
+
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
@@ -176,28 +184,100 @@ return {
     },
   },
 
-  -- DIAGNOSTICS
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+
+  {
+    "akinsho/bufferline.nvim",
+    version = "*",
+    lazy = false,
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = true,
+  },
+
+  { "catgoose/nvim-colorizer.lua",  event = "BufReadPre",  opts = {} },
+  { "rachartier/tiny-glimmer.nvim", event = "VeryLazy",    priority = 10, opts = {} },
+
+  -- EDITING / DEV UX ----------------------------------------------------------
+
+  { "windwp/nvim-autopairs",        event = "InsertEnter", config = true },
+
+  {
+    "okuuva/auto-save.nvim",
+    version = "^1.0.0",
+    cmd = "ASToggle",
+    event = { "InsertLeave", "TextChanged" },
+    opts = {},
+  },
+
+  {
+    "windwp/nvim-ts-autotag",
+    ft = {
+      "html",
+      "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
+      "svelte",
+      "vue",
+      "astro",
+    },
+    opts = {},
+  },
+
+  {
+    "olrtg/nvim-emmet",
+    config = function()
+      vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
+    end,
+  },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      bigfile = {},
+      explorer = {},
+      indent = {},
+      input = {},
+      picker = {},
+      notifier = {},
+      quickfile = {},
+      scope = {},
+      scroll = {},
+      statuscolumn = {},
+      words = {},
+    },
+  },
+
+  -- DIAGNOSTICS / NAV --------------------------------------------------------
+
   {
     "folke/trouble.nvim",
     cmd = "Trouble",
     opts = {},
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
-      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",      desc = "Symbols (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",                        desc = "Diagnostics (Trouble)" },
       {
-        "<leader>cl",
-        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-        desc = "LSP Definitions / references / ... (Trouble)",
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
       },
-      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",                desc = "Symbols (Trouble)" },
+      { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / refs" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                            desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                             desc = "Quickfix List (Trouble)" },
     },
   },
 
-  -- TOOLS
+  --🔧 TOOLS --------------------------------------------------------------------
+
   { "wakatime/vim-wakatime",       lazy = false },
-  { "ellisonleao/carbon-now.nvim", lazy = true,                                     cmd = "CarbonNow", opts = {} },
+  { "ellisonleao/carbon-now.nvim", lazy = true, cmd = "CarbonNow", opts = {} },
+
   {
     "kdheepak/lazygit.nvim",
     lazy = true,
