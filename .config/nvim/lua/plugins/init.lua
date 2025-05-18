@@ -1,7 +1,6 @@
 return {
 
   --󰒓 CORE / LSP ----------------------------------------------------------------
-
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -79,88 +78,27 @@ return {
 
   -- COMPLETION ----------------------------------------------------------------
 
-  { "hrsh7th/nvim-cmp" },
-
   {
     "saghen/blink.cmp",
     lazy = false,
     version = "1.*",
-    dependencies = { "rafamadriz/friendly-snippets" },
+    dependencies = { "rafamadriz/friendly-snippets", "hrsh7th/nvim-cmp" },
     opts = {
-      keymap = { preset = "default" },
+      keymap = {
+        preset = "default",
+      },
       appearance = { nerd_font_variant = "mono" },
-      completion = { documentation = { auto_show = true } },
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
       },
       cmdline = {
         enabled = true,
-        completion = { documentation = { auto_show = true } },
+        sources = { "path", "lsp" },
       },
-
+      signature = { enabled = true },
       fuzzy = { implementation = "prefer_rust_with_warning" },
     },
     opts_extend = { "sources.default", "cmdline.sources" },
-  },
-
-  -- UI / THEMING -------------------------------------------------------------
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    dependencies = { "MunifTanjim/nui.nvim" },
-
-    lsp = {
-      override = {
-        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-        ["vim.lsp.util.stylize_markdown"] = true,
-        ["cmp.entry.get_documentation"] = true,
-      },
-    },
-
-    opts = {
-      presets = {
-        bottom_search = false,
-        command_palette = true,
-        long_message_to_split = true,
-        inc_rename = false,
-        lsp_doc_border = true,
-      },
-
-      messages = {
-        enabled = true,
-        view = "split",
-        view_error = "notify",
-        view_warn = "notify",
-        view_history = "messages",
-        view_search = "virtualtext",
-      },
-
-      cmdline = {
-        enabled = true,
-      },
-      routes = {
-        {
-          filter = {
-            event = "msg_show",
-            any = {
-              { kind = "",            find = "written" },
-              { kind = "search_count" },
-              { find = "lines" },
-              { find = "bytes" },
-            },
-          },
-          opts = { skip = false }, -- force show
-        },
-        {
-          filter = { event = "msg_showmode" },
-          view = "notify", -- already in your config
-        },
-        {
-          filter = { event = "msg_showcmd" },
-          view = "mini",
-        },
-      },
-    },
   },
 
   {
@@ -197,12 +135,12 @@ return {
     config = true,
   },
 
-  { "catgoose/nvim-colorizer.lua",  event = "BufReadPre",  opts = {} },
-  { "rachartier/tiny-glimmer.nvim", event = "VeryLazy",    priority = 10, opts = {} },
+  { "catgoose/nvim-colorizer.lua",      event = "BufReadPre",  opts = {} },
+  { "rachartier/tiny-glimmer.nvim",     event = "VeryLazy",    priority = 10, opts = {} },
 
   -- EDITING / DEV UX ----------------------------------------------------------
 
-  { "windwp/nvim-autopairs",        event = "InsertEnter", config = true },
+  { "windwp/nvim-autopairs",            event = "InsertEnter", config = true },
 
   {
     "okuuva/auto-save.nvim",
