@@ -1,22 +1,12 @@
 -- This file needs to have same structure as nvconfig.lua
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
-local options = {
 
+local M = {
   base46 = {
-
-    theme = "tokyonight", -- default theme
-
-    hl_add = {
-      LineNr = { fg = "#d0be98" },
-      CursorLineNr = { fg = "#87d9e8" },
-    },
     hl_override = {
-      Comment = { fg = "#b0c0cc", italic = true },
+      Comment = { italic = true },
+      ["@comment"] = { italic = true },
     },
-    integrations = {},
-    changed_themes = {},
-    transparency = true,
-    theme_toggle = { "vscode_dark", "tokyonight" },
   },
 
   ui = {
@@ -30,7 +20,7 @@ local options = {
       },
     },
 
-    telescope = { style = "bordered" }, -- borderless / bordered
+    telescope = { style = "borderless" }, -- borderless / bordered
 
     statusline = {
       enabled = true,
@@ -48,44 +38,64 @@ local options = {
       modules = nil,
     },
   },
+}
 
-  nvdash = {
-    load_on_startup = true,
-    header = {
-      " ,,                                     ,,                               ",
-      "*MM                                     db                               ",
-      " MM                                                                     ",
-      ' MM,dMMb.   ,6"Yb.  `7Mb,od8 `7Mb,od8 `7MM  ,pW"Wq.  ,pP"Ybd  `7M\'   `MF\' ',
-      " MM    `Mb 8)   MM    MM' \"'   MM' \"'   MM 6W'   `Wb 8I   `\"    `VA ,V'  ",
-      " MM     M8  ,pm9MM    MM       MM       MM 8M     M8 `YMMMa.      XMX     ",
-      " MM.   ,M9 8M   MM    MM       MM       MM YA.   ,A9 L.   I8    ,V' VA.   ",
-      " P^YbmdP'  `Moo9^Yo..JMML.   .JMML.   .JMML.`Ybmd9'  M9mmmP'  .AM.   .MA. ",
-      "                                                                      ",
-      "     Powered By eovim    ",
+local options = {
+
+  base46 = {
+
+    theme = "tokyonight", -- default theme
+
+    hl_add = {
+      LineNr = { fg = "#d0be98" },
+      CursorLineNr = { fg = "#87d9e8" },
     },
-
-    buttons = {
-      { txt = "  Find File", keys = "Spc f f", cmd = "Telescope find_files" },
-      { txt = "  Recent Files", keys = "Spc f o", cmd = "Telescope oldfiles" },
-      { txt = "󰈭  Find Word", keys = "Spc f w", cmd = "Telescope live_grep" },
-      { txt = "󱥚  Themes", keys = "Spc t h", cmd = ":lua require('nvchad.themes').open()" },
-      { txt = "  Mappings", keys = "Spc c h", cmd = "NvCheatsheet" },
-
-      { txt = "─", hl = "NvDashLazy", no_gap = true, rep = true },
-
-      {
-        txt = function()
-          local stats = require("lazy").stats()
-          local ms = math.floor(stats.startuptime) .. " ms"
-          return "  Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms
-        end,
-        hl = "NvDashLazy",
-        no_gap = true,
-      },
-
-      { txt = "─", hl = "NvDashLazy", no_gap = true, rep = true },
+    hl_override = {
+      Comment = { fg = "#b0c0cc", italic = true },
     },
+    integrations = {},
+    changed_themes = {},
+    transparency = true,
+    theme_toggle = { "github_dark", "tokyonight" },
   },
+
+  -- nvdash = {
+  --   load_on_startup = true,
+  --   header = {
+  --     " ,,                                     ,,                               ",
+  --     "*MM                                     db                               ",
+  --     " MM                                                                     ",
+  --     ' MM,dMMb.   ,6"Yb.  `7Mb,od8 `7Mb,od8 `7MM  ,pW"Wq.  ,pP"Ybd  `7M\'   `MF\' ',
+  --     " MM    `Mb 8)   MM    MM' \"'   MM' \"'   MM 6W'   `Wb 8I   `\"    `VA ,V'  ",
+  --     " MM     M8  ,pm9MM    MM       MM       MM 8M     M8 `YMMMa.      XMX     ",
+  --     " MM.   ,M9 8M   MM    MM       MM       MM YA.   ,A9 L.   I8    ,V' VA.   ",
+  --     " P^YbmdP'  `Moo9^Yo..JMML.   .JMML.   .JMML.`Ybmd9'  M9mmmP'  .AM.   .MA. ",
+  --     "                                                                      ",
+  --     "     Powered By eovim    ",
+  --   },
+  --
+  --   buttons = {
+  --     { txt = "  Find File", keys = "Spc f f", cmd = "Telescope find_files" },
+  --     { txt = "  Recent Files", keys = "Spc f o", cmd = "Telescope oldfiles" },
+  --     { txt = "󰈭  Find Word", keys = "Spc f w", cmd = "Telescope live_grep" },
+  --     { txt = "󱥚  Themes", keys = "Spc t h", cmd = ":lua require('nvchad.themes').open()" },
+  --     { txt = "  Mappings", keys = "Spc c h", cmd = "NvCheatsheet" },
+  --
+  --     { txt = "─", hl = "NvDashLazy", no_gap = true, rep = true },
+  --
+  --     {
+  --       txt = function()
+  --         local stats = require("lazy").stats()
+  --         local ms = math.floor(stats.startuptime) .. " ms"
+  --         return "  Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms
+  --       end,
+  --       hl = "NvDashLazy",
+  --       no_gap = true,
+  --     },
+  --
+  --     { txt = "─", hl = "NvDashLazy", no_gap = true, rep = true },
+  --   },
+  -- },
 
   term = {
     winopts = { number = false, relativenumber = false },
@@ -118,4 +128,4 @@ local options = {
 }
 
 local status, chadrc = pcall(require, "chadrc")
-return vim.tbl_deep_extend("force", options, status and chadrc or {})
+return vim.tbl_deep_extend("force", M, options, status and chadrc or {})
