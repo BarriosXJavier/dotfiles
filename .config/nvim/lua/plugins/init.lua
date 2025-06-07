@@ -55,8 +55,8 @@ return {
   --     end,
   --   },
   -- },
-
-  { "rcarriga/nvim-dap-ui",             dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+  --
+  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 
   {
     "rcarriga/nvim-notify",
@@ -76,6 +76,18 @@ return {
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
     },
+    config = function()
+      require("bufferline").setup {
+        options = {
+          offsets = {
+            filetype = "neo-tree",
+            text = "Neotree",
+            text_align = "center",
+            width = 30,
+          },
+        },
+      }
+    end,
     lazy = false,
     opts = {
       close_if_last_window = false,
@@ -115,7 +127,6 @@ return {
       },
       window = {
         position = "left",
-        height = "full",
         width = 30,
         mappings = {
           ["<space>"] = "none",
@@ -304,16 +315,16 @@ return {
     cmd = "Trouble",
     opts = {},
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",      desc = "Symbols (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
       {
         "<leader>cl",
         "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
         desc = "LSP Definitions / references / ... (Trouble)",
       },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
     },
   },
   {
