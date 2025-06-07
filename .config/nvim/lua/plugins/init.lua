@@ -1,128 +1,23 @@
 return {
-  { "williamboman/mason-lspconfig.nvim" },
+  -----------------------------------------------------------------------------
+  -- Core / Utility Plugins
+  -----------------------------------------------------------------------------
+  { "nvim-lua/plenary.nvim" }, -- Common utilities for other plugins
+  { "MunifTanjim/nui.nvim" }, -- UI components for other plugins
+  { "rcarriga/nvim-notify" }, -- Notifications
 
-  {
-    "stevearc/conform.nvim",
-    event = "BufWritePre", -- uncomment for format on save
-    opts = require "configs.conform",
-  },
-
+  -----------------------------------------------------------------------------
+  -- LSP & Completion
+  -----------------------------------------------------------------------------
+  { "williamboman/mason.nvim" }, -- Plugin manager for LSP servers and formatters
+  { "williamboman/mason-lspconfig.nvim" }, -- Bridges Mason and nvim-lspconfig
   {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
     end,
   },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim",
-        "lua",
-        "vimdoc",
-        "html",
-        "css",
-      },
-    },
-  },
-
-  -- {
-  --   "mfussenegger/nvim-dap",
-  --   lazy = true,
-  --   keys = {
-  --     {
-  --       "<leader>db",
-  --       function()
-  --         require("dap").toggle_breakpoint()
-  --       end,
-  --       { desc = "Toggle breakpoint" },
-  --     },
-  --
-  --     "<leader>dc",
-  --     function()
-  --       require("dap").continue()
-  --     end,
-  --
-  --     "<leader>dC",
-  --     function()
-  --       require("dap").run_to_cursor()
-  --     end,
-  --
-  --     "<leader>dT",
-  --     function()
-  --       require("dap").terminate()
-  --     end,
-  --   },
-  -- },
-  --
-  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
-
-  {
-    "rcarriga/nvim-notify",
-  },
-
-  {
-    "williamboman/mason.nvim",
-    "mfussenegger/nvim-dap",
-    "jay-babu/mason-nvim-dap.nvim",
-  },
-
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
-    },
-    lazy = false,
-    opts = {
-      close_if_last_window = false,
-      enable_git_status = true,
-      enable_diagnostics = true,
-      default_component_configs = {
-        indent = { padding = 1 },
-        icon = {
-          folder_closed = "",
-          folder_open = "",
-          folder_empty = "󰜌",
-          default = "",
-        },
-        modified = { symbol = "[+]" },
-        git_status = {
-          symbols = {
-            added = "",
-            modified = "",
-            deleted = "",
-            renamed = "➜",
-            untracked = "",
-            ignored = "",
-            unstaged = "",
-            staged = "✓",
-            conflict = "",
-          },
-        },
-      },
-      filesystem = {
-        follow_current_file = { enabled = true },
-        use_libuv_file_watcher = true,
-        filtered_items = {
-          visible = true,
-          hide_dotfiles = false,
-          hide_gitignored = false,
-        },
-      },
-      window = {
-        position = "left",
-        width = 30,
-        mappings = {
-          ["<space>"] = "none",
-        },
-      },
-    },
-    vim.api.nvim_set_hl(0, "NeoTreeIndentMarker", { fg = "#999999" }),
-  },
-
+  { "hinell/lsp-timeout.nvim", dependencies = { "neovim/nvim-lspconfig" } },
   {
     "nvimtools/none-ls.nvim",
     event = "VeryLazy",
@@ -154,28 +49,11 @@ return {
       }
     end,
   },
-
   {
-    "okuuva/auto-save.nvim",
-    event = { "InsertLeave", "TextChanged" },
-    opts = {
-      enabled = true,
-      trigger_events = { "InsertLeave", "TextChanged" },
-      debounce_delay = 135,
-      condition = function(buf)
-        local fn = vim.fn
-        return fn.getbufvar(buf, "&modifiable") == 1
-      end,
-    },
+    "stevearc/conform.nvim",
+    event = "BufWritePre", -- uncomment for format on save
+    opts = require "configs.conform",
   },
-
-  {
-    "hinell/lsp-timeout.nvim",
-    dependencies = { "neovim/nvim-lspconfig" },
-  },
-  -----------------------------------------------------------------------------
-  -- Autopairs, Snippets, and Completion (nvim-cmp)
-  -----------------------------------------------------------------------------
   {
     "hrsh7th/nvim-cmp",
     event = "VeryLazy",
@@ -188,6 +66,12 @@ return {
       "onsails/lspkind.nvim",
       { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
       "windwp/nvim-autopairs",
+      {
+        "zbirenbaum/copilot-cmp", -- CMP source for Copilot
+        config = function()
+          require("copilot_cmp").setup()
+        end,
+      },
     },
     config = function()
       local cmp = require "cmp"
@@ -268,7 +152,168 @@ return {
     end,
 
     opts = function(_, opts)
+      table.insert(opts.sources, 1, {
+        name = "copilot",
+        group_index = 1,
+        priority = 100,
+      })
       opts.sources[1].trigger_characters = { "-" }
+    end,
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup {}
+    end,
+  },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {}, -- See Configuration section for options
+    -- See Commands section for default commands if you want to lazy load on them
+  },
+  {
+    "jinzhongjia/LspUI.nvim",
+    branch = "main",
+    config = function()
+      require("LspUI").setup {} -- config options go here
+    end,
+  },
+  {
+    "tiny-code-action.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    event = "LspAttach",
+    config = function()
+      require("tiny-code-action").setup {}
+      vim.keymap.set("n", "<leader>ca", function()
+        require("tiny-code-action").code_action()
+      end, { desc = "Code actions", noremap = true, silent = true })
+    end,
+  },
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("lspsaga").setup {
+        ui = {
+          border = "rounded",
+          title = true,
+          winblend = 10,
+          devicon = true,
+        },
+        lightbulb = {
+          enable = false,
+        },
+      }
+      vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
+    end,
+  },
+
+  -----------------------------------------------------------------------------
+  -- Debugging
+  -----------------------------------------------------------------------------
+  -- The commented out `nvim-dap` plugin should be here. If you uncomment it,
+  -- make sure to remove it from the `mason` plugin's dependency list.
+  -- {
+  --   "mfussenegger/nvim-dap",
+  --   lazy = true,
+  --   keys = {
+  --     {
+  --       "<leader>db",
+  --       function()
+  --         require("dap").toggle_breakpoint()
+  --       end,
+  --       { desc = "Toggle breakpoint" },
+  --     },
+  --     "<leader>dc",
+  --     function()
+  --       require("dap").continue()
+  --     end,
+  --     "<leader>dC",
+  --     function()
+  --       require("dap").run_to_cursor()
+  --     end,
+  --     "<leader>dT",
+  --     function()
+  --       require("dap").terminate()
+  --     end,
+  --   },
+  -- },
+  { "mfussenegger/nvim-dap" },
+  { "jay-babu/mason-nvim-dap.nvim" }, -- DAP integrations for Mason
+  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+
+  -----------------------------------------------------------------------------
+  -- File Management & Navigation
+  -----------------------------------------------------------------------------
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    lazy = false,
+    opts = {
+      close_if_last_window = false,
+      enable_git_status = true,
+      enable_diagnostics = true,
+      default_component_configs = {
+        indent = { padding = 1 },
+        icon = {
+          folder_closed = "",
+          folder_open = "",
+          folder_empty = "󰜌",
+          default = "",
+        },
+        modified = { symbol = "[+]" },
+        git_status = {
+          symbols = {
+            added = "",
+            modified = "",
+            deleted = "",
+            renamed = "➜",
+            untracked = "",
+            ignored = "",
+            unstaged = "",
+            staged = "✓",
+            conflict = "",
+          },
+        },
+      },
+      filesystem = {
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true,
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
+      },
+      window = {
+        position = "left",
+        width = 30,
+        mappings = {
+          ["<space>"] = "none",
+        },
+      },
+    },
+    config = function()
+      vim.api.nvim_set_hl(0, "NeoTreeIndentMarker", { fg = "#999999" })
     end,
   },
   {
@@ -281,6 +326,12 @@ return {
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
     lazy = false,
   },
+  {
+    "chentoast/marks.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+
   -----------------------------------------------------------------------------
   -- Git Integration
   -----------------------------------------------------------------------------
@@ -320,48 +371,6 @@ return {
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
     },
   },
-  {
-    "rachartier/tiny-code-action.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    event = "LspAttach",
-    config = function()
-      require("tiny-code-action").setup {}
-      vim.keymap.set("n", "<leader>ca", function()
-        require("tiny-code-action").code_action()
-      end, { desc = "Code actions", noremap = true, silent = true })
-    end,
-  },
-  {
-    "nvimdev/lspsaga.nvim",
-    event = "LspAttach",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      require("lspsaga").setup {
-        ui = {
-          border = "rounded",
-          title = true,
-          winblend = 10,
-          devicon = true,
-        },
-        lightbulb = {
-          enable = false,
-        },
-      }
-      vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
-    end,
-  },
-  {
-    "olrtg/nvim-emmet",
-    config = function()
-      vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
-    end,
-  },
 
   -----------------------------------------------------------------------------
   -- Aesthetics & UI
@@ -372,7 +381,6 @@ return {
     event = "BufReadPre",
     opts = {},
   },
-
   {
     "akinsho/bufferline.nvim",
     version = "*",
@@ -394,7 +402,6 @@ return {
       }
     end,
   },
-
   {
     "rachartier/tiny-glimmer.nvim",
     event = "VeryLazy",
@@ -413,5 +420,51 @@ return {
     build = function()
       require("base46").load_all_highlights()
     end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim",
+        "lua",
+        "vimdoc",
+        "html",
+        "css",
+      },
+    },
+  },
+  {
+    "okuuva/auto-save.nvim",
+    event = { "InsertLeave", "TextChanged", "FocusLost" },
+    opts = {
+      enabled = true,
+      trigger_events = { "InsertLeave", "TextChanged" },
+      debounce_delay = 135,
+      condition = function(buf)
+        local fn = vim.fn
+        return fn.getbufvar(buf, "&modifiable") == 1
+      end,
+    },
+  },
+  {
+    "olrtg/nvim-emmet",
+    config = function()
+      vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
+    end,
+  },
+
+  {
+    "echasnovski/mini.animate",
+    event = "VeryLazy",
+    opts = { cursor = {}, scroll = {}, resize = {} },
+  },
+
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    opts = {
+      options = { theme = "dracula", globalstatus = true },
+    },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 }
