@@ -76,18 +76,6 @@ return {
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
     },
-    config = function()
-      require("bufferline").setup {
-        options = {
-          offsets = {
-            filetype = "neo-tree",
-            text = "Neotree",
-            text_align = "center",
-            width = 30,
-          },
-        },
-      }
-    end,
     lazy = false,
     opts = {
       close_if_last_window = false,
@@ -135,15 +123,30 @@ return {
     },
     vim.api.nvim_set_hl(0, "NeoTreeIndentMarker", { fg = "#999999" }),
   },
-
   {
-    "Pocco81/auto-save.nvim",
-    config = function()
-      require("auto-save").setup {
-        -- your config goes here
-        -- or just leave it empty :)
-      }
-    end,
+    "okuuva/auto-save.nvim",
+    version = "^1.0.0",
+    cmd = "ASToggle",
+    event = { "InsertLeave", "TextChanged" },
+    opts = {
+      enabled = true,
+      execution_message = {
+        message = function()
+          return ("AutoSave: saved at " .. vim.fn.strftime "%H:%M:%S")
+        end,
+        dim = 0.18,
+        cleaning_interval = 1250,
+      },
+      trigger_events = { "InsertLeave", "TextChanged" },
+      condition = function(buf)
+        local fn = vim.fn
+        local utils = require "auto-save.utils.data"
+        return fn.getbufvar(buf, "&modifiable") == 1 and utils.not_in(fn.getbufvar(buf, "&filetype"), {})
+      end,
+      write_all_buffers = false,
+      debounce_delay = 135,
+      callbacks = {},
+    },
   },
 
   {
@@ -393,9 +396,9 @@ return {
           offsets = {
             {
               filetype = "neo-tree",
-              text = "Neotree",
+              text = "Neotree file explorer",
               separator = true,
-              text_align = "left",
+              text_align = "center",
               width = 30,
             },
           },
