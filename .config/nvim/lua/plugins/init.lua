@@ -3,13 +3,13 @@ return {
   -- Core / Utility Plugins
   -----------------------------------------------------------------------------
   { "nvim-lua/plenary.nvim" }, -- Common utilities for other plugins
-  { "MunifTanjim/nui.nvim" },  -- UI components for other plugins
-  { "rcarriga/nvim-notify" },  -- Notifications
+  { "MunifTanjim/nui.nvim" }, -- UI components for other plugins
+  { "rcarriga/nvim-notify" }, -- Notifications
 
   -----------------------------------------------------------------------------
   -- LSP & Completion
   -----------------------------------------------------------------------------
-  { "williamboman/mason.nvim" },           -- Plugin manager for LSP servers and formatters
+  { "williamboman/mason.nvim" }, -- Plugin manager for LSP servers and formatters
   { "williamboman/mason-lspconfig.nvim" }, -- Bridges Mason and nvim-lspconfig
   {
     "neovim/nvim-lspconfig",
@@ -18,7 +18,7 @@ return {
     end,
   },
 
-  { "hinell/lsp-timeout.nvim",     dependencies = { "neovim/nvim-lspconfig" } },
+  { "hinell/lsp-timeout.nvim", dependencies = { "neovim/nvim-lspconfig" } },
 
   {
     "nvimtools/none-ls.nvim",
@@ -49,6 +49,16 @@ return {
           end
         end,
       }
+    end,
+  },
+
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function()
+      require("tiny-inline-diagnostic").setup()
+      vim.diagnostic.config { virtual_text = false } -- Only if needed in your configuration, if you already have native LSP diagnostics
     end,
   },
 
@@ -169,11 +179,11 @@ return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
-      { "github/copilot.vim" },                       -- or zbirenbaum/copilot.lua
+      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
     },
-    build = "make tiktoken",                          -- Only on MacOS or Linux
-    opts = {},                                        -- See Configuration section for options
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {}, -- See Configuration section for options
     -- See Commands section for default commands if you want to lazy load on them
   },
   {
@@ -223,7 +233,7 @@ return {
   -----------------------------------------------------------------------------
   { "mfussenegger/nvim-dap" },
   { "jay-babu/mason-nvim-dap.nvim" }, -- DAP integrations for Mason
-  { "rcarriga/nvim-dap-ui",        dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 
   -----------------------------------------------------------------------------
   -- File Management & Navigation
@@ -328,16 +338,16 @@ return {
     cmd = "Trouble",
     opts = {},
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",      desc = "Symbols (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
       {
         "<leader>cl",
         "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
         desc = "LSP Definitions / references / ... (Trouble)",
       },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
     },
   },
 
