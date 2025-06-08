@@ -3,13 +3,13 @@ return {
   -- Core / Utility Plugins
   -----------------------------------------------------------------------------
   { "nvim-lua/plenary.nvim" }, -- Common utilities for other plugins
-  { "MunifTanjim/nui.nvim" }, -- UI components for other plugins
-  { "rcarriga/nvim-notify" }, -- Notifications
+  { "MunifTanjim/nui.nvim" },  -- UI components for other plugins
+  { "rcarriga/nvim-notify" },  -- Notifications
 
   -----------------------------------------------------------------------------
   -- LSP & Completion
   -----------------------------------------------------------------------------
-  { "williamboman/mason.nvim" }, -- Plugin manager for LSP servers and formatters
+  { "williamboman/mason.nvim" },           -- Plugin manager for LSP servers and formatters
   { "williamboman/mason-lspconfig.nvim" }, -- Bridges Mason and nvim-lspconfig
   {
     "neovim/nvim-lspconfig",
@@ -17,7 +17,9 @@ return {
       require "configs.lspconfig"
     end,
   },
-  { "hinell/lsp-timeout.nvim", dependencies = { "neovim/nvim-lspconfig" } },
+
+  { "hinell/lsp-timeout.nvim",     dependencies = { "neovim/nvim-lspconfig" } },
+
   {
     "nvimtools/none-ls.nvim",
     event = "VeryLazy",
@@ -36,24 +38,20 @@ return {
         },
         on_attach = function(client, bufnr)
           if client.supports_method "textDocument/formatting" then
-            vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              group = augroup,
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.format { bufnr = bufnr }
-              end,
-            })
+            -- vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+            -- vim.api.nvim_create_autocmd("BufWritePre", {
+            --   group = augroup,
+            --   buffer = bufnr,
+            --   callback = function()
+            --     vim.lsp.buf.format { bufnr = bufnr }
+            --   end,
+            -- })
           end
         end,
       }
     end,
   },
-  {
-    "stevearc/conform.nvim",
-    event = "BufWritePre", -- uncomment for format on save
-    opts = require "configs.conform",
-  },
+
   {
     "hrsh7th/nvim-cmp",
     event = "VeryLazy",
@@ -171,11 +169,11 @@ return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
-      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "github/copilot.vim" },                       -- or zbirenbaum/copilot.lua
       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
     },
-    build = "make tiktoken", -- Only on MacOS or Linux
-    opts = {}, -- See Configuration section for options
+    build = "make tiktoken",                          -- Only on MacOS or Linux
+    opts = {},                                        -- See Configuration section for options
     -- See Commands section for default commands if you want to lazy load on them
   },
   {
@@ -223,38 +221,9 @@ return {
   },
 
   -----------------------------------------------------------------------------
-  -- Debugging
-  -----------------------------------------------------------------------------
-  -- The commented out `nvim-dap` plugin should be here. If you uncomment it,
-  -- make sure to remove it from the `mason` plugin's dependency list.
-  -- {
-  --   "mfussenegger/nvim-dap",
-  --   lazy = true,
-  --   keys = {
-  --     {
-  --       "<leader>db",
-  --       function()
-  --         require("dap").toggle_breakpoint()
-  --       end,
-  --       { desc = "Toggle breakpoint" },
-  --     },
-  --     "<leader>dc",
-  --     function()
-  --       require("dap").continue()
-  --     end,
-  --     "<leader>dC",
-  --     function()
-  --       require("dap").run_to_cursor()
-  --     end,
-  --     "<leader>dT",
-  --     function()
-  --       require("dap").terminate()
-  --     end,
-  --   },
-  -- },
   { "mfussenegger/nvim-dap" },
   { "jay-babu/mason-nvim-dap.nvim" }, -- DAP integrations for Mason
-  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+  { "rcarriga/nvim-dap-ui",        dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 
   -----------------------------------------------------------------------------
   -- File Management & Navigation
@@ -359,16 +328,16 @@ return {
     cmd = "Trouble",
     opts = {},
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",      desc = "Symbols (Trouble)" },
       {
         "<leader>cl",
         "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
         desc = "LSP Definitions / references / ... (Trouble)",
       },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List (Trouble)" },
     },
   },
 
@@ -434,19 +403,6 @@ return {
     },
   },
   {
-    "okuuva/auto-save.nvim",
-    event = { "InsertLeave", "TextChanged", "FocusLost" },
-    opts = {
-      enabled = true,
-      trigger_events = { "InsertLeave", "TextChanged" },
-      debounce_delay = 135,
-      condition = function(buf)
-        local fn = vim.fn
-        return fn.getbufvar(buf, "&modifiable") == 1
-      end,
-    },
-  },
-  {
     "olrtg/nvim-emmet",
     config = function()
       vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
@@ -458,13 +414,91 @@ return {
     event = "VeryLazy",
     opts = { cursor = {}, scroll = {}, resize = {} },
   },
-
   {
     "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = {
-      options = { theme = "dracula", globalstatus = true },
-    },
+    event = { "VimEnter", "BufReadPost", "BufNewFile" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      local function get_lsp_status()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local buf_ft = vim.bo[bufnr].filetype
+        local lsp_clients, formatters, linters = {}, {}, {}
+
+        for _, client in pairs(vim.lsp.get_clients()) do
+          if client.attached_buffers[bufnr] and client.name ~= "copilot" and client.name ~= "null-ls" then
+            table.insert(lsp_clients, client.name)
+          end
+        end
+
+        local null_ls_ok, null_ls = pcall(require, "null-ls")
+        if null_ls_ok then
+          for _, source in ipairs(null_ls.get_sources()) do
+            if source._validated and source.filetypes[buf_ft] then
+              local method = source.method
+              if method == null_ls.methods.FORMATTING or method == null_ls.methods.FORMATTING_SYNC then
+                table.insert(formatters, source.name)
+              elseif method == null_ls.methods.DIAGNOSTICS then
+                table.insert(linters, source.name)
+              end
+            end
+          end
+        end
+
+        local function dedupe(list)
+          local seen, result = {}, {}
+          for _, item in ipairs(list) do
+            if not seen[item] then
+              seen[item] = true
+              table.insert(result, item)
+            end
+          end
+          return result
+        end
+
+        lsp_clients = dedupe(lsp_clients)
+        formatters = dedupe(formatters)
+        linters = dedupe(linters)
+
+        local parts = {}
+        if #lsp_clients > 0 then
+          table.insert(parts, "LSP: " .. table.concat(lsp_clients, ", "))
+        end
+        if #formatters > 0 then
+          table.insert(parts, "Fmt: " .. table.concat(formatters, ", "))
+        end
+        if #linters > 0 then
+          table.insert(parts, "Lint: " .. table.concat(linters, ", "))
+        end
+
+        local status = #parts > 0 and table.concat(parts, " » ") or "LSP Inactive"
+
+        local max_width = math.floor(vim.o.columns * 0.4) -- 40% of window width
+        if #status > max_width then
+          status = vim.fn.strcharpart(status, 0, max_width - 3) .. "…"
+        end
+
+        return status
+      end
+
+      require("lualine").setup {
+        options = {
+          theme = "dracula",
+          globalstatus = true,
+          component_separators = { left = "", right = "" },
+          section_separators = { left = "", right = "" },
+        },
+        sections = {
+          lualine_b = { "branch", "diff" },
+          lualine_x = {
+            "diagnostics",
+            {
+              get_lsp_status,
+              color = { gui = "bold" },
+            },
+            "filetype",
+          },
+        },
+      }
+    end,
   },
 }
