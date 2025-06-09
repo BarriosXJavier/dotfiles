@@ -33,10 +33,7 @@ return {
           null_ls.builtins.formatting.clang_format,
           null_ls.builtins.formatting.isort,
         },
-        on_attach = function(client, bufnr)
-          if client.supports_method "textDocument/formatting" then
-          end
-        end,
+        on_attach = function(client, bufnr) end,
       }
     end,
   },
@@ -47,6 +44,14 @@ return {
     config = function()
       require("tiny-inline-diagnostic").setup()
       vim.diagnostic.config { virtual_text = false }
+    end,
+  },
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("nvim-tree").setup(require("configs.nvimtree").override_options)
     end,
   },
   {
@@ -227,14 +232,27 @@ return {
           offsets = {
             {
               filetype = "NvimTree",
-              text = "NvimTree",
+              text = "Nvim Tree",
               highlight = "Directory",
-              separator = true, -- use a "true" to enable the default, or set your own character
+              separator = true,
+            },
+            highlights = {
+              buffer_selected = {
+                bold = true,
+                italic = true,
+              },
             },
           },
-
+          always_show_bufferline = true,
           diagnostics = "nvim_lsp",
-          separator_style = { "", "" },
+          diagnostics_indicator = function(count, level, _, _)
+            local icon = level:match "error" and " "
+                or level:match "warn" and " "
+                or level:match "info" and " "
+                or ""
+            return " " .. icon .. count
+          end,
+          separator_style = "thick",
           modified_icon = "●",
           show_close_icon = false,
           show_buffer_close_icons = true,
@@ -259,7 +277,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
   },
-  { "chentoast/marks.nvim",         event = "VeryLazy",   opts = {} },
+  { "chentoast/marks.nvim",        event = "VeryLazy",   opts = {} },
 
   -----------------------------------------------------------------------------
   -- Git Integration
@@ -304,10 +322,11 @@ return {
   -----------------------------------------------------------------------------
   -- Aesthetics & UI
   -----------------------------------------------------------------------------
-  { "wakatime/vim-wakatime",        lazy = false },
-  { "catgoose/nvim-colorizer.lua",  event = "BufReadPre", opts = {} },
-  { "rachartier/tiny-glimmer.nvim", event = "VeryLazy",   priority = 10, opts = {} },
+  { "wakatime/vim-wakatime",       lazy = false },
+  { "catgoose/nvim-colorizer.lua", event = "BufReadPre", opts = {} },
   {
+    "rachartier/tiny-glimmer.nvim",
+    event = "VeryLazy",
     "NvChad/ui",
     config = function()
       require "nvchad"

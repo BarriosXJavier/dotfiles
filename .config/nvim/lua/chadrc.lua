@@ -1,25 +1,6 @@
 -- This file needs to have same structure as nvconfig.lua
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 
-local M = {}
-
-M.nvimtree = {
-  git = {
-    enable = true,
-  },
-  renderer = {
-    highlight_git = true,
-    icons = {
-      show = {
-        git = true,
-      },
-    },
-  },
-  view = {
-    side = "right",
-  },
-}
-
 local options = {
 
   base46 = {
@@ -64,7 +45,7 @@ local options = {
     -- lazyload it when there are 1+ buffers
     tabufline = {
       enabled = true,
-      lazyload = true,
+      lazyload = false,
       order = { "treeOffset", "buffers", "tabs", "btns" },
       modules = nil,
     },
@@ -148,4 +129,4 @@ local options = {
 }
 
 local status, chadrc = pcall(require, "chadrc")
-return vim.tbl_deep_extend("force", M, options, status and chadrc or {})
+return vim.tbl_deep_extend("force", options, status and chadrc or {})
