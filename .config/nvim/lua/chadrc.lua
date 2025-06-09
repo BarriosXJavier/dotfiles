@@ -1,5 +1,25 @@
 -- This file needs to have same structure as nvconfig.lua
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
+
+local M = {}
+
+M.nvimtree = {
+  git = {
+    enable = true,
+  },
+  renderer = {
+    highlight_git = true,
+    icons = {
+      show = {
+        git = true,
+      },
+    },
+  },
+  view = {
+    side = "right",
+  },
+}
+
 local options = {
 
   base46 = {
@@ -22,11 +42,11 @@ local options = {
 
   ui = {
     cmp = {
-      icons_left = true, -- only for non-atom styles!
+      icons_left = true,   -- only for non-atom styles!
       lspkind_text = true,
       style = "flat_dark", -- default/flat_light/flat_dark/atom/atom_colored
       format_colors = {
-        tailwind = true, -- will work for css lsp too
+        tailwind = true,   -- will work for css lsp too
         icon = "󱓻",
       },
     },
@@ -113,7 +133,7 @@ local options = {
   lsp = { signature = true },
 
   cheatsheet = {
-    theme = "grid", -- simple/grid
+    theme = "grid",                                                     -- simple/grid
     excluded_groups = { "terminal (t)", "autopairs", "Nvim", "Opens" }, -- can add group name or with mode
   },
 
@@ -128,4 +148,4 @@ local options = {
 }
 
 local status, chadrc = pcall(require, "chadrc")
-return vim.tbl_deep_extend("force", options, status and chadrc or {})
+return vim.tbl_deep_extend("force", M, options, status and chadrc or {})

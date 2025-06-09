@@ -9,8 +9,4 @@ map("i", "jk", "<ESC>")
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
-map("n", "<leader>sp", function()
-require("telescope.builtin").find_files { hidden = false, no_ignore = true }
-end, { desc = "Telescope: find_files" })
-
-map("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle Neotree" })
+map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle Neotree" })
