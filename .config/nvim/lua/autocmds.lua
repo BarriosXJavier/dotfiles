@@ -1,7 +1,9 @@
+vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { bold = true, italic = true })
+
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
-
 local autosave_group = augroup("autosave", { clear = true })
+local cmp = require "cmp"
 
 local function is_saveable(bufnr)
   if not vim.api.nvim_buf_is_valid(bufnr) then
@@ -23,6 +25,17 @@ local function is_saveable(bufnr)
   return true
 end
 
+autocmd("InsertLeavePre", {
+  group = autosave_group,
+  callback = function()
+    if cmp.visible() then
+      vim.schedule(function()
+        vim.cmd "startinsert"
+      end)
+    end
+  end,
+})
+
 autocmd({ "BufLeave", "InsertLeave", "TextChanged", "VimLeavePre" }, {
   group = autosave_group,
   callback = function(event)
@@ -43,4 +56,3 @@ autocmd({ "BufLeave", "InsertLeave", "TextChanged", "VimLeavePre" }, {
     end
   end,
 })
-vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { bold = true, italic = true })

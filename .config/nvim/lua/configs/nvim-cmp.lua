@@ -9,6 +9,7 @@ function M.setup()
     return
   end
 
+
   cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
   cmp.setup {
@@ -25,41 +26,35 @@ function M.setup()
       completion = cmp.config.window.bordered(),
       documentation = cmp.config.window.bordered(),
     },
+
     formatting = {
-      format = lspkind.cmp_format {
-        mode = "symbol_text",
-        maxwidth = 50,
-        ellipsis_char = "...",
-        symbol_map = {
-          Text = "󰉿",
-          Method = "󰆧",
-          Function = "󰊕",
-          Constructor = "",
-          Field = "󰜢",
-          Variable = "󰀫",
-          Class = "󰠱",
-          Interface = "",
-          Module = "",
-          Property = "󰜢",
-          Unit = "󰑭",
-          Value = "󰎠",
-          Enum = "",
-          Keyword = "󰌋",
-          Snippet = "",
-          Color = "󰏘",
-          File = "󰈙",
-          Reference = "󰈇",
-          Folder = "󰉋",
-          EnumMember = "",
-          Constant = "󰏿",
-          Struct = "󰙅",
-          Event = "",
-          Operator = "󰆕",
-          TypeParameter = "",
-        },
-      },
+      format = function(entry, vim_item)
+        local source_labels = {
+          luasnip = "[Snip]",
+          friendly_snippets = "[FSnip]",
+          buffer = "[Buffer]",
+          path = "[Path]",
+          copilot = "[AI]",
+          cmdline = "[Cmd]",
+        }
+
+        if entry.source.name == "nvim_lsp" then
+          local client = entry.source.source.client
+          vim_item.menu = client and ("[" .. client.name .. "]") or "[LSP]"
+        else
+          vim_item.menu = source_labels[entry.source.name] or ("[" .. entry.source.name .. "]")
+        end
+
+        return require("lspkind").cmp_format({
+          mode = "symbol_text",
+          maxwidth = 50,
+          ellipsis_char = "...",
+        })(entry, vim_item)
+      end,
+
     },
     sources = cmp.config.sources {
+      { name = "copilot" },
       { name = "nvim_lsp" },
       { name = "luasnip" },
       { name = "friendly-snippets" },
@@ -67,6 +62,8 @@ function M.setup()
       { name = "path" },
     },
   }
+
+
 
   cmp.setup.cmdline("/", {
     mapping = cmp.mapping.preset.cmdline(),

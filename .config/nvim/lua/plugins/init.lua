@@ -5,6 +5,19 @@ return {
   { "nvim-lua/plenary.nvim" },
   { "MunifTanjim/nui.nvim" },
 
+  {
+    "stevearc/conform.nvim",
+    config = function()
+      require "configs.conform"
+    end,
+    opts = {
+      format_on_save = {
+        lsp_format = "fallback",
+        timeout_ms = 500,
+      },
+    },
+  },
+
   -----------------------------------------------------------------------------
   -- LSP & Completion
   -----------------------------------------------------------------------------
@@ -18,24 +31,6 @@ return {
     end,
   },
   { "hinell/lsp-timeout.nvim",     dependencies = { "neovim/nvim-lspconfig" } },
-  {
-    "nvimtools/none-ls.nvim",
-    event = "VeryLazy",
-    opts = function()
-      local null_ls = require "null-ls"
-      return {
-        sources = {
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.formatting.stylua,
-          null_ls.builtins.formatting.black,
-          null_ls.builtins.formatting.shfmt,
-          null_ls.builtins.formatting.clang_format,
-          null_ls.builtins.formatting.isort,
-        },
-        on_attach = function(client, bufnr) end,
-      }
-    end,
-  },
 
   {
     "rachartier/tiny-inline-diagnostic.nvim",
@@ -54,6 +49,8 @@ return {
       require("nvim-tree").setup(require("configs.nvimtree").override_options)
     end,
   },
+
+
   {
     "hrsh7th/nvim-cmp",
     event = "VeryLazy",
@@ -66,24 +63,13 @@ return {
       "onsails/lspkind.nvim",
       { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
       "windwp/nvim-autopairs",
-      {
-        "zbirenbaum/copilot-cmp",
-        config = function()
-          require("copilot_cmp").setup()
-        end,
-      },
     },
     config = require("configs.nvim-cmp").setup,
     opts = require("configs.nvim-cmp").opts,
   },
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup {}
-    end,
-  },
+
+
+
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
@@ -102,6 +88,7 @@ return {
   },
   {
     "rachartier/tiny-code-action.nvim",
+    lazy = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
@@ -112,27 +99,6 @@ return {
       vim.keymap.set("n", "<leader>ca", function()
         require("tiny-code-action").code_action()
       end, { desc = "Code actions", noremap = true, silent = true })
-    end,
-  },
-
-  {
-    "nvimdev/lspsaga.nvim",
-    event = "LspAttach",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      require("lspsaga").setup {
-        ui = {
-          border = "rounded",
-          title = true,
-          winblend = 10,
-          devicon = true,
-        },
-        lightbulb = { enable = false },
-      }
-      vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
     end,
   },
 
@@ -220,7 +186,7 @@ return {
 
   {
     "rachartier/tiny-glimmer.nvim",
-    event = "VeryLazy",
+    event = "Lazy",
     "NvChad/ui",
     config = function()
       require "nvchad"
@@ -281,5 +247,39 @@ return {
     event = { "VimEnter", "BufReadPost", "BufNewFile" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = require("configs.lualine").setup,
+  },
+
+  {
+    "Pocco81/auto-save.nvim",
+    config = function()
+      require("auto-save").setup {
+        -- your config goes here
+        -- or just leave it empty :)
+      }
+    end,
+  },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      bigfile = { enabled = false },
+      dashboard = { enabled = false },
+      explorer = { enabled = false },
+      indent = { enabled = true },
+      input = { enabled = false },
+      picker = { enabled = false },
+      notifier = { enabled = false },
+      quickfile = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
+    },
   },
 }
