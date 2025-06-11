@@ -28,17 +28,38 @@ function M.setup()
         backend = "notify",
         replace = false,
       },
+      mini = {
+        backend = "mini",
+        relative = "editor",
+        align = "message-right",
+        timeout = 2500,
+        reverse = true,
+      },
     },
 
     routes = {
       {
         filter = {
           event = "msg_show",
+          any = {
+            { find = "recording @" },
+            { find = "search hit" },
+            { find = "Pattern not found" },
+            { find = "%d+ change" },
+            { find = "%d+ line" },
+            { find = "Already at" },
+          },
+        },
+        view = "mini",
+      },
+      {
+        filter = {
+          event = "msg_show",
+          kind = "",
         },
         opts = { skip = false },
       },
     },
-
     presets = {
       bottom_search = true,
       command_palette = true,
