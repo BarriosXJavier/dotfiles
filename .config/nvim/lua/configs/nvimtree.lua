@@ -7,7 +7,7 @@ M.override_options = {
   },
   renderer = {
     highlight_git = true,
-    highlight_opened_files = "all",
+    highlight_opened_files = "name",
     indent_width = 2,
     icons = {
       show = {

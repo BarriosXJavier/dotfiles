@@ -35,7 +35,7 @@ autocmd({ "BufLeave", "InsertLeave", "TextChanged", "VimLeavePre" }, {
             local fname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(event.buf), ":t")
             vim.notify(("Saved %s at %s"):format(fname, os.date "%H:%M:%S"), vim.log.levels.INFO, {
               title = "AutoSave",
-              timeout = 2000,
+              timeout = 2500,
             })
           end)
         end
@@ -43,5 +43,4 @@ autocmd({ "BufLeave", "InsertLeave", "TextChanged", "VimLeavePre" }, {
     end
   end,
 })
-
 vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { bold = true, italic = true })

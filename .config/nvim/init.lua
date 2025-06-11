@@ -8,9 +8,9 @@ vim.opt.scrolloff = 8
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.guicursor = {
-  "n-v-c:block-Cursor", -- Steady block in Normal/Visual/Command-line
+  "n-v-c:block-Cursor",                                     -- Steady block in Normal/Visual/Command-line
   "i-ci:blinkon100-blinkoff100-blinkwait1000-block-Cursor", -- Blinking block in Insert/Command-line Insert
-  "r:blinkon100-blinkoff100-blinkwait1000-block-Cursor", -- Blinking block in Replace mode
+  "r:blinkon100-blinkoff100-blinkwait1000-block-Cursor",    -- Blinking block in Replace mode
 }
 
 -- bootstrap lazy and all plugins

@@ -4,7 +4,6 @@ return {
   -----------------------------------------------------------------------------
   { "nvim-lua/plenary.nvim" },
   { "MunifTanjim/nui.nvim" },
-  { "rcarriga/nvim-notify" },
 
   -----------------------------------------------------------------------------
   -- LSP & Completion
@@ -37,6 +36,7 @@ return {
       }
     end,
   },
+
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",
@@ -73,84 +73,8 @@ return {
         end,
       },
     },
-    config = function()
-      local cmp = require "cmp"
-      local lspkind = require "lspkind"
-      local cmp_autopairs = require "nvim-autopairs.completion.cmp"
-      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-      cmp.setup {
-        mapping = cmp.mapping.preset.insert {
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm { select = true },
-          ["<Tab>"] = cmp.mapping.select_next_item(),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-        },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        formatting = {
-          format = lspkind.cmp_format {
-            mode = "symbol_text",
-            maxwidth = 50,
-            ellipsis_char = "...",
-            symbol_map = {
-              Text = "󰉿",
-              Method = "󰆧",
-              Function = "󰊕",
-              Constructor = "",
-              Field = "󰜢",
-              Variable = "󰀫",
-              Class = "󰠱",
-              Interface = "",
-              Module = "",
-              Property = "󰜢",
-              Unit = "󰑭",
-              Value = "󰎠",
-              Enum = "",
-              Keyword = "󰌋",
-              Snippet = "",
-              Color = "󰏘",
-              File = "󰈙",
-              Reference = "󰈇",
-              Folder = "󰉋",
-              EnumMember = "",
-              Constant = "󰏿",
-              Struct = "󰙅",
-              Event = "",
-              Operator = "󰆕",
-              TypeParameter = "",
-            },
-          },
-        },
-        sources = cmp.config.sources {
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "friendly-snippets" },
-          { name = "buffer" },
-          { name = "path" },
-        },
-      }
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = { { name = "buffer" } },
-      })
-      cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
-      })
-    end,
-    opts = function(_, opts)
-      table.insert(opts.sources, 1, {
-        name = "copilot",
-        group_index = 1,
-        priority = 100,
-        trigger_characters = { "-" },
-      })
-    end,
+    config = require("configs.nvim-cmp").setup,
+    opts = require("configs.nvim-cmp").opts,
   },
   {
     "zbirenbaum/copilot.lua",
@@ -190,6 +114,7 @@ return {
       end, { desc = "Code actions", noremap = true, silent = true })
     end,
   },
+
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
@@ -226,39 +151,7 @@ return {
     lazy = false,
     version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
-    config = function()
-      require("bufferline").setup {
-        options = {
-          offsets = {
-            {
-              filetype = "NvimTree",
-              text = "Nvim Tree",
-              highlight = "Directory",
-              separator = true,
-            },
-            highlights = {
-              buffer_selected = {
-                bold = true,
-                italic = true,
-              },
-            },
-          },
-          always_show_bufferline = true,
-          diagnostics = "nvim_lsp",
-          diagnostics_indicator = function(count, level, _, _)
-            local icon = level:match "error" and " "
-                or level:match "warn" and " "
-                or level:match "info" and " "
-                or ""
-            return " " .. icon .. count
-          end,
-          separator_style = "thick",
-          modified_icon = "●",
-          show_close_icon = false,
-          show_buffer_close_icons = true,
-        },
-      }
-    end,
+    config = require("configs.bufferline").setup,
   },
 
   {
@@ -324,6 +217,7 @@ return {
   -----------------------------------------------------------------------------
   { "wakatime/vim-wakatime",       lazy = false },
   { "catgoose/nvim-colorizer.lua", event = "BufReadPre", opts = {} },
+
   {
     "rachartier/tiny-glimmer.nvim",
     event = "VeryLazy",
@@ -351,6 +245,31 @@ return {
       vim.keymap.set({ "n", "v" }, "<leader>xe", require("nvim-emmet").wrap_with_abbreviation)
     end,
   },
+
+  {
+    "rcarriga/nvim-notify",
+    lazy = false,
+    config = require("configs.notify").setup,
+  },
+
+  -- lazy.nvim
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    config = require("configs.noice").setup,
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+    },
+  },
+
   {
     "echasnovski/mini.animate",
     event = "VeryLazy",
@@ -361,87 +280,6 @@ return {
     "nvim-lualine/lualine.nvim",
     event = { "VimEnter", "BufReadPost", "BufNewFile" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      local function get_lsp_status()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local buf_ft = vim.bo[bufnr].filetype
-        local lsp_clients, formatters, linters = {}, {}, {}
-
-        for _, client in pairs(vim.lsp.get_clients()) do
-          if client.attached_buffers[bufnr] and client.name ~= "copilot" and client.name ~= "null-ls" then
-            table.insert(lsp_clients, client.name)
-          end
-        end
-
-        local null_ls_ok, null_ls = pcall(require, "null-ls")
-        if null_ls_ok then
-          for _, source in ipairs(null_ls.get_sources()) do
-            if source._validated and source.filetypes[buf_ft] then
-              local method = source.method
-              if method == null_ls.methods.FORMATTING or method == null_ls.methods.FORMATTING_SYNC then
-                table.insert(formatters, source.name)
-              elseif method == null_ls.methods.DIAGNOSTICS then
-                table.insert(linters, source.name)
-              end
-            end
-          end
-        end
-
-        local function dedupe(list)
-          local seen, result = {}, {}
-          for _, item in ipairs(list) do
-            if not seen[item] then
-              seen[item] = true
-              table.insert(result, item)
-            end
-          end
-          return result
-        end
-
-        lsp_clients = dedupe(lsp_clients)
-        formatters = dedupe(formatters)
-        linters = dedupe(linters)
-
-        local parts = {}
-        if #lsp_clients > 0 then
-          table.insert(parts, "LSP: " .. table.concat(lsp_clients, ", "))
-        end
-        if #formatters > 0 then
-          table.insert(parts, "Fmt: " .. table.concat(formatters, ", "))
-        end
-        if #linters > 0 then
-          table.insert(parts, "Lint: " .. table.concat(linters, ", "))
-        end
-
-        local status = #parts > 0 and table.concat(parts, " » ") or "LSP Inactive"
-
-        local max_width = math.floor(vim.o.columns * 0.4) -- 40% of window width
-        if #status > max_width then
-          status = vim.fn.strcharpart(status, 0, max_width - 3) .. "…"
-        end
-
-        return status
-      end
-
-      require("lualine").setup {
-        options = {
-          theme = "dracula",
-          globalstatus = true,
-          component_separators = { left = "", right = "" },
-          section_separators = { left = "", right = "" },
-        },
-        sections = {
-          lualine_b = { "branch", "diff" },
-          lualine_x = {
-            "diagnostics",
-            {
-              get_lsp_status,
-              color = { gui = "bold" },
-            },
-            "filetype",
-          },
-        },
-      }
-    end,
+    config = require("configs.lualine").setup,
   },
 }
