@@ -17,10 +17,10 @@ function M.setup()
     lsp = {
       progress = {
         enabled = false,
-        hover = { enabled = false },
-        signature = { enabled = false },
         message = { enabled = false },
       },
+      hover = { enabled = false },
+      signature = { enabled = false },
     },
     views = {
       messages = { view = "cmdline" },
