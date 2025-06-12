@@ -68,7 +68,26 @@ return {
     opts = require("configs.nvim-cmp").opts,
   },
 
-
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("lspsaga").setup {
+        ui = {
+          border = "rounded",
+          title = true,
+          winblend = 10,
+          devicon = true,
+        },
+        lightbulb = { enable = false },
+      }
+      vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
+    end,
+  },
 
   {
     "CopilotC-Nvim/CopilotChat.nvim",
