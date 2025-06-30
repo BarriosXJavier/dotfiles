@@ -28,7 +28,7 @@ return {
               callback = function()
                 vim.lsp.buf.format {
                   bufnr = bufnr,
-                  timeout_ms = 2500,
+                  timeout_ms = 5000,
                   async = false,
                 }
               end,
@@ -180,7 +180,7 @@ return {
     event = "VeryLazy",
     priority = 1000,
     config = function()
-      require("tiny-inline-diagnostic").setup()
+      require("tiny-inline-diagnostic").setup { preset = "classic" }
       vim.diagnostic.config { virtual_text = false }
     end,
   },
