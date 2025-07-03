@@ -38,6 +38,11 @@ return {
       }
     end,
   },
+
+  {
+    "folke/trouble.nvim",
+    opts = { focus = true },
+  },
   {
     "mfussenegger/nvim-dap",
     dependencies = {
