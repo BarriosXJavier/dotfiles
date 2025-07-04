@@ -105,7 +105,7 @@ local options = {
       relative = "editor",
       row = 0.1,
       col = 0.05,
-      width = 0.9,
+      width = 0.95,
       height = 0.7,
       border = "single",
     },

@@ -323,6 +323,14 @@ return {
     },
   },
 
+  {
+    "FabijanZulj/blame.nvim",
+    lazy = false,
+    config = function()
+      require("blame").setup {}
+    end,
+  },
+
   -----------------------------------------------------------------------------
   -- Diagnostics & LSP Utilities
   -----------------------------------------------------------------------------
@@ -425,7 +433,7 @@ return {
       -- your configuration comes here
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
-      bigfile = { enabled = false },
+      bigfile = { enabled = true },
       dashboard = { enabled = false },
       explorer = { enabled = false },
       indent = { enabled = true },
@@ -433,7 +441,7 @@ return {
       picker = { enabled = false },
       notifier = { enabled = false },
       quickfile = { enabled = true },
-      scope = { enabled = true },
+      scope = { enabled = false },
       scroll = { enabled = false },
       statuscolumn = { enabled = true },
       words = { enabled = true },
