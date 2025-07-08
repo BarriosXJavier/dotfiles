@@ -166,6 +166,15 @@ return {
     end,
   },
 
+
+  {
+    "jiaoshijie/undotree",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = true,
+    keys = { -- load the plugin only when using it's keybinding:
+      { "<leader>u", "<cmd>lua require('undotree').toggle()<cr>" },
+    },
+  },
   -----------------------------------------------------------------------------
   -- LSP & Completion
   -----------------------------------------------------------------------------
@@ -178,7 +187,7 @@ return {
       require "configs.lspconfig"
     end,
   },
-  { "hinell/lsp-timeout.nvim", dependencies = { "neovim/nvim-lspconfig" } },
+  { "hinell/lsp-timeout.nvim",     dependencies = { "neovim/nvim-lspconfig" } },
 
   {
     "rachartier/tiny-inline-diagnostic.nvim",
@@ -273,7 +282,7 @@ return {
   -----------------------------------------------------------------------------
   { "mfussenegger/nvim-dap" },
   { "jay-babu/mason-nvim-dap.nvim" },
-  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+  { "rcarriga/nvim-dap-ui",        dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 
   -----------------------------------------------------------------------------
   -- File Management & Navigation
@@ -302,7 +311,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
   },
-  { "chentoast/marks.nvim", event = "VeryLazy", opts = {} },
+  { "chentoast/marks.nvim",        event = "VeryLazy",   opts = {} },
 
   -----------------------------------------------------------------------------
   -- Git Integration
@@ -339,23 +348,23 @@ return {
     cmd = "Trouble",
     opts = {},
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",      desc = "Symbols (Trouble)" },
       {
         "<leader>cl",
         "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
         desc = "LSP Definitions/References",
       },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List" },
     },
   },
 
   -----------------------------------------------------------------------------
   -- Aesthetics & UI
   -----------------------------------------------------------------------------
-  { "wakatime/vim-wakatime", lazy = false },
+  { "wakatime/vim-wakatime",       lazy = false },
   { "catgoose/nvim-colorizer.lua", event = "BufReadPre", opts = {} },
 
   {

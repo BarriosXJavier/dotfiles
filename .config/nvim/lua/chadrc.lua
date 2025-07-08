@@ -101,10 +101,11 @@ local options = {
       ["bo sp"] = 0.3,
       ["bo vsp"] = 0.5,
     },
+
     float = {
       relative = "editor",
-      row = 0.1,
-      col = 0.05,
+      row = 0.5 - (0.7 / 2), -- Centers vertically
+      col = 0.5 - (0.95 / 2), -- Centers horizontally
       width = 0.95,
       height = 0.7,
       border = "single",
