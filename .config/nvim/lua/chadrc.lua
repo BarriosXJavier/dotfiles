@@ -107,7 +107,7 @@ local options = {
       row = 0.5 - (0.7 / 2), -- Centers vertically
       col = 0.5 - (0.95 / 2), -- Centers horizontally
       width = 0.95,
-      height = 0.7,
+      height = 0.9,
       border = "single",
     },
   },
