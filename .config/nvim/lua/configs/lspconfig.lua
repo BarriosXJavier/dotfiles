@@ -25,6 +25,7 @@ local servers = {
   "zls",
   "sqlls",
   "graphql",
+  "marksman",
 }
 local nvlsp = require "nvchad.configs.lspconfig"
 
