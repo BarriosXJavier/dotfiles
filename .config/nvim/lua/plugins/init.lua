@@ -415,7 +415,7 @@ return {
       indent = { enabled = true },
       input = { enabled = false },
       picker = { enabled = false },
-      notifier = { enabled = true, config = require("configs.notify").setup() },
+      notifier = { enabled = true, },
       quickfile = { enabled = true },
       scope = { enabled = false },
       scroll = { enabled = false },
