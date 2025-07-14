@@ -157,10 +157,6 @@ return {
             -- Fallback to system delve
             return vim.fn.exepath "dlv" ~= "" and vim.fn.exepath "dlv" or "dlv"
           end,
-
-          -- On Windows delve must be run attached or it crashes.
-          -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-          -- detached = vim.fn.has 'win32' == 0,
         },
       }
     end,
@@ -170,10 +166,10 @@ return {
     "jiaoshijie/undotree",
     dependencies = "nvim-lua/plenary.nvim",
     config = true,
-    keys = { -- load the plugin only when using it's keybinding:
+    keys = {
       { "<leader>u", "<cmd>lua require('undotree').toggle()<cr>" },
+      desc = { "undotree " },
     },
-    desc = { "undotree " },
   },
   -----------------------------------------------------------------------------
   -- LSP & Completion
@@ -388,30 +384,6 @@ return {
   },
 
   {
-    "rcarriga/nvim-notify",
-    lazy = false,
-    config = require("configs.notify").setup,
-  },
-
-  -- lazy.nvim
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    config = require("configs.noice").setup,
-    opts = {
-      -- add any options here
-    },
-    dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
-    },
-  },
-
-  {
     "echasnovski/mini.animate",
     event = "VeryLazy",
     opts = { cursor = {}, scroll = {}, resize = {} },
@@ -428,9 +400,7 @@ return {
     "rachartier/tiny-glimmer.nvim",
     event = "VeryLazy",
     priority = 10, -- Needs to be a really low priority, to catch others plugins keybindings.
-    opts = {
-      -- your configuration
-    },
+    opts = {},
   },
 
   {
@@ -439,16 +409,13 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
       bigfile = { enabled = true },
       dashboard = { enabled = false },
       explorer = { enabled = false },
       indent = { enabled = true },
       input = { enabled = false },
       picker = { enabled = false },
-      notifier = { enabled = false },
+      notifier = { enabled = true, config = require("configs.notify").setup() },
       quickfile = { enabled = true },
       scope = { enabled = false },
       scroll = { enabled = false },
