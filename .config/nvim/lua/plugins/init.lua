@@ -2,6 +2,7 @@ return {
   -----------------------------------------------------------------------------
   -- Core / Utility Plugins
   -----------------------------------------------------------------------------
+
   { "nvim-lua/plenary.nvim" },
   { "MunifTanjim/nui.nvim" },
 
@@ -415,7 +416,7 @@ return {
       indent = { enabled = true },
       input = { enabled = false },
       picker = { enabled = false },
-      notifier = { enabled = true, },
+      notifier = { enabled = true, timeout_ms = 2500, width = { min = 40, max = 0.3 } },
       quickfile = { enabled = true },
       scope = { enabled = false },
       scroll = { enabled = false },
