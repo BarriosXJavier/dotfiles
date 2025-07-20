@@ -15,7 +15,6 @@ return {
     opts = require "conform",
   },
 
-
   {
     "jiaoshijie/undotree",
     dependencies = "nvim-lua/plenary.nvim",
@@ -25,6 +24,22 @@ return {
       desc = { "undotree " },
     },
   },
+
+  -- debugger
+  {
+    "mfussenegger/nvim-dap",
+    event = "VeryLazy",
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
+      "jay-babu/mason-nvim-dap.nvim",
+      "theHamsta/nvim-dap-virtual-text",
+    },
+    config = function()
+      require "configs.dap"
+    end,
+  },
+
   -----------------------------------------------------------------------------
   -- LSP & Completion
   -----------------------------------------------------------------------------
@@ -127,8 +142,6 @@ return {
     end,
   },
 
-  
-
   -----------------------------------------------------------------------------
   -- File Management & Navigation
   -----------------------------------------------------------------------------
@@ -205,7 +218,7 @@ return {
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List" },
     },
 
-    focus = true
+    focus = true,
   },
 
   -----------------------------------------------------------------------------
@@ -285,7 +298,7 @@ return {
 
         vim.keymap.set("n", "<leader>sh", function()
           require("snacks.notifier").show_history()
-        end, { desc = "show notification history" })
+        end, { desc = "show notification history" }),
       },
       quickfile = { enabled = true },
       scope = { enabled = true },
