@@ -40,13 +40,6 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- configuring single server, example: typescript
-lspconfig.ts_ls.setup {
-  on_attach = nvlsp.on_attach,
-  on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
-}
-
 lspconfig.emmet_language_server.setup {
   filetypes = {
     "css",

@@ -75,16 +75,6 @@ function M.setup()
         },
         {
           function()
-            local ok, s = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 500 })
-            if not ok or s.total == 0 then
-              return "🔍"
-            end
-            return string.format("🔍 %d/%d", s.current, s.total)
-          end,
-          color = { fg = "#89b4fa" },
-        },
-        {
-          function()
             return get_lsp_status()
           end,
           color = { gui = "bold" },

@@ -10,10 +10,9 @@ local options = {
     yaml = { "prettier" },
     markdown = { "prettier" },
     toml = { "prettier" },
-
     lua = { "stylua" },
     rust = { "rustfmt" },
-    python = { "autopep8" },
+    python = { "black" },
     go = { "gofmt" },
     c = { "clang-format" },
     cpp = { "clang-format" },

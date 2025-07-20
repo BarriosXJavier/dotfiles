@@ -8,7 +8,7 @@ function M.setup()
           filetype = "NvimTree",
           text = "Nvim Tree",
           highlight = "Directory",
-          separator = false,
+          separator = true,
         },
       },
       highlights = {
@@ -21,9 +21,9 @@ function M.setup()
       diagnostics = "nvim_lsp",
       diagnostics_indicator = function(count, level, _, _)
         local icon = level:match "error" and " "
-          or level:match "warn" and " "
-          or level:match "info" and " "
-          or ""
+            or level:match "warn" and " "
+            or level:match "info" and " "
+            or ""
         return " " .. icon .. count
       end,
       modified_icon = "●",
