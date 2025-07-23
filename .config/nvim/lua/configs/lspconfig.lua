@@ -23,7 +23,7 @@ local servers = {
   "elixirls",
   "dartls",
   "zls",
-  "sqlls",
+  "sqls",
   "graphql",
   "marksman",
 }
@@ -39,6 +39,7 @@ for _, lsp in ipairs(servers) do
     capabilities = nvlsp.capabilities,
   }
 end
+
 
 lspconfig.emmet_language_server.setup {
   filetypes = {

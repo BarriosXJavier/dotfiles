@@ -16,6 +16,7 @@ local options = {
     go = { "gofmt" },
     c = { "clang-format" },
     cpp = { "clang-format" },
+    sql = { "sql-formatter" },
   },
 
   format_on_save = {
