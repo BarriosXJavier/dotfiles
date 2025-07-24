@@ -16,13 +16,29 @@ local options = {
     go = { "gofmt" },
     c = { "clang-format" },
     cpp = { "clang-format" },
-    sql = { "sql-formatter" },
+    sql = { "sleek" },
+    mysql = { "sleek" },
+    pgsql = { "sleek" },
+    plsql = { "sleek" },
   },
 
-  format_on_save = {
-    timeout_ms = 1000,
-    lsp_fallback = true,
+  formatters = {
+    sleek = {
+      command = "sleek",
+      args = {
+        "--uppercase=true",
+        "--indent-spaces=4",
+        "--lines-between-queries=2",
+        "--trailing-newline=true",
+      },
+      stdin = true,
+    },
   },
+
+  -- format_on_save = {
+  --   timeout_ms = 1000,
+  --   lsp_fallback = true,
+  -- },
 }
 
 return options

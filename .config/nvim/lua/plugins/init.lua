@@ -8,18 +8,20 @@ return {
 
   {
     "stevearc/conform.nvim",
-    event = { "BufWritePre", "BufReadPost" },
     config = function(_, opts)
       require("conform").setup(opts)
     end,
-    opts = require "conform",
+    opts = require "configs.conform",
     keys = {
       {
-        "<leader>F", function ()
+        "<leader>F",
+        function()
           require("conform").format()
-        end, mode = "n", desc = "Conform Format"
-      }
-    }
+        end,
+        mode = "n",
+        desc = "Conform Format",
+      },
+    },
   },
 
   {
