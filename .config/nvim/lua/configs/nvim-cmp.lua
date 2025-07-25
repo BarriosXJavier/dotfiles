@@ -1,6 +1,6 @@
 local M = {}
 
-function M.setup()
+function M.setup(_, opts)
   local cmp_ok, cmp = pcall(require, "cmp")
   local lspkind_ok, lspkind = pcall(require, "lspkind")
   local autopairs_ok, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
@@ -8,7 +8,6 @@ function M.setup()
     vim.notify("nvim-cmp setup skipped due to missing deps", vim.log.levels.WARN)
     return
   end
-
 
   cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
@@ -26,7 +25,6 @@ function M.setup()
       completion = cmp.config.window.bordered(),
       documentation = cmp.config.window.bordered(),
     },
-
     formatting = {
       format = function(entry, vim_item)
         local source_labels = {
@@ -51,19 +49,25 @@ function M.setup()
           ellipsis_char = "...",
         })(entry, vim_item)
       end,
-
     },
-    sources = cmp.config.sources {
-      { name = "copilot" },
-      { name = "nvim_lsp" },
-      { name = "luasnip" },
-      { name = "friendly-snippets" },
-      { name = "buffer" },
-      { name = "path" },
+    sources = opts.sources,
+    sorting = {
+      comparators = {
+        function(entry1, entry2)
+          if entry1.completion_item.label == entry2.completion_item.label then
+            return entry1.source.name < entry2.source.name
+          end
+        end,
+        cmp.config.compare.offset,
+        cmp.config.compare.exact,
+        cmp.config.compare.score,
+        cmp.config.compare.kind,
+        cmp.config.compare.sort_text,
+        cmp.config.compare.length,
+        cmp.config.compare.order,
+      },
     },
   }
-
-
 
   cmp.setup.cmdline("/", {
     mapping = cmp.mapping.preset.cmdline(),
@@ -76,13 +80,23 @@ function M.setup()
   })
 end
 
-M.opts = function(_, opts)
-  table.insert(opts.sources, 1, {
-    name = "copilot",
-    group_index = 1,
-    priority = 100,
-    trigger_characters = { "-" },
-  })
+M.opts = function()
+  return {
+    sources = {
+      { name = "nvim_lsp" },
+      { name = "luasnip" },
+      { name = "friendly-snippets" },
+      { name = "buffer" },
+      { name = "path" },
+      {
+        name = "copilot",
+        group_index = 1,
+        priority = 100,
+        trigger_characters = { "-" },
+      },
+    },
+  }
 end
 
 return M
+
