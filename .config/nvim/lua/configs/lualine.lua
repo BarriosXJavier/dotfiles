@@ -12,18 +12,6 @@ function M.setup()
       end
     end
 
-    local null_ls_ok, null_ls = pcall(require, "null-ls")
-    if null_ls_ok then
-      for _, source in ipairs(null_ls.get_sources()) do
-        if source._validated and source.filetypes[buf_ft] then
-          local method = source.method
-          if method == null_ls.methods.FORMATTING or method == null_ls.methods.FORMATTING_SYNC then
-            table.insert(formatters, source.name)
-          end
-        end
-      end
-    end
-
     local function dedupe(list)
       local seen, result = {}, {}
       for _, item in ipairs(list) do

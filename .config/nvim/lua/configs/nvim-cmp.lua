@@ -53,14 +53,10 @@ function M.setup(_, opts)
     sources = opts.sources,
     sorting = {
       comparators = {
-        function(entry1, entry2)
-          if entry1.completion_item.label == entry2.completion_item.label then
-            return entry1.source.name < entry2.source.name
-          end
-        end,
         cmp.config.compare.offset,
         cmp.config.compare.exact,
         cmp.config.compare.score,
+        cmp.config.compare.priority,
         cmp.config.compare.kind,
         cmp.config.compare.sort_text,
         cmp.config.compare.length,
@@ -83,11 +79,11 @@ end
 M.opts = function()
   return {
     sources = {
-      { name = "nvim_lsp" },
-      { name = "luasnip" },
-      { name = "friendly-snippets" },
-      { name = "buffer" },
-      { name = "path" },
+      { name = "nvim_lsp", priority = 10 },
+      { name = "luasnip", priority = 8 },
+      { name = "friendly-snippets", priority = 8 },
+      { name = "buffer", priority = 5 },
+      { name = "path", priority = 4 },
       {
         name = "copilot",
         group_index = 1,
@@ -99,4 +95,3 @@ M.opts = function()
 end
 
 return M
-

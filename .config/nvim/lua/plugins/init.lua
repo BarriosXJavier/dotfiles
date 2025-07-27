@@ -176,13 +176,6 @@ return {
     opts = {},
   },
   {
-    "jinzhongjia/LspUI.nvim",
-    branch = "main",
-    config = function()
-      require("LspUI").setup {}
-    end,
-  },
-  {
     "rachartier/tiny-code-action.nvim",
     lazy = false,
     dependencies = {
@@ -218,12 +211,6 @@ return {
     config = function()
       require("lsp-file-operations").setup()
     end,
-  },
-  {
-    "stevearc/oil.nvim",
-    opts = { set_default_explorer = false },
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    lazy = false,
   },
   { "chentoast/marks.nvim", event = "VeryLazy", opts = {} },
 
@@ -351,16 +338,21 @@ return {
           },
           bo = { filetype = "snacks_notif" },
         },
-
-        vim.keymap.set("n", "<leader>sh", function()
-          require("snacks.notifier").show_history()
-        end, { desc = "show notification history" }),
       },
       quickfile = { enabled = true },
       scope = { enabled = true },
       scroll = { enabled = false },
       statuscolumn = { enabled = true },
       words = { enabled = true },
+    },
+    keys = {
+      {
+        "<leader>sh",
+        function()
+          require("snacks.notifier").show_history()
+        end,
+        { desc = "show notification history" },
+      },
     },
   },
 }

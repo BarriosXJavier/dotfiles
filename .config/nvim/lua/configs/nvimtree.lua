@@ -17,7 +17,7 @@ M.override_options = {
   },
   view = {
     side = "left",
-    width = 30,
+    width = 25,
     adaptive_size = false,
   },
 }
