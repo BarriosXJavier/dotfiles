@@ -9,4 +9,9 @@ map("i", "jk", "<ESC>")
 
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>")
 
+-- resize with arrows
+map("n", "<C-Left>", ":vertical resize -2<CR>", nore)
+map("n", "<C-Right>", ":vertical resize +2<CR>", nore)
+
+
 

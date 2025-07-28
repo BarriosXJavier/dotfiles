@@ -43,11 +43,11 @@ function M.setup(_, opts)
           vim_item.menu = source_labels[entry.source.name] or ("[" .. entry.source.name .. "]")
         end
 
-        return require("lspkind").cmp_format({
+        return require("lspkind").cmp_format {
           mode = "symbol_text",
           maxwidth = 50,
           ellipsis_char = "...",
-        })(entry, vim_item)
+        }(entry, vim_item)
       end,
     },
     sources = opts.sources,
@@ -95,3 +95,4 @@ M.opts = function()
 end
 
 return M
+

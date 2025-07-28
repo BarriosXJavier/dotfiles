@@ -11,7 +11,7 @@ local options = {
     markdown = { "prettier" },
     toml = { "prettier" },
     lua = { "stylua" },
-    rust = { "rustfmt" },
+    -- rust = { "rustfmt" },
     python = { "black" },
     go = { "gofmt" },
     c = { "clang-format" },
@@ -34,11 +34,6 @@ local options = {
       stdin = true,
     },
   },
-
-  -- format_on_save = {
-  --   timeout_ms = 1000,
-  --   lsp_fallback = true,
-  -- },
 }
 
 return options
