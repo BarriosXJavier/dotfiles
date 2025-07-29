@@ -167,15 +167,6 @@ return {
   },
 
   {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    dependencies = {
-      { "github/copilot.vim" },
-      { "nvim-lua/plenary.nvim", branch = "master" },
-    },
-    build = "make tiktoken",
-    opts = {},
-  },
-  {
     "rachartier/tiny-code-action.nvim",
     lazy = false,
     dependencies = {
@@ -194,13 +185,6 @@ return {
   -----------------------------------------------------------------------------
   -- File Management & Navigation
   -----------------------------------------------------------------------------
-  {
-    "akinsho/bufferline.nvim",
-    lazy = false,
-    version = "*",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = require("configs.bufferline").setup,
-  },
 
   {
     "antosha417/nvim-lsp-file-operations",
