@@ -65,7 +65,7 @@ return {
   },
 
   { "tpope/vim-dadbod" },
-
+  { "ThePrimeagen/vim-be-good", cmd = "VimBeGood" },
   {
     "jiaoshijie/undotree",
     dependencies = "nvim-lua/plenary.nvim",
@@ -107,16 +107,6 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require "configs.lspconfig"
-    end,
-  },
-
-  {
-    "rachartier/tiny-inline-diagnostic.nvim",
-    event = "VeryLazy",
-    priority = 1000,
-    config = function()
-      require("tiny-inline-diagnostic").setup { preset = "classic" }
-      vim.diagnostic.config { virtual_text = false }
     end,
   },
 
