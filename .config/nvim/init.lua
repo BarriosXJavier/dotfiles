@@ -14,7 +14,7 @@ vim.opt.scrolloff = 8
 
 vim.opt.number = true
 vim.opt.relativenumber = true
-
+vim.opt.incsearch = true
 vim.opt.guicursor = {
   "n-v-c:block-Cursor",
   "i-ci:blinkon200-blinkoff200-blinkwait200-block-Cursor",

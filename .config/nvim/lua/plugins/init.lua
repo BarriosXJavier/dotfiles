@@ -12,16 +12,6 @@ return {
       require("conform").setup(opts)
     end,
     opts = require "configs.conform",
-    keys = {
-      {
-        "<leader>F",
-        function()
-          require("conform").format()
-        end,
-        mode = "n",
-        desc = "Conform Format",
-      },
-    },
   },
 
   {
@@ -47,21 +37,9 @@ return {
     version = "*",
     cmd = "ASToggle",
     event = { "InsertLeave", "TextChanged" },
-    opts = {
-      execution_message = {
-        enabled = false,
-      },
-      callbacks = {
-        after_saving = function(buf)
-          local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf), ":t")
-          local time = os.date "%H:%M:%S"
-          vim.notify(("Auto-saved %s at %s"):format(filename, time), vim.log.levels.INFO, {
-            title = "AutoSave",
-            timeout = 2000,
-          })
-        end,
-      },
-    },
+    config = function()
+      require "configs.auto-save"
+    end,
   },
 
   { "tpope/vim-dadbod" },
@@ -73,15 +51,6 @@ return {
     keys = {
       { "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", desc = "undotree" },
     },
-  },
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {},
   },
 
   -- debugger
@@ -195,7 +164,13 @@ return {
       require("lsp-file-operations").setup()
     end,
   },
+
   { "chentoast/marks.nvim", event = "VeryLazy", opts = {} },
+
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+  },
 
   -----------------------------------------------------------------------------
   -- Git Integration
@@ -327,15 +302,6 @@ return {
       scroll = { enabled = false },
       statuscolumn = { enabled = true },
       words = { enabled = true },
-    },
-    keys = {
-      {
-        "<leader>sh",
-        function()
-          require("snacks.notifier").show_history()
-        end,
-        { desc = "show notification history" },
-      },
     },
   },
 }

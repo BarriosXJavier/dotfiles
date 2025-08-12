@@ -1,4 +1,4 @@
-require("nvchad.mappings")
+require "nvchad.mappings"
 
 local map = vim.keymap.set
 
@@ -18,3 +18,16 @@ map("n", "<C-Right>", ":vertical resize +2<CR>", { noremap = true, desc = "Resiz
 -- Scroll down/up and center the screen
 map("n", "<C-d>", "<C-d>zz", { noremap = true, desc = "Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { noremap = true, desc = "Scroll up and center" })
+
+-- Auto save
+map("n", "<leader>as", "<cmd>ASToggle<CR>", { desc = "Toggle Autosave" })
+
+-- snacks notification
+map("n", "<leader>sh", function()
+  require("snacks.notifier").show_history()
+end, { desc = "show notification history" })
+
+-- Conform format
+map("n", "<leader>F", function()
+  require("conform").format()
+end, { desc = "Conform format" })
