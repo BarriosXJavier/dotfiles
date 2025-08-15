@@ -5,7 +5,7 @@ local options = {
 
   base46 = {
 
-    theme = "tokyonight", -- default theme
+    theme = "tokyonight-storm", -- default theme
 
     hl_add = {
       LineNr = { fg = "#d0be98" },
@@ -18,7 +18,7 @@ local options = {
     integrations = {},
     changed_themes = {},
     transparency = true,
-    theme_toggle = { "github_dark", "tokyonight" },
+    theme_toggle = { "tokyonight", "tokyonight-storm" },
   },
 
   ui = {

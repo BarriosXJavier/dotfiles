@@ -45,7 +45,7 @@ function M.setup()
 
   require("lualine").setup {
     options = {
-      theme = "dracula",
+      theme = "tokyonight",
       globalstatus = true,
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
