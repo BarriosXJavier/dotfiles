@@ -72,9 +72,10 @@ return {
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    opts = {
-  
-    },
+    opts = {},
+    config = function ()
+      require("configs.tokyonight").setup()
+    end
   },
 
   -----------------------------------------------------------------------------

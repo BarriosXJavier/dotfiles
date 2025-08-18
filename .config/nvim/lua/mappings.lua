@@ -1,4 +1,5 @@
 require "nvchad.mappings"
+local tokyonight = require("configs.tokyonight")
 
 local map = vim.keymap.set
 
@@ -33,3 +34,8 @@ end, { desc = "show notification history" })
 map("n", "<leader>F", function()
   require("conform").format()
 end, { desc = "Conform format" })
+
+
+map("n", "<leader>tt", function()
+  require("configs.tokyonight").pick_variant()
+end, { desc = "Pick TokyoNight variant" })

@@ -35,7 +35,7 @@ local options = {
     telescope = { style = "bordered" }, -- borderless / bordered
 
     statusline = {
-      enabled = true,
+      enabled = false,
       theme = "default",
       separator_style = "arrow",
       order = nil,
