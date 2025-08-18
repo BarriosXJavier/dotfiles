@@ -2,6 +2,8 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+
+
 -- Normal mode for faster command mode
 map("n", ";", ":", { desc = "CMD: Enter command mode" })
 
@@ -19,7 +21,7 @@ map("n", "<C-Right>", ":vertical resize +2<CR>", { noremap = true, desc = "Resiz
 map("n", "<C-d>", "<C-d>zz", { noremap = true, desc = "Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { noremap = true, desc = "Scroll up and center" })
 
--- Auto save
+-- Auto save toggle
 map("n", "<leader>as", "<cmd>ASToggle<CR>", { desc = "Toggle Autosave" })
 
 -- snacks notification
