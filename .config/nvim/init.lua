@@ -20,6 +20,7 @@ vim.opt.guicursor = {
   "i-ci:blinkon200-blinkoff200-blinkwait200-block-Cursor",
   "r:blinkon200-blinkoff200-blinkwait200-block-Cursor",
 }
+vim.o.termguicolors = true
 
 -- ╭──────────────────────────────────────────────────────────╮
 -- │                    Lazy Plugin Manager                   │
@@ -67,3 +68,5 @@ require "autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+vim.cmd("colorscheme tokyonight-storm")
