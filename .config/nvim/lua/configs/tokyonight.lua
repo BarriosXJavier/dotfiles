@@ -21,7 +21,7 @@ local function save_variant(style)
 end
 
 M.setup = function(style)
-  style = style or read_last_variant() or "night"
+  style = style or read_last_variant() or "storm"
   save_variant(style)
 
   local is_dark = style ~= "day"

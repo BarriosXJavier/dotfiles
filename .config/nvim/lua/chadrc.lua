@@ -15,10 +15,8 @@ local options = {
       Comment = { fg = "#b0c0cc", italic = true },
       ["@comment"] = { italic = true },
     },
-    integrations = {},
-    changed_themes = {},
     transparency = true,
-    theme_toggle = { "tokyonight", "github_dark" },
+    theme_toggle = { "tokyonight", "gruvbox" },
   },
 
   ui = {
