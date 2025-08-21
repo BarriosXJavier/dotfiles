@@ -2,11 +2,8 @@
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 
 local options = {
-
   base46 = {
-
     theme = "tokyonight", -- default theme
-
     hl_add = {
       LineNr = { fg = "#d0be98" },
       CursorLineNr = { fg = "#87d9e8" },
@@ -46,6 +43,7 @@ local options = {
       lazyload = false,
       order = { "treeOffset", "buffers", "tabs", "btns" },
       modules = nil,
+      separator_style = "slant",
     },
   },
 

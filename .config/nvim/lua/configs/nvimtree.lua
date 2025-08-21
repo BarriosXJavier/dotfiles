@@ -20,6 +20,7 @@ M.override_options = {
     width = 25,
     adaptive_size = false,
   },
+  
 }
 
 return M

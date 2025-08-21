@@ -58,7 +58,7 @@ require("lazy").setup({
 -- ╰──────────────────────────────────────────────────────────╯
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
-
+vim.cmd[[colorscheme tokyonight-storm]]
 -- ╭──────────────────────────────────────────────────────────╮
 -- │                   Core Modules (Opt/Maps)                │
 -- ╰──────────────────────────────────────────────────────────╯
@@ -69,4 +69,3 @@ vim.schedule(function()
   require "mappings"
 end)
 
-vim.cmd("colorscheme tokyonight-storm")

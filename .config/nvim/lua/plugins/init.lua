@@ -2,8 +2,9 @@ return {
   -----------------------------------------------------------------------------
   -- Core / Utility Plugins
   -----------------------------------------------------------------------------
-
+  -- Plenary for async programming
   { "nvim-lua/plenary.nvim" },
+
   { "MunifTanjim/nui.nvim" },
 
   {
@@ -42,31 +43,10 @@ return {
     end,
   },
 
-  {
-    "akinsho/bufferline.nvim",
-    version = "*",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    opts = {
-      options = {
-        offsets = {
-          { filetype = "NvimTree", text = "File Explorer", text_align = "left", separator = true },
-        },
-        highlights = {
-          buffer_selected = {
-            bold = true,
-            italic = true,
-          },
-          diagnostic_selected = {
-            bold = true,
-            italic = true,
-          },
-        },
-      },
-    },
-  },
-
   { "tpope/vim-dadbod" },
+
   { "ThePrimeagen/vim-be-good", cmd = "VimBeGood" },
+
   {
     "jiaoshijie/undotree",
     dependencies = "nvim-lua/plenary.nvim",

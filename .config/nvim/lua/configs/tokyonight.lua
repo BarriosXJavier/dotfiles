@@ -1,53 +1,24 @@
--- configs/tokyonight.lua
 local M = {}
 
-local save_file = vim.fn.stdpath("data") .. "/tokyonight_variant.txt"
-
-local function read_last_variant()
-  local f = io.open(save_file, "r")
-  if f then
-    local style = f:read("*l")
-    f:close()
-    return style
-  end
-end
-
-local function save_variant(style)
-  local f = io.open(save_file, "w")
-  if f then
-    f:write(style)
-    f:close()
-  end
-end
-
 M.setup = function(style)
-  style = style or read_last_variant() or "storm"
-  save_variant(style)
-
+  style = style or "storm"
   local is_dark = style ~= "day"
 
   require("tokyonight").setup({
     style = style,
-    transparent = is_dark, -- wallpapers only in dark variants
+    transparent = is_dark,
     styles = {
       sidebars = is_dark and "transparent" or "dark",
       floats   = is_dark and "transparent" or "dark",
     },
   })
 
-  -- hard reset highlights to avoid bleed
-  vim.cmd("highlight clear")
-  vim.cmd("syntax reset")
   vim.o.background = is_dark and "dark" or "light"
 
-  -- load scheme cleanly
-  vim.cmd.colorscheme("tokyonight")
-
-  -- refresh indent-blankline highlights
-  local ok, ibl = pcall(require, "ibl")
-  if ok then ibl.setup() end
+  vim.cmd.colorscheme("tokyonight-storm")
 end
 
+-- picker for switching variants
 M.pick_variant = function()
   local pickers = require("telescope.pickers")
   local finders = require("telescope.finders")
@@ -59,9 +30,7 @@ M.pick_variant = function()
 
   pickers.new({}, {
     prompt_title = "TokyoNight Variant",
-    finder = finders.new_table({
-      results = variants,
-    }),
+    finder = finders.new_table({ results = variants }),
     sorter = conf.generic_sorter({}),
     attach_mappings = function(_, map)
       local apply = function(prompt_bufnr)
@@ -76,6 +45,27 @@ M.pick_variant = function()
     end,
   }):find()
 end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+
+
+    -- NvimTree
+    local ok2, nvim_tree = pcall(require, "nvim-tree")
+    if ok2 then nvim_tree.setup({}) end  -- or reapply your config table
+
+    -- bufferline
+    local ok3, bufferline = pcall(require, "bufferline")
+    if ok3 then bufferline.setup({}) end
+
+    -- lualine
+    local ok4, lualine = pcall(require, "lualine")
+    if ok4 then lualine.refresh() end
+
+    -- any other plugin that depends on highlights can go here
+  end,
+})
 
 return M
 
