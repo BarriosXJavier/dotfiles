@@ -42,6 +42,29 @@ return {
     end,
   },
 
+  {
+    "akinsho/bufferline.nvim",
+    version = "*",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    opts = {
+      options = {
+        offsets = {
+          { filetype = "NvimTree", text = "File Explorer", text_align = "left", separator = true },
+        },
+        highlights = {
+          buffer_selected = {
+            bold = true,
+            italic = true,
+          },
+          diagnostic_selected = {
+            bold = true,
+            italic = true,
+          },
+        },
+      },
+    },
+  },
+
   { "tpope/vim-dadbod" },
   { "ThePrimeagen/vim-be-good", cmd = "VimBeGood" },
   {
@@ -73,9 +96,9 @@ return {
     lazy = false,
     priority = 1000,
     opts = {},
-    config = function ()
+    config = function()
       require("configs.tokyonight").setup()
-    end
+    end,
   },
 
   -----------------------------------------------------------------------------
