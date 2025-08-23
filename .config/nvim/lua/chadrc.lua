@@ -43,7 +43,6 @@ local options = {
       lazyload = false,
       order = { "treeOffset", "buffers", "tabs", "btns" },
       modules = nil,
-      separator_style = "slant",
     },
   },
 

@@ -15,7 +15,14 @@ M.setup = function(style)
 
   vim.o.background = is_dark and "dark" or "light"
 
-  vim.cmd.colorscheme("tokyonight-storm")
+  -- Use the correct variant dynamically
+  vim.cmd.colorscheme("tokyonight-" .. style)
+
+  -- Apply ibl safely after colorscheme
+  local ok, ibl = pcall(require, "ibl")
+  if ok then
+    ibl.setup({})
+  end
 end
 
 -- picker for switching variants
@@ -46,14 +53,13 @@ M.pick_variant = function()
   }):find()
 end
 
+-- Plugin highlights that depend on colorscheme
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
-
-
     -- NvimTree
     local ok2, nvim_tree = pcall(require, "nvim-tree")
-    if ok2 then nvim_tree.setup({}) end  -- or reapply your config table
+    if ok2 then nvim_tree.setup({}) end
 
     -- bufferline
     local ok3, bufferline = pcall(require, "bufferline")
@@ -63,7 +69,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     local ok4, lualine = pcall(require, "lualine")
     if ok4 then lualine.refresh() end
 
-    -- any other plugin that depends on highlights can go here
+    -- ibl fallback in case colorscheme changed
+    local ok5, ibl = pcall(require, "ibl")
+    if ok5 then ibl.setup({}) end
   end,
 })
 
