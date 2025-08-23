@@ -1,5 +1,6 @@
 local M = {}
 
+-- Setup TokyoNight colorscheme
 M.setup = function(style)
   style = style or "storm"
   local is_dark = style ~= "day"
@@ -15,17 +16,32 @@ M.setup = function(style)
 
   vim.o.background = is_dark and "dark" or "light"
 
-  -- Use the correct variant dynamically
+  -- Apply the selected colorscheme variant
   vim.cmd.colorscheme("tokyonight-" .. style)
 
-  -- Apply ibl safely after colorscheme
+  -- Configure indent-blankline.nvim (thin and subtle)
   local ok, ibl = pcall(require, "ibl")
   if ok then
-    ibl.setup({})
+    ibl.setup({
+      indent = {
+        char = "│",          -- thin vertical bar
+        tab_char = "│",
+        smart_indent_cap = true,
+      },
+      scope = {
+        enabled = false,      -- optional: turn off scope highlight
+      },
+      exclude = {
+        filetypes = { "help", "terminal", "lazy", "NvimTree" },
+      },
+    })
+
+    -- match IblChar to TokyoNight side color
+    vim.cmd([[highlight IblChar guifg=#3b4261 gui=nocombine]])
   end
 end
 
--- picker for switching variants
+-- Variant picker using Telescope
 M.pick_variant = function()
   local pickers = require("telescope.pickers")
   local finders = require("telescope.finders")
@@ -53,7 +69,7 @@ M.pick_variant = function()
   }):find()
 end
 
--- Plugin highlights that depend on colorscheme
+-- Refresh plugin highlights on colorscheme change
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
@@ -69,9 +85,16 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     local ok4, lualine = pcall(require, "lualine")
     if ok4 then lualine.refresh() end
 
-    -- ibl fallback in case colorscheme changed
+    -- reapply ibl after any colorscheme change
     local ok5, ibl = pcall(require, "ibl")
-    if ok5 then ibl.setup({}) end
+    if ok5 then
+      ibl.setup({
+        indent = { char = "│", tab_char = "│", smart_indent_cap = true },
+        scope = { enabled = false },
+        exclude = { filetypes = { "help", "terminal", "lazy", "NvimTree" } },
+      })
+      vim.cmd([[highlight IblChar guifg=#3b4261 gui=nocombine]])
+    end
   end,
 })
 
