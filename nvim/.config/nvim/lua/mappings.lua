@@ -1,4 +1,4 @@
-require "nvchad.mappings"
+require("nvchad.mappings")
 
 -- add yours here
 
@@ -20,3 +20,9 @@ map("n", "<C-Right>", ":vertical resize +2<CR>", { noremap = true, desc = "Resiz
 map("n", "<C-d>", "<C-d>zz", { noremap = true, desc = "Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { noremap = true, desc = "Scroll up and center" })
 
+map(
+	"n",
+	"<leader>tp",
+	require("configs.tokyonight-picker").pick_tokyonight_variant,
+	{ desc = "Pick tokyonight variant" }
+)
