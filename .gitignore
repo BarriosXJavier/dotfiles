@@ -1,0 +1,8 @@
+*.swp
+*.swo
+*.un~   # temp editor backups
+local/  # machine-specific overrides
+
+# TMUX session/resurrect files
+.tmux/resurrect/
+

@@ -1,0 +1,7 @@
+@theme "/home/maksim/.config/polybar/forest/scripts/rofi/launcher.rasi"
+
+configuration {
+  modi: "combi,power:~/.config/rofi/scripts/power.sh";
+  combi-modi: "drun,run,window,ssh,power";
+}
+
