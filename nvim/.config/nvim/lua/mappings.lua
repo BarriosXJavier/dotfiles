@@ -26,3 +26,10 @@ map(
 	require("configs.tokyonight-picker").pick_tokyonight_variant,
 	{ desc = "Pick tokyonight variant" }
 )
+
+map("i", "<M-l>", "<Plug>(copilot-accept)", { desc = "Copilot: Accept suggestion" })
+map("i", "<M-w>", "<Plug>(copilot-accept-word)", { desc = "Copilot: Accept word" })
+map("i", "<M-e>", "<Plug>(copilot-accept-line)", { desc = "Copilot: Accept line" })
+map("i", "<M-]>", "<Plug>(copilot-next)", { desc = "Copilot: Next suggestion" })
+map("i", "<M-[>", "<Plug>(copilot-previous)", { desc = "Copilot: Previous suggestion" })
+map("i", "<C-]>", "<Plug>(copilot-dismiss)", { desc = "Copilot: Dismiss suggestion" })

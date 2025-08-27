@@ -175,4 +175,29 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = require("configs.lualine").setup,
 	},
+
+	-- Copilot core (auth + backend)
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup({
+				suggestion = {
+					enabled = true,
+					auto_trigger = true,
+				},
+				panel = { enabled = true },
+			})
+		end,
+	},
+
+	-- Copilot bridge for cmp
+	{
+		"zbirenbaum/copilot-cmp",
+		after = { "copilot.lua", "nvim-cmp" },
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	},
 }

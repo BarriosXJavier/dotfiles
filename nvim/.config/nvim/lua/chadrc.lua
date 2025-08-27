@@ -3,7 +3,6 @@
 
 -- This table is used to override the default NvChad configuration.
 local M = {
-    -- This table is used to define the colorschemes that are available to NvChad.
     colorscheme = {
         tokyonight = {
             day = "tokyonight-day",
