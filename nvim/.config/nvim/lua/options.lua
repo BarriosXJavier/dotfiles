@@ -10,7 +10,8 @@ o.number = true -- absolute line number
 o.relativenumber = true -- relative line numbers
 o.signcolumn = "yes" -- always show sign column (git, lsp)
 o.scrolloff = 8 -- padding around cursor
-o.wrap = false -- no line wrap (keeps code readable)
+o.wrap = true -- no line wrap (keeps code readable)
+o.textwidth = 80 -- max width for text
 o.termguicolors = true -- better colors
 
 -- Editing
