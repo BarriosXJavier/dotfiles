@@ -14,6 +14,11 @@ o.wrap = true -- no line wrap (keeps code readable)
 o.textwidth = 80 -- max width for text
 o.termguicolors = true -- better colors
 
+o.guicursor =
+  "n-v-c-sm:block-blinkon0," ..
+  "i-ci:block-blinkwait10-blinkon50-blinkoff50," ..
+  "r-cr:block-blinkwait10-blinkon50-blinkoff50"
+
 -- Editing
 o.clipboard = "unnamedplus" -- system clipboard
 o.hidden = true -- keep buffers in background

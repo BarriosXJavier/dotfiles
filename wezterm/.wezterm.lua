@@ -6,13 +6,15 @@ local config = wezterm.config_builder()
 -- =========================
 config.font = wezterm.font_with_fallback({
 	"Iosevka Nerd Font",
+    "JetBrainsMono Nerd Font",
 	"Fira Code Nerd Font",
 })
-config.font_size = 13
+config.font_size = 12
 
 local fonts = {
 	"Iosevka Nerd Font",
 	"Fira Code Nerd Font",
+    "JetBrainsMono Nerd Font",
 }
 
 local current_font = 1

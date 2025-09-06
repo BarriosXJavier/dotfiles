@@ -41,6 +41,18 @@ return {
 			-- your configuration
 		},
 	},
+
+	{
+		"okuuva/auto-save.nvim",
+		version = "^1.0.0", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
+		cmd = "ASToggle", -- optional for lazy loading on command
+		event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
+		opts = {
+			-- your config goes here
+			-- or just leave it empty :)
+		},
+	},
+
 	{
 		"kdheepak/lazygit.nvim",
 		lazy = true,
@@ -62,6 +74,31 @@ return {
 		lazy = false,
 		config = function()
 			require("blame").setup({})
+		end,
+	},
+
+	{
+		"akinsho/bufferline.nvim",
+		version = "*",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("bufferline").setup({
+				options = {
+					offsets = {
+						{
+							filetype = "NvimTree",
+							text = "NvimTree",
+							text_align = "center",
+							separator = true,
+						},
+					},
+					separator_style = "slant", -- Optional: adds nice separators
+					show_buffer_close_icons = true,
+					show_close_icon = true,
+				},
+			})
 		end,
 	},
 

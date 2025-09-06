@@ -41,11 +41,11 @@ end)
 local variant_file = vim.fn.stdpath("data") .. "/.tokyonight_variant"
 local file = io.open(variant_file, "r")
 if file then
-  local variant = file:read("*a")
-  file:close()
-  if variant and variant ~= "" then
-    vim.defer_fn(function()
-      vim.cmd("colorscheme " .. variant)
-    end, 100)
-  end
+	local variant = file:read("*a")
+	file:close()
+	if variant and variant ~= "" then
+		vim.defer_fn(function()
+			vim.cmd("colorscheme " .. variant)
+		end, 100)
+	end
 end

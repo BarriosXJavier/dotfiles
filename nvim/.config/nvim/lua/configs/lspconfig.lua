@@ -19,7 +19,6 @@ local servers = {
   "marksman",
   "lua_ls",
   "jdtls",
-  "elixirls",
   "dartls",
   "zls",
   "sqls",
