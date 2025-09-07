@@ -220,6 +220,11 @@ return {
 		config = require("configs.lualine").setup,
 	},
 
+	{
+		"github/copilot.vim",
+		event = "BufEnter",
+	},
+
 	-- Copilot core (auth + backend)
 	{
 		"zbirenbaum/copilot.lua",
@@ -243,5 +248,17 @@ return {
 		config = function()
 			require("copilot_cmp").setup()
 		end,
+	},
+
+	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		event = "BufEnter",
+		dependencies = {
+			{ "nvim-lua/plenary.nvim", branch = "master" },
+		},
+		build = "make tiktoken",
+		opts = {
+			-- See Configuration section for options
+		},
 	},
 }
