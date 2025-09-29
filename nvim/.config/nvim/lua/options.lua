@@ -1,37 +1,34 @@
--- overrides for nvchad.options
-
 require("nvchad.options")
 
 local o = vim.o
 
 -- UI
-o.cursorlineopt = "both" -- highlight line & number
-o.number = true -- absolute line number
-o.relativenumber = true -- relative line numbers
-o.signcolumn = "yes" -- always show sign column (git, lsp)
-o.scrolloff = 8 -- padding around cursor
-o.wrap = true -- no line wrap (keeps code readable)
-o.textwidth = 80 -- max width for text
-o.termguicolors = true -- better colors
-
-o.guicursor =
-  "n-v-c-sm:block-blinkon0," ..
-  "i-ci:block-blinkwait10-blinkon50-blinkoff50," ..
-  "r-cr:block-blinkwait10-blinkon50-blinkoff50"
+o.cursorlineopt = "both"
+o.number = true
+o.relativenumber = true
+o.signcolumn = "yes"
+o.scrolloff = 8
+o.linebreak = true
+o.breakindent = true
+o.termguicolors = true
+o.guicursor = "n-v-c-sm:block-blinkon0,"
+	.. "i-ci:block-blinkwait0-blinkon50-blinkoff50,"
+	.. "r-cr:block-blinkwait0-blinkon50-blinkoff50"
 
 -- Editing
-o.clipboard = "unnamedplus" -- system clipboard
-o.hidden = true -- keep buffers in background
-o.updatetime = 300 -- faster diagnostics update
+o.clipboard = "unnamedplus"
+o.hidden = true
+o.updatetime = 300
 
--- Tabs & Indent
-o.tabstop = 4
-o.shiftwidth = 4
-o.expandtab = true -- spaces instead of tabs
-o.smartindent = true -- smarter autoindent
+-- Tabs & Indent (default)
+o.tabstop = 2
+o.shiftwidth = 2
+o.softtabstop = 2
+o.expandtab = false
+o.smartindent = true
 
 -- Search
-o.ignorecase = true -- case-insensitive search…
-o.smartcase = true -- …unless uppercase is used
-o.hlsearch = true -- highlight matches
-o.incsearch = true -- live incremental search
+o.ignorecase = true
+o.smartcase = true
+o.hlsearch = true
+o.incsearch = true

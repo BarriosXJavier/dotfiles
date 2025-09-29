@@ -1,7 +1,7 @@
 return {
 	{
 		"stevearc/conform.nvim",
-		event = "BufWritePre", -- uncomment for format on save
+		event = "BufWritePre",
 		opts = require("configs.conform"),
 	},
 
@@ -30,6 +30,7 @@ return {
 		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
+		opts = {},
 	},
 
 	{ "chentoast/marks.nvim", event = "VeryLazy", opts = {} },
@@ -43,13 +44,56 @@ return {
 	},
 
 	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		event = "VeryLazy",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
+	},
+
+	{
 		"okuuva/auto-save.nvim",
 		version = "^1.0.0", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
 		cmd = "ASToggle", -- optional for lazy loading on command
 		event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
 		opts = {
-			-- your config goes here
-			-- or just leave it empty :)
+			debounce_delay = 1000,
+		},
+	},
+
+	{
+		"tribela/transparent.nvim",
+		event = "VimEnter",
+		opts = {
+			extra_groups = {
+				"Normal",
+				"NormalNC",
+				"NormalFloat",
+				"FloatBorder",
+				"NvimTreeNormal",
+				"NvimTreeNormalNC",
+				"NvimTreeWinSeparator",
+				"TelescopeNormal",
+				"TelescopeBorder",
+				"TelescopePromptNormal",
+				"TelescopePromptBorder",
+				"TelescopeResultsNormal",
+				"TelescopeResultsBorder",
+				"TelescopePreviewNormal",
+				"TelescopePreviewBorder",
+				"WinSeparator",
+				"VertSplit",
+				"StatusLine",
+				"StatusLineNC",
+				"SignColumn",
+				"EndOfBuffer",
+				"WhichKeyNormal",
+				"WhichKeyFloat",
+			},
+			exclude_groups = {},
 		},
 	},
 
@@ -97,6 +141,7 @@ return {
 					separator_style = "slant", -- Optional: adds nice separators
 					show_buffer_close_icons = true,
 					show_close_icon = true,
+					diagnostics = "nvim_lsp",
 				},
 			})
 		end,
@@ -105,20 +150,17 @@ return {
 	{
 		"folke/trouble.nvim",
 		cmd = "Trouble",
-		opts = { focus = true },
-		keys = {
-			{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
-			{ "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-			{ "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
-			{
-				"<leader>cl",
-				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-				desc = "LSP Definitions/References",
+		opts = {
+			focus = true,
+			modes = {
+				diagnostics = {
+					decorators = {
+						line = true,
+						indent = true,
+					},
+				},
 			},
-			{ "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List" },
-			{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List" },
 		},
-
 		focus = true,
 	},
 
@@ -209,7 +251,6 @@ return {
 				},
 				lightbulb = { enable = false },
 			})
-			vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
 		end,
 	},
 
@@ -220,11 +261,6 @@ return {
 		config = require("configs.lualine").setup,
 	},
 
-	{
-		"github/copilot.vim",
-		event = "BufEnter",
-	},
-
 	-- Copilot core (auth + backend)
 	{
 		"zbirenbaum/copilot.lua",
@@ -232,33 +268,27 @@ return {
 		event = "InsertEnter",
 		config = function()
 			require("copilot").setup({
-				suggestion = {
-					enabled = true,
-					auto_trigger = true,
-				},
+				suggestion = { enabled = false }, -- disable inline if using cmp
 				panel = { enabled = true },
 			})
 		end,
 	},
 
-	-- Copilot bridge for cmp
+	-- Bridge Copilot to nvim-cmp
 	{
 		"zbirenbaum/copilot-cmp",
-		after = { "copilot.lua", "nvim-cmp" },
+		dependencies = { "zbirenbaum/copilot.lua" },
 		config = function()
 			require("copilot_cmp").setup()
 		end,
 	},
 
+	-- Copilot Chat
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
-		event = "BufEnter",
-		dependencies = {
-			{ "nvim-lua/plenary.nvim", branch = "master" },
-		},
+		event = "VeryLazy",
+		dependencies = { "nvim-lua/plenary.nvim" },
 		build = "make tiktoken",
-		opts = {
-			-- See Configuration section for options
-		},
+		opts = {},
 	},
 }

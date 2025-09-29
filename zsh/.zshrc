@@ -21,7 +21,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # --- PATH ---
 export PATH="/opt/bin:/opt/nvim-linux-x86_64/bin:$HOME/.bun/bin:/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.nvm/versions/node/v22.16.0/bin:$HOME/.zvm/bin:$HOME/.zvm/self:$HOME/bin:/usr/local/bin:/usr/sbin:/sbin:$PATH"
-
+export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 # --- Prompt ---
 eval "$(starship init zsh)"
 
@@ -108,3 +108,7 @@ extract() {
 
 # --- Key Bindings ---
 zvm_after_init_commands+=('bindkey "^R" history-incremental-search-backward')
+
+# Always use a steady block cursor
+echo -ne "\e[1 q"
+

@@ -11,7 +11,6 @@ local options = {
 		markdown = { "prettier" },
 		toml = { "prettier" },
 		lua = { "stylua" },
-		-- rust = { "rustfmt" },
 		python = { "black" },
 		go = { "gofmt" },
 		c = { "clang-format" },

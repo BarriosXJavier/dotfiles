@@ -3,32 +3,23 @@
 
 -- This table is used to override the default NvChad configuration.
 local M = {
-	colorscheme = {
-		tokyonight = {
-			day = "tokyonight-day",
-			night = "tokyonight-night",
-			storm = "tokyonight-storm",
-			moon = "tokyonight-moon",
-		},
-	},
 
 	base46 = {
-		theme = "tokyonight",
+		theme = "github_dark",
 		hl_add = {
-			LineNr = { fg = "#4b5370" },
+			-- LineNr = { fg = "#4b5370" },
 			CursorLineNr = { fg = "#7aa2f7", bold = true },
 		},
 		hl_override = {
 			Comment = { fg = "#bcc0cc", italic = true },
 			["@comment"] = { italic = true },
+			
 		},
-		changed_themes = {},
-		transparency = false,
-		theme_toggle = { "tokyonight", "gruvbox" },
+		theme_toggle = { "github_dark", "gruvbox" },
 	},
 
 	ui = {
-		theme = "tokyonight",
+		theme = "github_dark",
 		cmp = {
 			icons_left = true, -- only for non-atom styles!
 			lspkind_text = true,
@@ -43,7 +34,6 @@ local M = {
 
 		statusline = {
 			enabled = false,
-			theme = "default",
 			separator_style = "arrow",
 			order = nil,
 			modules = nil,
@@ -56,6 +46,7 @@ local M = {
 			order = { "treeOffset", "buffers", "tabs", "btns" },
 			modules = nil,
 		},
+		transparency = true,
 	},
 
 	term = {
@@ -72,13 +63,13 @@ local M = {
 			relative = "editor",
 			row = 0.5 - (0.7 / 2), -- Centers vertically
 			col = 0.5 - (0.95 / 2), -- Centers horizontally
-			width = 0.95,
-			height = 0.9,
+			width = 0.92,
+			height = 0.85,
 			border = "single",
 		},
 	},
 
-	lsp = { signature = true },
+	lsp = { signature = true, theme = "github_dark" },
 
 	cheatsheet = {
 		theme = "grid", -- simple/grid

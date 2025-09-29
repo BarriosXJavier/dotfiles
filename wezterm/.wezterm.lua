@@ -6,15 +6,14 @@ local config = wezterm.config_builder()
 -- =========================
 config.font = wezterm.font_with_fallback({
 	"Iosevka Nerd Font",
-    "JetBrainsMono Nerd Font",
-	"Fira Code Nerd Font",
+	"JetBrainsMono Nerd Font",
 })
-config.font_size = 12
+-- config.font_size = 12
+config.font_size = 14
 
 local fonts = {
 	"Iosevka Nerd Font",
-	"Fira Code Nerd Font",
-    "JetBrainsMono Nerd Font",
+	"JetBrainsMono Nerd Font",
 }
 
 local current_font = 1
@@ -151,13 +150,15 @@ end)
 -- =========================
 -- Appearance
 -- =========================
-config.color_scheme = "tokyonight"
+config.color_scheme = "3024 Night (Gogh)"
 
 config.window_decorations = "NONE"
 config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 config.hide_mouse_cursor_when_typing = true
-config.default_cursor_style = "BlinkingBar"
-config.cursor_thickness = 0.4
+config.default_cursor_style = "BlinkingBlock"
+config.cursor_blink_rate = 600
+config.cursor_blink_ease_in = "Constant"
+config.cursor_blink_ease_out = "Constant"
 
 return config

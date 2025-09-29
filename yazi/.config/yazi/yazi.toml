@@ -1,0 +1,5 @@
+video =	["dragon"]
+
+pdf = ["zen"]
+
+open = ["xdg-open"]

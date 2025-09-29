@@ -48,6 +48,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 			end)
 		end
 
+		-- 🔹 re-apply transparency
+		local ok_tr, transparent = pcall(require, "transparent")
+		if ok_tr then
+			pcall(transparent.enable)
+		end
+
 		-- theme load notification
 		vim.notify("Colorscheme applied: " .. vim.g.colors_name, vim.log.levels.INFO, { title = "Theme" })
 	end,
@@ -59,7 +65,7 @@ vim.api.nvim_create_autocmd("User", {
 	once = true,
 	callback = function()
 		vim.schedule(function()
-			vim.cmd("colorscheme tokyonight-night")
+			vim.cmd("colorscheme tokyonight-storm")
 		end)
 	end,
 })

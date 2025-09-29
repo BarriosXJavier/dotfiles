@@ -112,7 +112,7 @@ export ZVM_INSTALL="$HOME/.zvm/self"
 export PATH="$PATH:$HOME/.zvm/bin"
 export PATH="$PATH:$ZVM_INSTALL/"
 PATH=/opt/bin:/opt/nvim-linux-x86_64/bin:/home/maksim/.bun/bin:/usr/local/go/bin:/home/maksim/go/bin:/home/maksim/.local/bin:/home/maksim/.cargo/bin:/home/maksim/.nvm/versions/node/v22.16.0/bin:/opt/bin:/opt/nvim-linux-x86_64/bin:/home/maksim/.bun/bin:/usr/local/go/bin:/home/maksim/go/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/snap/bin:/home/maksim/.zvm/bin:/home/maksim/.zvm/self/:/home/maksim/.zvm/bin:/home/maksim/.zvm/self/:~/.config/rofi/scripts
-
+export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 [[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
 
 if [[ -f "$HOME/.config/geminicli/secrets.env" ]]; then
