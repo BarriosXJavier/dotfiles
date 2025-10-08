@@ -30,7 +30,14 @@ return {
 		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
-		opts = {},
+		opts = {
+			style = "storm", -- or "night", "moon", "day"
+			on_highlights = function(hl, c)
+				hl.TelescopeSelection = { bg = c.bg_highlight, fg = c.fg, bold = true, italic = true }
+				hl.TelescopeSelectionCaret = { fg = c.orange, bg = c.bg_highlight, bold = true }
+				hl.TelescopeMultiSelection = { fg = c.purple, bg = c.bg_highlight }
+			end,
+		},
 	},
 
 	{ "chentoast/marks.nvim", event = "VeryLazy", opts = {} },
@@ -43,16 +50,16 @@ return {
 		},
 	},
 
-	{
-		"MeanderingProgrammer/render-markdown.nvim",
-		event = "VeryLazy",
-		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
-		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
-		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-		---@module 'render-markdown'
-		---@type render.md.UserConfig
-		opts = {},
-	},
+	-- {
+	-- 	"MeanderingProgrammer/render-markdown.nvim",
+	-- 	event = "VeryLazy",
+	-- 	dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+	-- 	-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
+	-- 	-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+	-- 	---@module 'render-markdown'
+	-- 	---@type render.md.UserConfig
+	-- 	opts = {},
+	-- },
 
 	{
 		"okuuva/auto-save.nvim",
@@ -69,13 +76,36 @@ return {
 		event = "VimEnter",
 		opts = {
 			extra_groups = {
+				-- Core UI
 				"Normal",
 				"NormalNC",
 				"NormalFloat",
 				"FloatBorder",
-				"NvimTreeNormal",
-				"NvimTreeNormalNC",
-				"NvimTreeWinSeparator",
+				"WinSeparator",
+				"VertSplit",
+				"SignColumn",
+				"EndOfBuffer",
+				"StatusLine",
+				"StatusLineNC",
+
+				-- LSP / Lspsaga
+				"LspFloatWinNormal",
+				"LspFloatWinBorder",
+				"SagaNormal",
+				"SagaBorder",
+				"SagaNormalFloat",
+				"SagaWinbar",
+				"SagaWinbarSep",
+				"SagaTitle",
+				"SagaBorderTitle",
+
+				-- Completion (nvim-cmp)
+				"Pmenu",
+				"PmenuSel",
+				"PmenuSbar",
+				"PmenuThumb",
+
+				-- Telescope
 				"TelescopeNormal",
 				"TelescopeBorder",
 				"TelescopePromptNormal",
@@ -84,12 +114,13 @@ return {
 				"TelescopeResultsBorder",
 				"TelescopePreviewNormal",
 				"TelescopePreviewBorder",
-				"WinSeparator",
-				"VertSplit",
-				"StatusLine",
-				"StatusLineNC",
-				"SignColumn",
-				"EndOfBuffer",
+
+				-- Trees / File explorers
+				"NvimTreeNormal",
+				"NvimTreeNormalNC",
+				"NvimTreeWinSeparator",
+
+				-- WhichKey
 				"WhichKeyNormal",
 				"WhichKeyFloat",
 			},
@@ -246,7 +277,7 @@ return {
 				ui = {
 					border = "rounded",
 					title = true,
-					winblend = 10,
+					winblend = 100,
 					devicon = true,
 				},
 				lightbulb = { enable = false },

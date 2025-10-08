@@ -8,7 +8,7 @@ config.font = wezterm.font_with_fallback({
 	"Iosevka Nerd Font",
 	"JetBrainsMono Nerd Font",
 })
--- config.font_size = 12
+
 config.font_size = 14
 
 local fonts = {

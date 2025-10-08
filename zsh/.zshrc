@@ -112,3 +112,11 @@ zvm_after_init_commands+=('bindkey "^R" history-incremental-search-backward')
 # Always use a steady block cursor
 echo -ne "\e[1 q"
 
+
+# pnpm
+export PNPM_HOME="/home/maksim/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

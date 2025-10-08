@@ -5,21 +5,19 @@
 local M = {
 
 	base46 = {
-		theme = "github_dark",
+		theme = "tokyonight",
 		hl_add = {
-			-- LineNr = { fg = "#4b5370" },
 			CursorLineNr = { fg = "#7aa2f7", bold = true },
 		},
 		hl_override = {
 			Comment = { fg = "#bcc0cc", italic = true },
 			["@comment"] = { italic = true },
-			
 		},
-		theme_toggle = { "github_dark", "gruvbox" },
+		theme_toggle = { "tokyonight", "gruvbox" },
 	},
 
 	ui = {
-		theme = "github_dark",
+		theme = "tokyonight",
 		cmp = {
 			icons_left = true, -- only for non-atom styles!
 			lspkind_text = true,
@@ -69,7 +67,7 @@ local M = {
 		},
 	},
 
-	lsp = { signature = true, theme = "github_dark" },
+	lsp = { signature = true, theme = "tokyonight" },
 
 	cheatsheet = {
 		theme = "grid", -- simple/grid
