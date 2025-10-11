@@ -1,18 +1,95 @@
 return {
 	{
 		"stevearc/conform.nvim",
-		event = "BufWritePre",
+		event = "BufWritePre", -- uncomment for format on save
 		opts = require("configs.conform"),
 	},
 
 	{
 		"neovim/nvim-lspconfig",
-		event = { "BufReadPre", "BufNewFile" },
+		event = { "BufWritePre", "BufNewFile" },
 		config = function()
 			require("configs.lspconfig")
 		end,
 	},
 
+	{
+		import = "nvchad.blink.lazyspec",
+
+		cmdline = {
+			enabled = true,
+		},
+
+		menu = {
+			auto_show = true,
+
+			draw = {
+				columns = {
+					{ "label", "label_description", gap = 1 },
+					{ "kind_icon", "kind", "source_name" },
+				},
+			},
+
+			documentation = {
+				auto_show = true,
+				auto_show_delay_ms = 300,
+				window = {
+					max_width = 80,
+					border = "rounded",
+				},
+			},
+		},
+
+		sources = {
+			default = {
+				"lsp",
+				"path",
+				"snippets",
+				"buffer",
+			},
+		},
+
+		snippets = {
+			preset = "luasnip",
+			expand = function(args)
+				require("luasnip").lsp_expand(args.body)
+			end,
+		},
+
+		signature = {
+			enabled = true,
+			trigger = { enabled = true, trigger_chars = { "(", "," } },
+		},
+
+		experimental = {
+			ghost_text = true,
+		},
+	},
+	{
+		"akinsho/bufferline.nvim",
+		version = "*",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("bufferline").setup({
+				options = {
+					offsets = {
+						{
+							filetype = "NvimTree",
+							text = "NvimTree",
+							text_align = "center",
+							separator = true,
+						},
+					},
+					separator_style = { "", "" },
+					show_buffer_close_icons = true,
+					show_close_icon = true,
+					diagnostics = "nvim_lsp",
+				},
+			})
+		end,
+	},
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = {
@@ -26,21 +103,8 @@ return {
 		},
 	},
 
-	{
-		"folke/tokyonight.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {
-			style = "storm", -- or "night", "moon", "day"
-			on_highlights = function(hl, c)
-				hl.TelescopeSelection = { bg = c.bg_highlight, fg = c.fg, bold = true, italic = true }
-				hl.TelescopeSelectionCaret = { fg = c.orange, bg = c.bg_highlight, bold = true }
-				hl.TelescopeMultiSelection = { fg = c.purple, bg = c.bg_highlight }
-			end,
-		},
-	},
-
 	{ "chentoast/marks.nvim", event = "VeryLazy", opts = {} },
+
 	{
 		"rachartier/tiny-glimmer.nvim",
 		event = "VeryLazy",
@@ -50,83 +114,7 @@ return {
 		},
 	},
 
-	-- {
-	-- 	"MeanderingProgrammer/render-markdown.nvim",
-	-- 	event = "VeryLazy",
-	-- 	dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
-	-- 	-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
-	-- 	-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-	-- 	---@module 'render-markdown'
-	-- 	---@type render.md.UserConfig
-	-- 	opts = {},
-	-- },
-
-	{
-		"okuuva/auto-save.nvim",
-		version = "^1.0.0", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
-		cmd = "ASToggle", -- optional for lazy loading on command
-		event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
-		opts = {
-			debounce_delay = 1000,
-		},
-	},
-
-	{
-		"tribela/transparent.nvim",
-		event = "VimEnter",
-		opts = {
-			extra_groups = {
-				-- Core UI
-				"Normal",
-				"NormalNC",
-				"NormalFloat",
-				"FloatBorder",
-				"WinSeparator",
-				"VertSplit",
-				"SignColumn",
-				"EndOfBuffer",
-				"StatusLine",
-				"StatusLineNC",
-
-				-- LSP / Lspsaga
-				"LspFloatWinNormal",
-				"LspFloatWinBorder",
-				"SagaNormal",
-				"SagaBorder",
-				"SagaNormalFloat",
-				"SagaWinbar",
-				"SagaWinbarSep",
-				"SagaTitle",
-				"SagaBorderTitle",
-
-				-- Completion (nvim-cmp)
-				"Pmenu",
-				"PmenuSel",
-				"PmenuSbar",
-				"PmenuThumb",
-
-				-- Telescope
-				"TelescopeNormal",
-				"TelescopeBorder",
-				"TelescopePromptNormal",
-				"TelescopePromptBorder",
-				"TelescopeResultsNormal",
-				"TelescopeResultsBorder",
-				"TelescopePreviewNormal",
-				"TelescopePreviewBorder",
-
-				-- Trees / File explorers
-				"NvimTreeNormal",
-				"NvimTreeNormalNC",
-				"NvimTreeWinSeparator",
-
-				-- WhichKey
-				"WhichKeyNormal",
-				"WhichKeyFloat",
-			},
-			exclude_groups = {},
-		},
-	},
+	{ "mbbill/undotree", event = "VeryLazy" },
 
 	{
 		"kdheepak/lazygit.nvim",
@@ -149,32 +137,6 @@ return {
 		lazy = false,
 		config = function()
 			require("blame").setup({})
-		end,
-	},
-
-	{
-		"akinsho/bufferline.nvim",
-		version = "*",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		lazy = false,
-		priority = 1000,
-		config = function()
-			require("bufferline").setup({
-				options = {
-					offsets = {
-						{
-							filetype = "NvimTree",
-							text = "NvimTree",
-							text_align = "center",
-							separator = true,
-						},
-					},
-					separator_style = "slant", -- Optional: adds nice separators
-					show_buffer_close_icons = true,
-					show_close_icon = true,
-					diagnostics = "nvim_lsp",
-				},
-			})
 		end,
 	},
 
@@ -248,50 +210,6 @@ return {
 		vim.lsp.enable("sqls"),
 	},
 
-	{
-		"hrsh7th/nvim-cmp",
-		event = "VeryLazy",
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-cmdline",
-			"rafamadriz/friendly-snippets",
-			"onsails/lspkind.nvim",
-			{ "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
-			"windwp/nvim-autopairs",
-		},
-		config = require("configs.nvim-cmp").setup,
-		opts = require("configs.nvim-cmp").opts,
-	},
-
-	{
-		"nvimdev/lspsaga.nvim",
-		event = "LspAttach",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-tree/nvim-web-devicons",
-		},
-		config = function()
-			require("lspsaga").setup({
-				ui = {
-					border = "rounded",
-					title = true,
-					winblend = 100,
-					devicon = true,
-				},
-				lightbulb = { enable = false },
-			})
-		end,
-	},
-
-	{
-		"nvim-lualine/lualine.nvim",
-		event = { "VimEnter", "BufReadPost", "BufNewFile" },
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = require("configs.lualine").setup,
-	},
-
 	-- Copilot core (auth + backend)
 	{
 		"zbirenbaum/copilot.lua",
@@ -321,5 +239,101 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim" },
 		build = "make tiktoken",
 		opts = {},
+	},
+	{
+		"okuuva/auto-save.nvim",
+		version = "^1.0.0", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
+		cmd = "ASToggle", -- optional for lazy loading on command
+		event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
+		opts = {
+			debounce_delay = 1000,
+		},
+	},
+
+	{
+		"nvimdev/lspsaga.nvim",
+		event = "LspAttach",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("lspsaga").setup({
+				ui = {
+					border = "rounded",
+					title = true,
+					winblend = 10,
+					devicon = true,
+				},
+				lightbulb = { enable = false },
+			})
+		end,
+	},
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("tokyonight").setup({
+				style = "moon", -- options: storm, night, moon, day
+				transparent = true, -- or true if you like the terminal background showing
+				terminal_colors = true, -- apply the same palette to terminals
+				styles = {
+					comments = { italic = true },
+					keywords = { italic = true },
+					functions = {},
+					variables = {},
+				},
+			})
+			vim.cmd("colorscheme tokyonight-moon")
+		end,
+	},
+	{
+		"xiyaowong/transparent.nvim",
+		lazy = false,
+		config = function()
+			require("transparent").setup({
+				extra_groups = {
+					"Normal",
+					"NormalNC",
+					"NormalFloat",
+					"FloatBorder",
+					"TelescopeNormal",
+					"TelescopeBorder",
+					"NvimTreeWinSeparator",
+					"NvimTreeNormal",
+					"NvimTreeNormalNC",
+					"SignColumn",
+					"StatusLine",
+					"StatusLineNC",
+					"VertSplit",
+					"WinSeparator",
+					"MsgArea",
+					"Pmenu",
+					"PmenuSbar",
+					"PmenuThumb",
+					"BlinkCmpMenu",
+					"BlinkCmpMenuBorder",
+					"BlinkCmpDoc",
+					"BlinkCmpDocBorder",
+					"WhichKey",
+					"Bufferline"
+				},
+				exclude_groups = {
+					-- keep solid highlight colors for better contrast
+					"PmenuSel", -- menu selection
+					"CursorLine", -- current line
+					"CursorLineNr", -- line number highlight
+					"Visual", -- visual mode selection
+					"BlinkCmpMenuSelection", -- blink's active item
+				},
+			})
+		end,
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		event = { "VimEnter", "BufReadPost", "BufNewFile" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = require("configs.lualine").setup,
 	},
 }

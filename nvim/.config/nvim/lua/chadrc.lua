@@ -3,10 +3,11 @@
 
 -- This table is used to override the default NvChad configuration.
 local M = {
-
+	transparency = true,
 	base46 = {
 		theme = "tokyonight",
 		hl_add = {
+			WinSeparator = { fg = "#1e1e2e", bg = "none" },
 			CursorLineNr = { fg = "#7aa2f7", bold = true },
 		},
 		hl_override = {
@@ -26,6 +27,8 @@ local M = {
 				tailwind = true, -- will work for css lsp too
 				icon = "󱓻",
 			},
+			hl_override = {},
+			hl_add = {},
 		},
 
 		telescope = { style = "bordered" }, -- borderless / bordered
@@ -44,7 +47,6 @@ local M = {
 			order = { "treeOffset", "buffers", "tabs", "btns" },
 			modules = nil,
 		},
-		transparency = true,
 	},
 
 	term = {
@@ -67,7 +69,7 @@ local M = {
 		},
 	},
 
-	lsp = { signature = true, theme = "tokyonight" },
+	lsp = { signature = true, theme = "github_dark" },
 
 	cheatsheet = {
 		theme = "grid", -- simple/grid

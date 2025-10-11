@@ -1,5 +1,4 @@
-video =	["dragon"]
-
-pdf = ["zen"]
-
-open = ["xdg-open"]
+[opener]
+video = [{ run = "dragon {}", desc = "Preview video" }]
+pdf = [{ run = "zen {}", desc = "Open PDF" }]
+open = [{ run = "xdg-open {}", desc = "Default app" }]
