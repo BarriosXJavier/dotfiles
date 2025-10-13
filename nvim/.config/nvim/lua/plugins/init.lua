@@ -22,12 +22,12 @@ return {
 
 		menu = {
 			auto_show = true,
-
 			draw = {
 				columns = {
-					{ "label", "label_description", gap = 1 },
-					{ "kind_icon", "kind", "source_name" },
+					{ "kind_icon", "label", "label_description", gap = 1 },
+					{ "source_name" }, -- this shows [lsp], [snip], [buf], etc.
 				},
+				separator = " • ",
 			},
 
 			documentation = {
@@ -65,6 +65,7 @@ return {
 			ghost_text = true,
 		},
 	},
+
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
@@ -212,25 +213,21 @@ return {
 
 	-- Copilot core (auth + backend)
 	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		event = "InsertEnter",
-		config = function()
-			require("copilot").setup({
-				suggestion = { enabled = false }, -- disable inline if using cmp
-				panel = { enabled = true },
-			})
-		end,
-	},
-
-	-- Bridge Copilot to nvim-cmp
-	{
-		"zbirenbaum/copilot-cmp",
-		dependencies = { "zbirenbaum/copilot.lua" },
-		config = function()
-			require("copilot_cmp").setup()
-		end,
-	},
+  "zbirenbaum/copilot.lua",
+  cmd = "Copilot",
+  event = "InsertEnter",
+  config = function()
+    require("copilot").setup({
+      suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        debounce = 75,
+        keymap = {}, 
+      },
+      panel = { enabled = true },
+    })
+  end,
+},
 
 	-- Copilot Chat
 	{
@@ -317,7 +314,7 @@ return {
 					"BlinkCmpDoc",
 					"BlinkCmpDocBorder",
 					"WhichKey",
-					"Bufferline"
+					"Bufferline",
 				},
 				exclude_groups = {
 					-- keep solid highlight colors for better contrast

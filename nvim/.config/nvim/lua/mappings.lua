@@ -1,5 +1,4 @@
-require "nvchad.mappings"
-
+require("nvchad.mappings")
 
 local map = vim.keymap.set
 
@@ -33,13 +32,31 @@ map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnost
 map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
 map("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
 map(
-  "n",
-  "<leader>cl",
-  "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-  { desc = "LSP Definitions/References" }
+	"n",
+	"<leader>cl",
+	"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+	{ desc = "LSP Definitions/References" }
 )
 map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List" })
 map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List" })
 
 -- undo tree
 map("n", "<leader><F5>", "<cmd>UndotreeToggle<cr>", { desc = "Nvim Undotree" })
+
+-- Copilot mappings
+-- Copilot inline suggestions
+map("i", "<C-l>", function()
+	require("copilot.suggestion").accept()
+end, { desc = "Copilot: accept suggestion" })
+
+map("i", "<M-]>", function()
+	require("copilot.suggestion").next()
+end, { desc = "Copilot: next suggestion" })
+
+map("i", "<M-[>", function()
+	require("copilot.suggestion").prev()
+end, { desc = "Copilot: previous suggestion" })
+
+map("i", "<C-e>", function()
+	require("copilot.suggestion").dismiss()
+end, { desc = "Copilot: dismiss suggestion" })
