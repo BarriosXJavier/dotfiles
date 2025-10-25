@@ -66,3 +66,5 @@ map("n", "gD", vim.lsp.buf.type_definition, { desc = "LSP: Go to Type Definition
 
 map("n", "<leader>cc", "<cmd>CopilotChatOpen<cr>", { desc = "Copilot Open Chat" })
 map("n", "<leader>cx", "<cmd>CopilotChatClose<cr>", { desc = "Copilot Close Chat" })
+
+map("n", "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", { desc = "Toggle Undo Tree" })

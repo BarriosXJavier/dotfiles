@@ -1,9 +1,6 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
--- =========================
--- Fonts
--- =========================
 config.font = wezterm.font_with_fallback({
 	"Iosevka Nerd Font",
 	"JetBrainsMono Nerd Font",
@@ -33,9 +30,6 @@ wezterm.on("switch-font-backward", function(window, _)
 	set_font(window, -1)
 end)
 
--- =========================
--- Wallpapers
--- =========================
 local wallpaper_dir = wezterm.home_dir .. "/Pictures/wallpapers/terminal"
 local cache_file = "/tmp/wezterm_wallpapers.cache"
 

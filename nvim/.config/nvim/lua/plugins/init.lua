@@ -67,6 +67,25 @@ return {
 	},
 
 	{
+		"rachartier/tiny-inline-diagnostic.nvim",
+		event = "VeryLazy",
+		priority = 1000,
+		config = function()
+			require("tiny-inline-diagnostic").setup()
+			vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+		end,
+	},
+
+	{
+		"akinsho/bufferline.nvim",
+		event = "VeryLazy",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		config = function()
+			require("configs.bufferline")
+		end,
+	},
+
+	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = {
 			ensure_installed = {
@@ -159,9 +178,6 @@ return {
 		"jiaoshijie/undotree",
 		dependencies = "nvim-lua/plenary.nvim",
 		config = true,
-		keys = {
-			{ "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", desc = "undotree" },
-		},
 	},
 
 	-- debugger
@@ -209,79 +225,6 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim" },
 		build = "make tiktoken",
 		opts = {},
-	},
-
-	{
-		"folke/tokyonight.nvim",
-		lazy = false,
-		priority = 1000,
-		config = function()
-			require("tokyonight").setup({
-				style = "moon", -- options: storm, night, moon, day
-				transparent = true, -- or true if you like the terminal background showing
-				terminal_colors = true, -- apply the same palette to terminals
-				styles = {
-					comments = { italic = true },
-					keywords = { italic = true },
-					functions = {},
-					variables = {},
-				},
-			})
-			vim.cmd("colorscheme tokyonight-moon")
-		end,
-	},
-
-	{
-		"xiyaowong/transparent.nvim",
-		lazy = false,
-		config = function()
-			require("transparent").setup({
-				extra_groups = {
-					"Normal",
-					"NormalNC",
-					"NormalFloat",
-					"FloatBorder",
-					"LspFloatWinNormal",
-					"LspFloatWinBorder",
-					"LspSignatureActiveParameter",
-					"LspSignatureBorder",
-					"TelescopeNormal",
-					"TelescopeBorder",
-					"NvimTreeWinSeparator",
-					"NvimTreeNormal",
-					"NvimTreeNormalNC",
-					"SignColumn",
-					"StatusLine",
-					"StatusLineNC",
-					"VertSplit",
-					"WinSeparator",
-					"MsgArea",
-					"Pmenu",
-					"PmenuSbar",
-					"PmenuThumb",
-					"BlinkCmpMenu",
-					"BlinkCmpMenuBorder",
-					"BlinkCmpDoc",
-					"BlinkCmpDocBorder",
-					"WhichKey",
-					"Bufferline",
-				},
-				exclude_groups = {
-					"PmenuSel",
-					"CursorLine",
-					"CursorLineNr",
-					"Visual",
-					"BlinkCmpMenuSelection",
-				},
-			})
-		end,
-	},
-
-	{
-		"nvim-lualine/lualine.nvim",
-		event = { "VimEnter", "BufReadPost", "BufNewFile" },
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = require("configs.lualine").setup,
 	},
 
 	{

@@ -4,21 +4,30 @@
 -- This table is used to override the default NvChad configuration.
 local M = {
 	transparency = true,
+
 	base46 = {
-		theme = "tokyonight",
+		theme = "gruvbox",
+
 		hl_add = {
 			WinSeparator = { fg = "#1e1e2e", bg = "none" },
 			CursorLineNr = { fg = "#7aa2f7", bold = true },
 		},
+
 		hl_override = {
 			Comment = { fg = "#bcc0cc", italic = true },
 			["@comment"] = { italic = true },
+
+			-- improved popup visibility
+			PmenuSel = { bg = "one_bg2", fg = "white", bold = true },
+			TelescopeSelection = { bg = "one_bg2", fg = "white", bold = true },
+			TelescopeSelectionCaret = { fg = "yellow", bold = true },
 		},
-		theme_toggle = { "tokyonight", "gruvbox" },
+
+		theme_toggle = { "gruvbox", "gruvbox" },
 	},
 
 	ui = {
-		theme = "tokyonight",
+		theme = "gruvbox",
 		cmp = {
 			icons_left = true, -- only for non-atom styles!
 			lspkind_text = true,
@@ -34,7 +43,7 @@ local M = {
 		telescope = { style = "bordered" }, -- borderless / bordered
 
 		statusline = {
-			enabled = false,
+			enabled = true,
 			separator_style = "arrow",
 			order = nil,
 			modules = nil,
@@ -52,6 +61,7 @@ local M = {
 	term = {
 		winopts = { number = false, relativenumber = false },
 		transparency = true,
+
 		sizes = {
 			sp = 0.35,
 			vsp = 0.35,
@@ -63,8 +73,8 @@ local M = {
 			relative = "editor",
 			row = 0.5 - (0.7 / 2), -- Centers vertically
 			col = 0.5 - (0.95 / 2), -- Centers horizontally
-			width = 0.92,
-			height = 0.85,
+			width = 0.96,
+			height = 0.90,
 			border = "single",
 		},
 	},
