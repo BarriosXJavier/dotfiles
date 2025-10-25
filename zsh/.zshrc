@@ -123,3 +123,9 @@ esac
 
 # bun completions
 [ -s "/home/maksim/.bun/_bun" ] && source "/home/maksim/.bun/_bun"
+
+eval "$(ssh-agent -s)" > /dev/null
+ssh-add ~/.ssh/id_ed25519 2>/dev/null
+
+# opencode
+export PATH=/home/maksim/.opencode/bin:$PATH
