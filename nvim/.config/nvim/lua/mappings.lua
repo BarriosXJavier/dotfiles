@@ -7,9 +7,9 @@ map("i", "jk", "<ESC>")
 
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
--- Lsp saga
-map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { noremap = true, silent = true })
-map("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", { desc = "LSP: Code Action" })
+map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code Action" })
+map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP: Rename" })
 
 -- Toggle nvim tree
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle Nvim Tree" })
@@ -45,7 +45,7 @@ map("n", "<leader><F5>", "<cmd>UndotreeToggle<cr>", { desc = "Nvim Undotree" })
 
 -- Copilot mappings
 -- Copilot inline suggestions
-map("i", "<C-l>", function()
+map("i", "<M-l>", function()
 	require("copilot.suggestion").accept()
 end, { desc = "Copilot: accept suggestion" })
 
@@ -60,3 +60,9 @@ end, { desc = "Copilot: previous suggestion" })
 map("i", "<C-e>", function()
 	require("copilot.suggestion").dismiss()
 end, { desc = "Copilot: dismiss suggestion" })
+
+map("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to Definition" })
+map("n", "gD", vim.lsp.buf.type_definition, { desc = "LSP: Go to Type Definition" })
+
+map("n", "<leader>cc", "<cmd>CopilotChatOpen<cr>", { desc = "Copilot Open Chat" })
+map("n", "<leader>cx", "<cmd>CopilotChatClose<cr>", { desc = "Copilot Close Chat" })

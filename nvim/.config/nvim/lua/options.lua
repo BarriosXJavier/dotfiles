@@ -14,6 +14,7 @@ o.termguicolors = true
 o.guicursor = "n-v-c-sm:block-blinkon0,"
 	.. "i-ci:block-blinkwait0-blinkon50-blinkoff50,"
 	.. "r-cr:block-blinkwait0-blinkon50-blinkoff50"
+o.winborder = "rounded"
 
 -- Editing
 o.clipboard = "unnamedplus"
