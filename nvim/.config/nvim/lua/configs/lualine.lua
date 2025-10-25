@@ -1,10 +1,20 @@
 local M = {}
 
+local function dedupe(list)
+  local seen, result = {}, {}
+  for _, item in ipairs(list) do
+    if not seen[item] then
+      seen[item] = true
+      table.insert(result, item)
+    end
+  end
+  return result
+end
+
 function M.setup()
   local function get_lsp_status()
     local bufnr = vim.api.nvim_get_current_buf()
-    local buf_ft = vim.bo[bufnr].filetype
-    local lsp_clients, formatters = {}, {}
+    local lsp_clients = {}
 
     for _, client in pairs(vim.lsp.get_clients()) do
       if client.attached_buffers[bufnr] and client.name ~= "copilot" and client.name ~= "null-ls" then
@@ -12,26 +22,11 @@ function M.setup()
       end
     end
 
-    local function dedupe(list)
-      local seen, result = {}, {}
-      for _, item in ipairs(list) do
-        if not seen[item] then
-          seen[item] = true
-          table.insert(result, item)
-        end
-      end
-      return result
-    end
-
     lsp_clients = dedupe(lsp_clients)
-    formatters = dedupe(formatters)
 
     local parts = {}
     if #lsp_clients > 0 then
       table.insert(parts, "LSP: " .. table.concat(lsp_clients, ", "))
-    end
-    if #formatters > 0 then
-      table.insert(parts, "Fmt: " .. table.concat(formatters, ", "))
     end
 
     local status = #parts > 0 and table.concat(parts, " » ") or "LSP Inactive"

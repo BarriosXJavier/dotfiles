@@ -1,6 +1,8 @@
 -- Load NvChad defaults first
 require("nvchad.autocmds")
 
+local group = vim.api.nvim_create_augroup("autosave", { clear = true })
+
 -- 🔹 ibl safe setup
 local ok, ibl = pcall(require, "ibl")
 if ok then
@@ -71,16 +73,12 @@ vim.schedule(function()
 	vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
 end)
 
-local function cleanup_dead_buffers()
-	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-		if not vim.api.nvim_buf_is_loaded(bufnr) or not vim.api.nvim_buf_is_valid(bufnr) then
-			pcall(vim.api.nvim_buf_delete, bufnr, { force = true })
-		end
-	end
-end
-
-vim.api.nvim_create_autocmd({ "BufWinLeave", "BufHidden" }, {
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+	group = group,
+	pattern = "*",
 	callback = function()
-		vim.defer_fn(cleanup_dead_buffers, 500)
+		if vim.bo.modified and vim.fn.getbufvar(vim.fn.bufnr(), "&buftype") == "" then
+			vim.cmd("silent! write")
+		end
 	end,
 })

@@ -67,31 +67,6 @@ return {
 	},
 
 	{
-		"akinsho/bufferline.nvim",
-		version = "*",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		lazy = false,
-		priority = 1000,
-		config = function()
-			require("bufferline").setup({
-				options = {
-					offsets = {
-						{
-							filetype = "NvimTree",
-							text = "NvimTree",
-							text_align = "center",
-							separator = true,
-						},
-					},
-					separator_style = { "", "" },
-					show_buffer_close_icons = true,
-					show_close_icon = true,
-					diagnostics = "nvim_lsp",
-				},
-			})
-		end,
-	},
-	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = {
 			ensure_installed = {
@@ -114,8 +89,6 @@ return {
 			-- your configuration
 		},
 	},
-
-	{ "mbbill/undotree", event = "VeryLazy" },
 
 	{
 		"kdheepak/lazygit.nvim",
@@ -213,21 +186,21 @@ return {
 
 	-- Copilot core (auth + backend)
 	{
-  "zbirenbaum/copilot.lua",
-  cmd = "Copilot",
-  event = "InsertEnter",
-  config = function()
-    require("copilot").setup({
-      suggestion = {
-        enabled = true,
-        auto_trigger = true,
-        debounce = 75,
-        keymap = {}, 
-      },
-      panel = { enabled = true },
-    })
-  end,
-},
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup({
+				suggestion = {
+					enabled = true,
+					auto_trigger = true,
+					debounce = 75,
+					keymap = {},
+				},
+				panel = { enabled = true },
+			})
+		end,
+	},
 
 	-- Copilot Chat
 	{
@@ -237,35 +210,7 @@ return {
 		build = "make tiktoken",
 		opts = {},
 	},
-	{
-		"okuuva/auto-save.nvim",
-		version = "^1.0.0", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
-		cmd = "ASToggle", -- optional for lazy loading on command
-		event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
-		opts = {
-			debounce_delay = 1000,
-		},
-	},
 
-	{
-		"nvimdev/lspsaga.nvim",
-		event = "LspAttach",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-tree/nvim-web-devicons",
-		},
-		config = function()
-			require("lspsaga").setup({
-				ui = {
-					border = "rounded",
-					title = true,
-					winblend = 10,
-					devicon = true,
-				},
-				lightbulb = { enable = false },
-			})
-		end,
-	},
 	{
 		"folke/tokyonight.nvim",
 		lazy = false,
@@ -285,6 +230,7 @@ return {
 			vim.cmd("colorscheme tokyonight-moon")
 		end,
 	},
+
 	{
 		"xiyaowong/transparent.nvim",
 		lazy = false,
@@ -295,6 +241,10 @@ return {
 					"NormalNC",
 					"NormalFloat",
 					"FloatBorder",
+					"LspFloatWinNormal",
+					"LspFloatWinBorder",
+					"LspSignatureActiveParameter",
+					"LspSignatureBorder",
 					"TelescopeNormal",
 					"TelescopeBorder",
 					"NvimTreeWinSeparator",
@@ -317,20 +267,33 @@ return {
 					"Bufferline",
 				},
 				exclude_groups = {
-					-- keep solid highlight colors for better contrast
-					"PmenuSel", -- menu selection
-					"CursorLine", -- current line
-					"CursorLineNr", -- line number highlight
-					"Visual", -- visual mode selection
-					"BlinkCmpMenuSelection", -- blink's active item
+					"PmenuSel",
+					"CursorLine",
+					"CursorLineNr",
+					"Visual",
+					"BlinkCmpMenuSelection",
 				},
 			})
 		end,
 	},
+
 	{
 		"nvim-lualine/lualine.nvim",
 		event = { "VimEnter", "BufReadPost", "BufNewFile" },
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = require("configs.lualine").setup,
+	},
+
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" }, -- if you use standalone mini plugins
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {
+			completions = { lsp = { enabled = false } },
+		},
+		event = "VeryLazy",
 	},
 }
