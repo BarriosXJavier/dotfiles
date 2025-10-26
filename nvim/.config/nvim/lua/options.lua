@@ -16,6 +16,10 @@ o.guicursor = "n-v-c-sm:block-blinkon0,"
 	.. "r-cr:block-blinkwait0-blinkon50-blinkoff50"
 o.winborder = "rounded"
 
+-- Popup transparency for modern UI
+o.pumblend = 10 -- Completion menu transparency
+o.winblend = 10 -- Floating window transparency
+
 -- Editing
 o.clipboard = "unnamedplus"
 o.hidden = true
@@ -25,7 +29,7 @@ o.updatetime = 300
 o.tabstop = 2
 o.shiftwidth = 2
 o.softtabstop = 2
-o.expandtab = false
+o.expandtab = true
 o.smartindent = true
 
 -- Search

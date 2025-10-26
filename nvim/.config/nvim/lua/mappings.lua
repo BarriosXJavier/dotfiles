@@ -40,9 +40,6 @@ map(
 map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List" })
 map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List" })
 
--- undo tree
-map("n", "<leader><F5>", "<cmd>UndotreeToggle<cr>", { desc = "Nvim Undotree" })
-
 -- Copilot mappings
 -- Copilot inline suggestions
 map("i", "<M-l>", function()
@@ -68,3 +65,11 @@ map("n", "<leader>cc", "<cmd>CopilotChatOpen<cr>", { desc = "Copilot Open Chat" 
 map("n", "<leader>cx", "<cmd>CopilotChatClose<cr>", { desc = "Copilot Close Chat" })
 
 map("n", "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", { desc = "Toggle Undo Tree" })
+
+-- Custom theme picker (all colorschemes: NvChad + plugins)
+map("n", "<leader>ta", function()
+	require("configs.telescope-themes").pick_colorscheme()
+end, { desc = "All Colorschemes (NvChad + Plugins)" })
+
+-- nvim blame
+map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })

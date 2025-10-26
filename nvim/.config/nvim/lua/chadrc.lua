@@ -1,15 +1,30 @@
 -- This file needs to have same structure as nvconfig.lua
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 
+-- Load persisted theme preference
+local function load_last_nvchad_theme()
+	local nvchad_theme_file = vim.fn.stdpath("data") .. "/last_nvchad_theme.txt"
+	local file = io.open(nvchad_theme_file, "r")
+	if file then
+		local theme = file:read("*l")
+		file:close()
+		-- Only return if it's not empty (empty means external colorscheme is in use)
+		if theme and theme ~= "" then
+			return theme
+		end
+	end
+	return "tokyonight" -- default fallback
+end
+
+local saved_theme = load_last_nvchad_theme()
+
 -- This table is used to override the default NvChad configuration.
 local M = {
-	transparency = true,
-
 	base46 = {
-		theme = "gruvbox",
+		theme = saved_theme,
 
 		hl_add = {
-			WinSeparator = { fg = "#1e1e2e", bg = "none" },
+			WinSeparator = { fg = "#bcc0cc", bg = "none" },
 			CursorLineNr = { fg = "#7aa2f7", bold = true },
 		},
 
@@ -17,17 +32,29 @@ local M = {
 			Comment = { fg = "#bcc0cc", italic = true },
 			["@comment"] = { italic = true },
 
-			-- improved popup visibility
-			PmenuSel = { bg = "one_bg2", fg = "white", bold = true },
-			TelescopeSelection = { bg = "one_bg2", fg = "white", bold = true },
-			TelescopeSelectionCaret = { fg = "yellow", bold = true },
+			-- Ensure cursor line is always visible
+			CursorLine = { bg = "black2" },
+			Visual = { bg = "one_bg3" },
+
+			-- improved popup visibility with stronger contrast
+			PmenuSel = { bg = "black2", fg = "nord_blue", bold = true, italic = true },
+			TelescopeSelection = { bg = "black2", fg = "nord_blue", bold = true, italic = true },
+			TelescopeSelectionCaret = { fg = "yellow", bg = "black2", bold = true },
+
+			-- NvimTree highlights
+			NvimTreeCursorLine = { bg = "black2", bold = true, italic = true },
+			NvimTreeOpenedFile = { fg = "green", bold = true, underline = true, italic = true },
+			NvimTreeSpecialFile = { fg = "yellow", underline = true, bold = true, italic = true },
+
+			-- Other common list highlights
+			FloatBorder = { fg = "blue" },
 		},
 
-		theme_toggle = { "gruvbox", "gruvbox" },
+		theme_toggle = { "tokyonight", "gruvbox" },
 	},
 
 	ui = {
-		theme = "gruvbox",
+		theme = saved_theme,
 		cmp = {
 			icons_left = true, -- only for non-atom styles!
 			lspkind_text = true,
@@ -60,8 +87,6 @@ local M = {
 
 	term = {
 		winopts = { number = false, relativenumber = false },
-		transparency = true,
-
 		sizes = {
 			sp = 0.35,
 			vsp = 0.35,
@@ -73,13 +98,13 @@ local M = {
 			relative = "editor",
 			row = 0.5 - (0.7 / 2), -- Centers vertically
 			col = 0.5 - (0.95 / 2), -- Centers horizontally
-			width = 0.96,
+			width = 0.98,
 			height = 0.90,
 			border = "single",
 		},
 	},
 
-	lsp = { signature = true, theme = "github_dark" },
+	lsp = { signature = true, theme = saved_theme },
 
 	cheatsheet = {
 		theme = "grid", -- simple/grid
