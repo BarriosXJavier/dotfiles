@@ -32,6 +32,12 @@ local M = {
 			Comment = { fg = "#bcc0cc", italic = true },
 			["@comment"] = { italic = true },
 
+			-- Diagnostics: use underline instead of undercurl (squiggly)
+			DiagnosticUnderlineError = { underline = true, sp = "red" },
+			DiagnosticUnderlineWarn = { underline = false, sp = "yellow" },
+			DiagnosticUnderlineInfo = { underline = false, sp = "cyan" },
+			DiagnosticUnderlineHint = { underline = false, sp = "blue" },
+
 			-- Ensure cursor line is always visible
 			CursorLine = { bg = "black2" },
 			Visual = { bg = "one_bg3" },

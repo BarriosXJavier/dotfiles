@@ -75,7 +75,7 @@ return {
 		priority = 1000,
 		config = function()
 			require("tiny-inline-diagnostic").setup()
-			vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+			vim.diagnostic.config({ virtual_text = false, underline = true }) -- Disable Neovim's default virtual text diagnostics
 		end,
 	},
 
@@ -348,43 +348,5 @@ return {
 				map("n", "<leader>td", gs.toggle_deleted, { desc = "Toggle deleted" })
 			end,
 		},
-	},
-
-	-- None-ls for linting
-	{
-		"nvimtools/none-ls.nvim",
-		event = "BufReadPre",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvimtools/none-ls-extras.nvim",
-		},
-		config = function()
-			local null_ls = require("null-ls")
-			local diagnostics = null_ls.builtins.diagnostics
-
-			null_ls.setup({
-				sources = {
-					-- Linters from none-ls-extras
-					require("none-ls.diagnostics.eslint_d"),
-					diagnostics.pylint,
-					diagnostics.shellcheck,
-					diagnostics.markdownlint,
-					diagnostics.yamllint,
-
-					-- Code actions from none-ls-extras
-					require("none-ls.code_actions.eslint_d"),
-				},
-				on_attach = function(client, bufnr)
-					if client.supports_method("textDocument/formatting") then
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							buffer = bufnr,
-							callback = function()
-								vim.lsp.buf.format({ bufnr = bufnr })
-							end,
-						})
-					end
-				end,
-			})
-		end,
 	},
 }
