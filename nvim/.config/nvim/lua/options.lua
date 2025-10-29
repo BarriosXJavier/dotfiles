@@ -17,8 +17,8 @@ o.guicursor = "n-v-c-sm:block-blinkon0,"
 o.winborder = "rounded"
 
 -- Popup transparency for modern UI
-o.pumblend = 10 -- Completion menu transparency
-o.winblend = 10 -- Floating window transparency
+o.pumblend = 5 -- Completion menu transparency
+o.winblend = 5 -- Floating window transparency
 
 -- Editing
 o.clipboard = "unnamedplus"

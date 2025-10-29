@@ -48,6 +48,47 @@ local M = {
 
 			-- Other common list highlights
 			FloatBorder = { fg = "blue" },
+			-- Keywords and language constructs
+			Keyword = { italic = true },
+			["@keyword"] = { italic = true },
+			["@keyword.function"] = { italic = true },
+			["@keyword.return"] = { italic = true },
+			["@keyword.operator"] = {},
+
+			-- Conditionals and loops
+			Conditional = { italic = true },
+			Repeat = { italic = true },
+			["@keyword.conditional"] = { italic = true },
+			["@keyword.repeat"] = { italic = true },
+
+			-- Functions and methods
+			Function = { bold = true },
+			["@function"] = { bold = true },
+			["@function.builtin"] = { italic = true },
+			["@method"] = { bold = true },
+
+			-- Types and classes
+			Type = { bold = true },
+			["@type"] = { bold = true },
+			["@type.builtin"] = { italic = true },
+			["@class"] = { bold = true },
+
+			-- Constants and variables
+			Constant = {},
+			["@constant"] = {},
+			["@constant.builtin"] = { italic = true },
+			["@variable.builtin"] = { italic = true },
+
+			-- Strings and special chars
+			String = {},
+			["@string"] = {},
+			["@string.escape"] = { italic = true },
+
+			-- Other useful highlights
+			Statement = { italic = true },
+			Exception = { italic = true },
+			Include = { italic = true },
+			["@include"] = { italic = true },
 		},
 
 		theme_toggle = { "tokyonight", "gruvbox" },
