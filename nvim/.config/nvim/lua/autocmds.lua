@@ -72,6 +72,64 @@ if nvchad_themes_utils_ok then
 	end
 end
 
+-- Function to apply custom highlight overrides
+local function apply_custom_highlights()
+	-- Get current theme colors from base46 if available
+	local ok, base46 = pcall(require, "base46")
+	if ok then
+		local colors = require("base46").get_theme_tb("base_30")
+		
+		-- Apply selection highlights with current theme colors
+		vim.api.nvim_set_hl(0, "PmenuSel", { bg = colors.grey, fg = colors.blue, bold = true })
+		vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = colors.grey, fg = colors.blue, bold = true })
+		vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = colors.yellow, bg = colors.grey, bold = true })
+		vim.api.nvim_set_hl(0, "CursorLine", { bg = colors.black2 })
+		vim.api.nvim_set_hl(0, "Visual", { bg = colors.one_bg3 })
+		vim.api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = colors.grey, bold = true })
+		vim.api.nvim_set_hl(0, "CursorLineNr", { fg = colors.blue, bold = true })
+		
+		-- Blink.cmp specific highlights
+		vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = colors.black2 })
+		vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", { bg = colors.grey, fg = colors.blue, bold = true })
+		vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = colors.blue })
+		vim.api.nvim_set_hl(0, "BlinkCmpDoc", { bg = colors.black2 })
+		vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { fg = colors.blue })
+		
+		-- LSP signature help
+		vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { bg = colors.grey, fg = colors.blue, bold = true })
+		
+		-- Command line completion
+		vim.api.nvim_set_hl(0, "BlinkCmpMenuCmdline", { bg = colors.black2 })
+		vim.api.nvim_set_hl(0, "BlinkCmpMenuSelectionCmdline", { bg = colors.grey, fg = colors.blue, bold = true })
+		
+		-- Apply other custom highlights
+		vim.api.nvim_set_hl(0, "WinSeparator", { fg = colors.one_bg2 or "#565f89", bg = "NONE" })
+		vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = colors.one_bg2 or "#565f89", bg = "NONE" })
+		vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { fg = colors.green, bold = true, underline = true, italic = true })
+		vim.api.nvim_set_hl(0, "NvimTreeSpecialFile", { fg = colors.yellow, underline = true, bold = true, italic = true })
+		vim.api.nvim_set_hl(0, "FloatBorder", { fg = colors.blue })
+	else
+		-- Fallback for non-base46 themes (like tokyonight)
+		-- Use hardcoded colors that work well with most themes
+		vim.cmd("hi PmenuSel guibg=#3b4261 guifg=#7aa2f7 gui=bold")
+		vim.cmd("hi TelescopeSelection guibg=#3b4261 guifg=#7aa2f7 gui=bold")
+		vim.cmd("hi TelescopeSelectionCaret guifg=#e0af68 guibg=#3b4261 gui=bold")
+		vim.cmd("hi CursorLine guibg=#292e42")
+		vim.cmd("hi Visual guibg=#364a82")
+		vim.cmd("hi WinSeparator guifg=#565f89 guibg=NONE")
+		
+		-- Blink.cmp for external themes
+		vim.cmd("hi BlinkCmpMenu guibg=#1a1b26")
+		vim.cmd("hi BlinkCmpMenuSelection guibg=#3b4261 guifg=#7aa2f7 gui=bold")
+		vim.cmd("hi BlinkCmpMenuBorder guifg=#7aa2f7")
+		vim.cmd("hi BlinkCmpDoc guibg=#1a1b26")
+		vim.cmd("hi BlinkCmpDocBorder guifg=#7aa2f7")
+		vim.cmd("hi LspSignatureActiveParameter guibg=#3b4261 guifg=#7aa2f7 gui=bold")
+		vim.cmd("hi BlinkCmpMenuCmdline guibg=#1a1b26")
+		vim.cmd("hi BlinkCmpMenuSelectionCmdline guibg=#3b4261 guifg=#7aa2f7 gui=bold")
+	end
+end
+
 -- save theme whenever it changes via :colorscheme
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
@@ -114,6 +172,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				pcall(dofile, vim.g.base46_cache .. "statusline")
 				pcall(dofile, vim.g.base46_cache .. "tbline")
 			end
+			
+			-- Apply custom highlights after theme loads
+			apply_custom_highlights()
 		end)
 
 		local ok_ibl, ibl = pcall(require, "ibl")
@@ -142,12 +203,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				vim.cmd("hi! link TelescopePromptBorder TelescopeBorder")
 			end)
 		end
-
-		-- Force WinSeparator to be visible (including NvimTree)
-		vim.schedule(function()
-			vim.cmd("hi WinSeparator guifg=#565f89 guibg=NONE")
-			vim.cmd("hi NvimTreeWinSeparator guifg=#565f89 guibg=NONE")
-		end)
 	end,
 })
 
@@ -171,6 +226,11 @@ vim.api.nvim_create_autocmd("UIEnter", {
 				vim.cmd.colorscheme(last_theme)
 			end
 			vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
+			
+			-- Apply custom highlights after initial load
+			vim.schedule(function()
+				apply_custom_highlights()
+			end)
 		end, 300)
 	end,
 })
@@ -189,4 +249,9 @@ vim.schedule(function()
 		vim.cmd.colorscheme(last_theme)
 	end
 	vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
+	
+	-- Final application of custom highlights
+	vim.defer_fn(function()
+		apply_custom_highlights()
+	end, 100)
 end)

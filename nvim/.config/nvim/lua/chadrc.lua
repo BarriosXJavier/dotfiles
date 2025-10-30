@@ -13,7 +13,7 @@ local function load_last_nvchad_theme()
 			return theme
 		end
 	end
-	return "gruvbox" -- default fallback
+	return "tokyonight" -- default fallback
 end
 
 local saved_theme = load_last_nvchad_theme()
@@ -98,7 +98,7 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { "gruvbox", saved_theme },
+		theme_toggle = { "tokyonight", saved_theme },
 	},
 
 	ui = {

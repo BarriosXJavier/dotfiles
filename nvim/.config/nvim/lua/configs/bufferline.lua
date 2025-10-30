@@ -11,7 +11,7 @@ bufferline.setup({
 		show_buffer_close_icons = true,
 		show_close_icon = true,
 		always_show_bufferline = true,
-		separator_style = "slant",
+		separator_style = "thick",
 
 		-- LSP diagnostics
 		diagnostics = "nvim_lsp",

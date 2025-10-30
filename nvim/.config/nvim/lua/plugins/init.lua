@@ -120,9 +120,15 @@ return {
 
 	{
 		"nvimdev/lspsaga.nvim",
-    event = "LspAttach",
+		event = "LspAttach",
 		config = function()
-			require("lspsaga").setup({})
+			require("lspsaga").setup({
+				ui = {
+					border = "single",
+					beacon = { enable = false },
+					lightbulb = { enable = false },
+				},
+			})
 		end,
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter", -- optional

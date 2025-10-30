@@ -3,7 +3,7 @@ require("nvchad.options")
 local o = vim.o
 
 -- UI
-o.cursorlineopt = "both"
+o.cursorlineopt = "number"
 o.number = true
 o.relativenumber = true
 o.signcolumn = "yes"
@@ -15,10 +15,6 @@ o.guicursor = "n-v-c-sm:block-blinkon0,"
 	.. "i-ci:block-blinkwait0-blinkon50-blinkoff50,"
 	.. "r-cr:block-blinkwait0-blinkon50-blinkoff50"
 o.winborder = "rounded"
-
--- Popup transparency for modern UI
-o.pumblend = 5 -- Completion menu transparency
-o.winblend = 5 -- Floating window transparency
 
 -- Editing
 o.clipboard = "unnamedplus"
