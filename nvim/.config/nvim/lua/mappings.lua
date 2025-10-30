@@ -5,11 +5,7 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
-map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
-
 map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
-map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code Action" })
-map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP: Rename" })
 
 -- Toggle nvim tree
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle Nvim Tree" })
@@ -57,9 +53,6 @@ end, { desc = "Copilot: previous suggestion" })
 map("i", "<C-e>", function()
 	require("copilot.suggestion").dismiss()
 end, { desc = "Copilot: dismiss suggestion" })
-
-map("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to Definition" })
-map("n", "gD", vim.lsp.buf.type_definition, { desc = "LSP: Go to Type Definition" })
 
 map("n", "<leader>cc", "<cmd>CopilotChatOpen<cr>", { desc = "Copilot Open Chat" })
 map("n", "<leader>cx", "<cmd>CopilotChatClose<cr>", { desc = "Copilot Close Chat" })
