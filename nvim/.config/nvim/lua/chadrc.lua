@@ -98,7 +98,7 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { "tokyonight", saved_theme },
+		theme_toggle = { "gruvbox", saved_theme },
 	},
 
 	ui = {
@@ -169,7 +169,7 @@ local M = {
 	},
 
 	nvdash = {
-		load_on_startup = true,
+		load_on_startup = false,
 	},
 }
 
