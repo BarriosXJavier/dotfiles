@@ -142,6 +142,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				vim.cmd("hi! link TelescopePromptBorder TelescopeBorder")
 			end)
 		end
+
+		-- Force WinSeparator to be visible (including NvimTree)
+		vim.schedule(function()
+			vim.cmd("hi WinSeparator guifg=#565f89 guibg=NONE")
+			vim.cmd("hi NvimTreeWinSeparator guifg=#565f89 guibg=NONE")
+		end)
 	end,
 })
 

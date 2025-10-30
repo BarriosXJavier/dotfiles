@@ -13,7 +13,7 @@ local function load_last_nvchad_theme()
 			return theme
 		end
 	end
-	return "tokyonight" -- default fallback
+	return "gruvbox" -- default fallback
 end
 
 local saved_theme = load_last_nvchad_theme()
@@ -24,7 +24,8 @@ local M = {
 		theme = saved_theme,
 
 		hl_add = {
-			WinSeparator = { fg = "#bcc0cc", bg = "none" },
+			WinSeparator = { fg = "#565f89", bg = "none" },
+			NvimTreeWinSeparator = { fg = "#565f89", bg = "none" },
 			CursorLineNr = { fg = "#7aa2f7", bold = true },
 		},
 
@@ -43,12 +44,12 @@ local M = {
 			Visual = { bg = "one_bg3" },
 
 			-- improved popup visibility with stronger contrast
-			PmenuSel = { bg = "black2", fg = "nord_blue", bold = true, italic = true },
-			TelescopeSelection = { bg = "black2", fg = "nord_blue", bold = true, italic = true },
-			TelescopeSelectionCaret = { fg = "yellow", bg = "black2", bold = true },
+			PmenuSel = { bg = "grey", fg = "blue", bold = true },
+			TelescopeSelection = { bg = "grey", fg = "blue", bold = true },
+			TelescopeSelectionCaret = { fg = "yellow", bg = "grey", bold = true },
 
 			-- NvimTree highlights
-			NvimTreeCursorLine = { bg = "black2", bold = true, italic = true },
+			NvimTreeCursorLine = { bg = "grey", bold = true },
 			NvimTreeOpenedFile = { fg = "green", bold = true, underline = true, italic = true },
 			NvimTreeSpecialFile = { fg = "yellow", underline = true, bold = true, italic = true },
 
@@ -68,36 +69,36 @@ local M = {
 			["@keyword.repeat"] = { italic = true },
 
 			-- Functions and methods
-			Function = { bold = true },
-			["@function"] = { bold = true },
-			["@function.builtin"] = { italic = true },
-			["@method"] = { bold = true },
+			Function = {},
+			["@function"] = {},
+			["@function.builtin"] = {},
+			["@method"] = {},
 
 			-- Types and classes
-			Type = { bold = true },
-			["@type"] = { bold = true },
-			["@type.builtin"] = { italic = true },
-			["@class"] = { bold = true },
+			Type = {},
+			["@type"] = {},
+			["@type.builtin"] = {},
+			["@class"] = {},
 
 			-- Constants and variables
 			Constant = {},
 			["@constant"] = {},
-			["@constant.builtin"] = { italic = true },
-			["@variable.builtin"] = { italic = true },
+			["@constant.builtin"] = {},
+			["@variable.builtin"] = {},
 
 			-- Strings and special chars
 			String = {},
 			["@string"] = {},
-			["@string.escape"] = { italic = true },
+			["@string.escape"] = {},
 
 			-- Other useful highlights
-			Statement = { italic = true },
-			Exception = { italic = true },
+			Statement = {},
+			Exception = {},
 			Include = { italic = true },
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { "tokyonight", "gruvbox" },
+		theme_toggle = { "tokyonight", saved_theme },
 	},
 
 	ui = {

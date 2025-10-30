@@ -6,8 +6,17 @@ return {
 	},
 
 	{
+		"williamboman/mason-lspconfig.nvim",
+		dependencies = { "williamboman/mason.nvim" },
+		opts = {
+			automatic_installation = true,
+		},
+	},
+
+	{
 		"neovim/nvim-lspconfig",
-		event = { "BufWritePre", "BufNewFile" },
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = { "williamboman/mason-lspconfig.nvim" },
 		config = function()
 			require("configs.lspconfig")
 		end,

@@ -1,25 +1,14 @@
-local servers = {
-	"html",
-	"cssls",
-	"ts_ls",
-	"clangd",
-	"pyright",
-	"rust_analyzer",
-	"tailwindcss",
-	"bashls",
-	"gopls",
-	"dockerls",
-	"yamlls",
-	"jsonls",
-	"marksman",
-	"lua_ls",
-	"jdtls",
-	"dartls",
-	"zls",
-	"sqls",
-	"graphql",
-}
+-- Auto-setup for all Mason-installed servers
+require("mason-lspconfig").setup({
+	automatic_installation = true,
+	handlers = {
+		function(server_name)
+			vim.lsp.enable(server_name)
+		end,
+	},
+})
 
+-- Custom configurations for specific servers
 vim.lsp.config("emmet_language_server", {
 	cmd = { "emmet-language-server", "--stdio" },
 	filetypes = {
@@ -48,4 +37,4 @@ vim.lsp.config("emmet_language_server", {
 	},
 })
 
-vim.lsp.enable({ "emmet_language_server", unpack(servers) })
+vim.lsp.enable("emmet_language_server")
