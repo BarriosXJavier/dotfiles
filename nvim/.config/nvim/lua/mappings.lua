@@ -5,7 +5,7 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
-map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
+-- map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
 
 -- Toggle nvim tree
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle Nvim Tree" })
@@ -66,3 +66,8 @@ end, { desc = "All Colorschemes (NvChad + Plugins)" })
 
 -- nvim blame
 map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })
+
+-- LspSaga keymaps
+map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
+map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
+map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "Hover documentation" })

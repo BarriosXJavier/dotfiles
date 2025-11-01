@@ -13,7 +13,7 @@ local function load_last_nvchad_theme()
 			return theme
 		end
 	end
-	return "tokyonight" -- default fallback
+	return "github_dark" -- default fallback
 end
 
 local saved_theme = load_last_nvchad_theme()
@@ -98,7 +98,7 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { "tokyonight", saved_theme },
+		theme_toggle = { "github_dark", saved_theme },
 	},
 
 	ui = {
