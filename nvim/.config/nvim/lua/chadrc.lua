@@ -21,7 +21,7 @@ local saved_theme = load_last_nvchad_theme()
 -- This table is used to override the default NvChad configuration.
 local M = {
 	base46 = {
-		theme = saved_theme or "catppuccin", -- default NvChad theme if none saved
+		theme = saved_theme or "github_dark", -- default NvChad theme if none saved
 
 		hl_add = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
@@ -98,7 +98,7 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { saved_theme or "catppuccin", "gruvbox" },
+		theme_toggle = { saved_theme or "github_dark", "gruvbox" },
 	},
 
 	ui = {

@@ -5,20 +5,8 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
 	pattern = "*",
 	callback = function()
 		if vim.bo.modified and vim.fn.getbufvar(vim.fn.bufnr(), "&buftype") == "" then
-			vim.cmd("silent! write")
+			vim.cmd("write!")
 		end
-	end,
-	desc = "Auto-save files when focus is lost or text changes",
-})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = "*",
-	callback = function(args)
-		require("conform").format({
-			bufnr = args.buf,
-			lsp_format = "fallback",
-			timeout_ms = 500,
-		})
 	end,
 })
 
@@ -291,3 +279,4 @@ vim.schedule(function()
 		end, 100)
 	end, 50)
 end)
+

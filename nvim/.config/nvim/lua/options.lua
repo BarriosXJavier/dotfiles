@@ -33,3 +33,6 @@ o.ignorecase = true
 o.smartcase = true
 o.hlsearch = true
 o.incsearch = true
+
+o.backup = false
+o.writebackup = false
