@@ -219,11 +219,19 @@ vim.api.nvim_create_autocmd("UIEnter", {
 				if ok then
 					require("nvconfig").base46.theme = last_nvchad
 					base46.load_all_highlights()
+					-- Load base46 cache after setting theme
+					dofile(vim.g.base46_cache .. "defaults")
+					dofile(vim.g.base46_cache .. "statusline")
 				end
 			else
 				-- Use direct colorscheme (for tokyonight variants)
 				local last_theme = load_last_theme()
 				vim.cmd.colorscheme(last_theme)
+				-- Still load statusline for external themes to maintain UI consistency
+				vim.schedule(function()
+					pcall(dofile, vim.g.base46_cache .. "statusline")
+					pcall(dofile, vim.g.base46_cache .. "tbline")
+				end)
 			end
 			vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
 			
@@ -231,27 +239,36 @@ vim.api.nvim_create_autocmd("UIEnter", {
 			vim.schedule(function()
 				apply_custom_highlights()
 			end)
-		end, 300)
+		end, 25)
 	end,
 })
 
 -- extra safety: reapply theme once more (async)
 vim.schedule(function()
-	local last_nvchad = load_last_nvchad_theme()
-	if last_nvchad then
-		local ok, base46 = pcall(require, "base46")
-		if ok then
-			require("nvconfig").base46.theme = last_nvchad
-			base46.load_all_highlights()
-		end
-	else
-		local last_theme = load_last_theme()
-		vim.cmd.colorscheme(last_theme)
-	end
-	vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
-	
-	-- Final application of custom highlights
 	vim.defer_fn(function()
-		apply_custom_highlights()
-	end, 100)
+		local last_nvchad = load_last_nvchad_theme()
+		if last_nvchad then
+			local ok, base46 = pcall(require, "base46")
+			if ok then
+				require("nvconfig").base46.theme = last_nvchad
+				base46.load_all_highlights()
+				pcall(dofile, vim.g.base46_cache .. "defaults")
+				pcall(dofile, vim.g.base46_cache .. "statusline")
+			end
+		else
+			local last_theme = load_last_theme()
+			vim.cmd.colorscheme(last_theme)
+			-- Load UI highlights for consistency
+			vim.schedule(function()
+				pcall(dofile, vim.g.base46_cache .. "statusline")
+				pcall(dofile, vim.g.base46_cache .. "tbline")
+			end)
+		end
+		vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
+		
+		-- Final application of custom highlights
+		vim.defer_fn(function()
+			apply_custom_highlights()
+		end, 100)
+	end, 50)
 end)

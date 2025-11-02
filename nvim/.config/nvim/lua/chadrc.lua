@@ -13,7 +13,7 @@ local function load_last_nvchad_theme()
 			return theme
 		end
 	end
-	return "gruvbox" -- default fallback
+	return nil -- default fallback - let external colorscheme load
 end
 
 local saved_theme = load_last_nvchad_theme()
@@ -21,7 +21,7 @@ local saved_theme = load_last_nvchad_theme()
 -- This table is used to override the default NvChad configuration.
 local M = {
 	base46 = {
-		theme = saved_theme,
+		theme = saved_theme or "catppuccin", -- default NvChad theme if none saved
 
 		hl_add = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
@@ -98,11 +98,10 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { saved_theme, "gruvbox" },
+		theme_toggle = { saved_theme or "catppuccin", "gruvbox" },
 	},
 
 	ui = {
-		theme = "tokyonight",
 		cmp = {
 			icons_left = true, -- only for non-atom styles!
 			lspkind_text = true,
@@ -152,7 +151,7 @@ local M = {
 		},
 	},
 
-	lsp = { signature = true, theme = saved_theme },
+	lsp = { signature = true },
 
 	cheatsheet = {
 		theme = "grid", -- simple/grid
