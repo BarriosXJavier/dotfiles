@@ -11,6 +11,17 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
 	desc = "Auto-save files when focus is lost or text changes",
 })
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	callback = function(args)
+		require("conform").format({
+			bufnr = args.buf,
+			lsp_format = "fallback",
+			timeout_ms = 500,
+		})
+	end,
+})
+
 -- ibl safe setup
 local ok, ibl = pcall(require, "ibl")
 if ok then
@@ -78,7 +89,7 @@ local function apply_custom_highlights()
 	local ok, base46 = pcall(require, "base46")
 	if ok then
 		local colors = require("base46").get_theme_tb("base_30")
-		
+
 		-- Apply selection highlights with current theme colors
 		vim.api.nvim_set_hl(0, "PmenuSel", { bg = colors.grey, fg = colors.blue, bold = true })
 		vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = colors.grey, fg = colors.blue, bold = true })
@@ -87,26 +98,34 @@ local function apply_custom_highlights()
 		vim.api.nvim_set_hl(0, "Visual", { bg = colors.one_bg3 })
 		vim.api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = colors.grey, bold = true })
 		vim.api.nvim_set_hl(0, "CursorLineNr", { fg = colors.blue, bold = true })
-		
+
 		-- Blink.cmp specific highlights
 		vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = colors.black2 })
 		vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", { bg = colors.grey, fg = colors.blue, bold = true })
 		vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = colors.blue })
 		vim.api.nvim_set_hl(0, "BlinkCmpDoc", { bg = colors.black2 })
 		vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { fg = colors.blue })
-		
+
 		-- LSP signature help
 		vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { bg = colors.grey, fg = colors.blue, bold = true })
-		
+
 		-- Command line completion
 		vim.api.nvim_set_hl(0, "BlinkCmpMenuCmdline", { bg = colors.black2 })
 		vim.api.nvim_set_hl(0, "BlinkCmpMenuSelectionCmdline", { bg = colors.grey, fg = colors.blue, bold = true })
-		
+
 		-- Apply other custom highlights
 		vim.api.nvim_set_hl(0, "WinSeparator", { fg = colors.one_bg2 or "#565f89", bg = "NONE" })
 		vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = colors.one_bg2 or "#565f89", bg = "NONE" })
-		vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { fg = colors.green, bold = true, underline = true, italic = true })
-		vim.api.nvim_set_hl(0, "NvimTreeSpecialFile", { fg = colors.yellow, underline = true, bold = true, italic = true })
+		vim.api.nvim_set_hl(
+			0,
+			"NvimTreeOpenedFile",
+			{ fg = colors.green, bold = true, underline = true, italic = true }
+		)
+		vim.api.nvim_set_hl(
+			0,
+			"NvimTreeSpecialFile",
+			{ fg = colors.yellow, underline = true, bold = true, italic = true }
+		)
 		vim.api.nvim_set_hl(0, "FloatBorder", { fg = colors.blue })
 	else
 		-- Fallback for non-base46 themes (like tokyonight)
@@ -117,7 +136,7 @@ local function apply_custom_highlights()
 		vim.cmd("hi CursorLine guibg=#292e42")
 		vim.cmd("hi Visual guibg=#364a82")
 		vim.cmd("hi WinSeparator guifg=#565f89 guibg=NONE")
-		
+
 		-- Blink.cmp for external themes
 		vim.cmd("hi BlinkCmpMenu guibg=#1a1b26")
 		vim.cmd("hi BlinkCmpMenuSelection guibg=#3b4261 guifg=#7aa2f7 gui=bold")
@@ -142,7 +161,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				local nvchad_themes = utils.list_themes()
 				is_nvchad_theme = vim.tbl_contains(nvchad_themes, current_theme)
 			end
-			
+
 			if not is_nvchad_theme then
 				-- External theme (tokyonight, etc) - clear NvChad preference
 				local file = io.open(nvchad_theme_file, "w")
@@ -150,7 +169,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 					file:write("")
 					file:close()
 				end
-				
+
 				-- If it's a tokyonight variant, also update the plugin style
 				if current_theme:match("^tokyonight%-") then
 					local variant = current_theme:match("^tokyonight%-(.+)$")
@@ -162,17 +181,17 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 					end
 				end
 			end
-			
+
 			save_theme(current_theme)
 		end
-		
+
 		-- Reload NvChad statusline highlights when colorscheme changes
 		vim.schedule(function()
 			if vim.g.base46_cache then
 				pcall(dofile, vim.g.base46_cache .. "statusline")
 				pcall(dofile, vim.g.base46_cache .. "tbline")
 			end
-			
+
 			-- Apply custom highlights after theme loads
 			apply_custom_highlights()
 		end)
@@ -234,7 +253,7 @@ vim.api.nvim_create_autocmd("UIEnter", {
 				end)
 			end
 			vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
-			
+
 			-- Apply custom highlights after initial load
 			vim.schedule(function()
 				apply_custom_highlights()
@@ -265,7 +284,7 @@ vim.schedule(function()
 			end)
 		end
 		vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
-		
+
 		-- Final application of custom highlights
 		vim.defer_fn(function()
 			apply_custom_highlights()

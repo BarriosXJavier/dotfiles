@@ -1,8 +1,12 @@
 return {
 	{
 		"stevearc/conform.nvim",
-		event = "BufWritePre", -- uncomment for format on save
+		event = "BufWritePre",
+		cmd = "ConformInfo",
 		opts = require("configs.conform"),
+		config = function(_, opts)
+			require("conform").setup(opts)
+		end,
 	},
 
 	{
@@ -252,9 +256,14 @@ return {
 		end,
 	},
 
+	-- sqls plugin for SQL LSP enhancements
 	{
 		"nanotee/sqls.nvim",
-		vim.lsp.enable("sqls"),
+		ft = { "sql", "mysql", "plsql" },
+		config = function()
+			-- sqls.nvim provides additional commands and features for sqls
+			require("sqls").setup({})
+		end,
 	},
 
 	-- Copilot core (auth + backend)
