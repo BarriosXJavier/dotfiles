@@ -1,15 +1,6 @@
 -- Load NvChad defaults first
 require("nvchad.autocmds")
 
-vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
-	pattern = "*",
-	callback = function()
-		if vim.bo.modified and vim.fn.getbufvar(vim.fn.bufnr(), "&buftype") == "" then
-			vim.cmd("write!")
-		end
-	end,
-})
-
 -- ibl safe setup
 local ok, ibl = pcall(require, "ibl")
 if ok then

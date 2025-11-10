@@ -70,4 +70,4 @@ map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })
 -- LspSaga keymaps
 map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
-map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "Hover documentation" })
+

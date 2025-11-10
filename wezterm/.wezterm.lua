@@ -144,7 +144,7 @@ end)
 -- =========================
 -- Appearance
 -- =========================
-config.color_scheme = "3024 Night (Gogh)"
+config.color_scheme = "tokyonight_night"
 
 config.window_decorations = "NONE"
 config.hide_tab_bar_if_only_one_tab = true

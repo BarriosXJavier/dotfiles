@@ -21,7 +21,7 @@ local saved_theme = load_last_nvchad_theme()
 -- This table is used to override the default NvChad configuration.
 local M = {
 	base46 = {
-		theme = saved_theme or "github_dark", -- default NvChad theme if none saved
+		theme = saved_theme or "tokyonight", -- default NvChad theme if none saved
 
 		hl_add = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
@@ -98,10 +98,11 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { saved_theme or "github_dark", "gruvbox" },
+		theme_toggle = { saved_theme or "tokyonight", "tokyonight" },
 	},
 
 	ui = {
+		theme = saved_theme or "tokyonight", "tokyonight",
 		cmp = {
 			icons_left = true, -- only for non-atom styles!
 			lspkind_text = true,
@@ -114,13 +115,31 @@ local M = {
 			hl_add = {},
 		},
 
-		telescope = { style = "bordered" }, -- borderless / bordered
+		telescope = { style = "bordered" }, -- borderless / bordered   
 
 		statusline = {
 			enabled = true,
 			separator_style = "arrow",
 			order = nil,
-			modules = nil,
+			modules = {
+				lsp = function()
+					local clients = vim.lsp.get_clients({ bufnr = 0 })
+					if #clients == 0 then
+						return ""
+					end
+
+					local client_names = {}
+					for _, client in ipairs(clients) do
+						local name = client.name
+						if #name > 4 then
+							name = name:sub(1, 4)
+						end
+						table.insert(client_names,"[".. name .."]")
+					end
+
+					return "%#St_LspStatus#" .. "  LSPs: " .. table.concat(client_names, " ") .. " "
+				end,
+			},
 		},
 
 		-- lazyload it when there are 1+ buffers
