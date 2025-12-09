@@ -77,7 +77,7 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { "github_dark", "github_dark" },
+		theme_toggle = { "tokyonight", "github_dark" },
 	},
 
 	ui = {
@@ -92,6 +92,7 @@ local M = {
 			hl_override = {},
 			hl_add = {},
 			border = "single",
+			theme = "github_dark",
 		},
 
 		telescope = { style = "bordered" }, -- borderless / bordered
@@ -128,6 +129,8 @@ local M = {
 			order = { "treeOffset", "buffers", "tabs", "btns" },
 			modules = nil,
 		},
+
+		theme = "github_dark",
 	},
 
 	term = {

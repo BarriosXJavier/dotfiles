@@ -3,9 +3,6 @@ return {
 		"stevearc/conform.nvim",
 		cmd = "ConformInfo",
 		opts = require("configs.conform"),
-		-- config = function(_, opts)
-		-- 	require("conform").setup(opts)
-		-- end,
 	},
 
 	{
@@ -30,64 +27,50 @@ return {
 		version = "*", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
 		cmd = "ASToggle", -- optional for lazy loading on command
 		event = { "InsertLeave" }, -- optional for lazy loading on trigger events
-		opts = {
-			-- your config goes here
-			-- or just leave it empty :)
-		},
+		opts = {},
 	},
 	{
 		import = "nvchad.blink.lazyspec",
-		cmdline = {
-			enabled = true,
-			sources = { "cmdline", "path", "buffer" },
-		},
-
-		completion = {
-			enable_in_comment = false,
-			enable_in_string = false,
-			trigger_chars = { ".", ":", "->", "{", "(" },
-		},
-
-		menu = {
-			auto_show = true,
-			draw = {
-				columns = {
-					{ "kind_icon", "label", "label_description", gap = 1 },
-					{ "source_name" },
+		opts = function()
+			local base_opts = require("nvchad.blink.config")
+			return vim.tbl_deep_extend("force", base_opts, {
+				cmdline = {
+					enabled = true,
+					sources = { "cmdline", "path", "buffer" },
 				},
-				separator = " • ",
-			},
-			documentation = {
-				auto_show = true,
-				auto_show_delay_ms = 300,
-				window = {
-					max_width = 80,
-					border = "rounded",
+				sources = {
+					default = { "lsp", "copilot", "path", "snippets", "buffer" },
+					providers = {
+						lsp = {
+							min_keyword_length = 0,
+							score_offset = 10,
+						},
+						snippets = {
+							min_keyword_length = 2,
+							score_offset = 5,
+						},
+						copilot = {
+							name = "copilot",
+							module = "blink-cmp-copilot",
+							score_offset = 8,
+							async = true,
+						},
+					},
 				},
-			},
-		},
-		sources = {
-			default = {
-				"lsp",
-				"copilot",
-				"path",
-				"snippets",
-				"buffer",
-			},
-		},
-		snippets = {
-			preset = "luasnip",
-			expand = function(args)
-				require("luasnip").lsp_expand(args.body)
-			end,
-		},
-		signature = {
-			enabled = true,
-			trigger = { enabled = true, trigger_chars = { "(", "," } },
-			window = {
-				border = "rounded",
-			},
-		},
+				completion = {
+					trigger = {
+						show_on_insert_on_trigger_character = true,
+					},
+					documentation = {
+						auto_show = true,
+						auto_show_delay_ms = 200,
+					},
+				},
+				signature = {
+					enabled = true,
+				},
+			})
+		end,
 	},
 
 	{
@@ -104,8 +87,7 @@ return {
 		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
-		config = function()
-		end,
+		config = function() end,
 	},
 	{
 		"akinsho/bufferline.nvim",
@@ -286,11 +268,8 @@ return {
 	},
 
 	{
-		"zbirenbaum/copilot-cmp",
+		"giuxtaposition/blink-cmp-copilot",
 		dependencies = { "zbirenbaum/copilot.lua" },
-		config = function()
-			require("copilot_cmp").setup()
-		end,
 	},
 
 	{

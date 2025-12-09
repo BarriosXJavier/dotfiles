@@ -44,12 +44,43 @@ vim.lsp.config("emmet_language_server", {
 	},
 })
 
+-- Enable emmet_language_server manually
 vim.lsp.enable("emmet_language_server")
+
+-- Custom configuration for TypeScript servers
+vim.lsp.config("ts_ls", {
+	root_markers = { "package.json", "tsconfig.json", ".git" },
+	settings = {
+		completions = {
+			completeFunctionCalls = true,
+		},
+		typescript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "all",
+				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayVariableTypeHints = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayEnumMemberValueHints = true,
+			},
+		},
+		javascript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "all",
+				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayVariableTypeHints = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayEnumMemberValueHints = true,
+			},
+		},
+	},
+})
 
 -- Custom configuration for sqls (SQL language server)
 vim.lsp.config("sqls", {
 	root_markers = { ".git" },
 	filetypes = { "sql", "mysql", "plsql" },
 })
-
-vim.lsp.enable("sqls")
