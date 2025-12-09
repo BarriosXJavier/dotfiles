@@ -1,27 +1,10 @@
 -- This file needs to have same structure as nvconfig.lua
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 
--- Load persisted theme preference
-local function load_last_nvchad_theme()
-	local nvchad_theme_file = vim.fn.stdpath("data") .. "/last_nvchad_theme.txt"
-	local file = io.open(nvchad_theme_file, "r")
-	if file then
-		local theme = file:read("*l")
-		file:close()
-		-- Only return if it's not empty (empty means external colorscheme is in use)
-		if theme and theme ~= "" then
-			return theme
-		end
-	end
-	return nil -- default fallback - let external colorscheme load
-end
-
-local saved_theme = load_last_nvchad_theme()
-
 -- This table is used to override the default NvChad configuration.
 local M = {
 	base46 = {
-		theme = saved_theme or "tokyonight", -- default NvChad theme if none saved
+		theme = "github_dark", -- default NvChad theme if none saved
 
 		hl_add = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
@@ -39,17 +22,13 @@ local M = {
 			DiagnosticUnderlineInfo = { underline = false, sp = "cyan" },
 			DiagnosticUnderlineHint = { underline = false, sp = "blue" },
 
-			-- Ensure cursor line is always visible
-			CursorLine = { bg = "black2" },
-			Visual = { bg = "one_bg3" },
-
 			-- improved popup visibility with stronger contrast
-			PmenuSel = { bg = "grey", fg = "blue", bold = true },
-			TelescopeSelection = { bg = "grey", fg = "blue", bold = true },
-			TelescopeSelectionCaret = { fg = "yellow", bg = "grey", bold = true },
+			PmenuSel = { bg = "one_bg2", fg = "blue", bold = true },
+			TelescopeSelection = { bg = "one_bg2", fg = "blue", bold = true },
+			TelescopeSelectionCaret = { fg = "yellow", bg = "one_bg2", bold = true },
 
 			-- NvimTree highlights
-			NvimTreeCursorLine = { bg = "grey", bold = true },
+			NvimTreeCursorLine = { bg = "one_bg2", bold = true },
 			NvimTreeOpenedFile = { fg = "green", bold = true, underline = true, italic = true },
 			NvimTreeSpecialFile = { fg = "yellow", underline = true, bold = true, italic = true },
 
@@ -98,11 +77,10 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { saved_theme or "tokyonight", "tokyonight" },
+		theme_toggle = { "github_dark", "github_dark" },
 	},
 
 	ui = {
-		theme = saved_theme or "tokyonight", "tokyonight",
 		cmp = {
 			icons_left = true, -- only for non-atom styles!
 			lspkind_text = true,
@@ -113,9 +91,10 @@ local M = {
 			},
 			hl_override = {},
 			hl_add = {},
+			border = "single",
 		},
 
-		telescope = { style = "bordered" }, -- borderless / bordered   
+		telescope = { style = "bordered" }, -- borderless / bordered
 
 		statusline = {
 			enabled = true,
@@ -134,7 +113,7 @@ local M = {
 						if #name > 4 then
 							name = name:sub(1, 4)
 						end
-						table.insert(client_names,"[".. name .."]")
+						table.insert(client_names, "[" .. name .. "]")
 					end
 
 					return "%#St_LspStatus#" .. "  LSPs: " .. table.concat(client_names, " ") .. " "

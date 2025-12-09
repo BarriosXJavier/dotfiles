@@ -59,7 +59,7 @@ let mapleader = " "
 set nocompatible
 set clipboard=unnamedplus
 filetype plugin indent on
-
+set incsearch 
 call plug#begin()
 
 " List your plugins here
@@ -70,6 +70,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'jiangmiao/auto-pairs'
 Plug 'shougo/neosnippet.vim'
 Plug 'chiel92/vim-autoformat'
-Plug 'yggdroot/indentline'
+"Plug 'yggdroot/indentline'
 
 call plug#end()

@@ -44,10 +44,7 @@ local function apply_theme(theme, is_nvchad)
 		-- Use NvChad's theme system
 		local ok, base46 = pcall(require, "base46")
 		if ok then
-			require("nvconfig").base46.theme = theme
-			base46.load_all_highlights()
-			-- Trigger ColorScheme autocmd to apply custom highlights
-			vim.api.nvim_exec_autocmds("ColorScheme", { pattern = theme })
+			base46.change_theme(require("nvconfig").base46.theme, theme)
 		end
 	else
 		-- Use direct colorscheme command (will trigger ColorScheme autocmd)

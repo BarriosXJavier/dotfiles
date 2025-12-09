@@ -29,15 +29,9 @@ M.setup = function()
 			},
 		},
 		hover = {
-			max_width = 0.8,
+			max_width = 0.9,
 		},
 	})
-end
-
-M.keymaps = function()
-	vim.keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>")
-	vim.keymap.set("n", "gD", "<cmd>Lspsaga goto_definition<CR>")
-	vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>")
 end
 
 return M

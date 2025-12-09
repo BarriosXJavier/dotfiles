@@ -3,9 +3,9 @@ return {
 		"stevearc/conform.nvim",
 		cmd = "ConformInfo",
 		opts = require("configs.conform"),
-		config = function(_, opts)
-			require("conform").setup(opts)
-		end,
+		-- config = function(_, opts)
+		-- 	require("conform").setup(opts)
+		-- end,
 	},
 
 	{
@@ -29,7 +29,7 @@ return {
 		"okuuva/auto-save.nvim",
 		version = "*", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
 		cmd = "ASToggle", -- optional for lazy loading on command
-		event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
+		event = { "InsertLeave" }, -- optional for lazy loading on trigger events
 		opts = {
 			-- your config goes here
 			-- or just leave it empty :)
@@ -105,22 +105,6 @@ return {
 		lazy = false,
 		priority = 1000,
 		config = function()
-			local theme_file = vim.fn.stdpath("data") .. "/last_colorscheme.txt"
-			local saved_variant = "moon"
-
-			local file = io.open(theme_file, "r")
-			if file then
-				local saved = file:read("*l")
-				file:close()
-				if saved and saved:match("^tokyonight%-") then
-					saved_variant = saved:match("^tokyonight%-(.+)$") or "moon"
-				end
-			end
-
-			require("tokyonight").setup({
-				style = saved_variant,
-				transparent = false,
-			})
 		end,
 	},
 	{

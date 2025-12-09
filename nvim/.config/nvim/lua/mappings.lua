@@ -5,7 +5,7 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
--- map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
+map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
 
 -- Toggle nvim tree
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle Nvim Tree" })
@@ -28,10 +28,10 @@ map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnost
 map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
 map("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
 map(
-  "n",
-  "<leader>cl",
-  "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-  { desc = "LSP Definitions/References" }
+	"n",
+	"<leader>cl",
+	"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+	{ desc = "LSP Definitions/References" }
 )
 map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List" })
 map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List" })
@@ -39,19 +39,19 @@ map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List
 -- Copilot mappings
 -- Copilot inline suggestions
 map("i", "<M-l>", function()
-  require("copilot.suggestion").accept()
+	require("copilot.suggestion").accept()
 end, { desc = "Copilot: accept suggestion" })
 
 map("i", "<M-]>", function()
-  require("copilot.suggestion").next()
+	require("copilot.suggestion").next()
 end, { desc = "Copilot: next suggestion" })
 
 map("i", "<M-[>", function()
-  require("copilot.suggestion").prev()
+	require("copilot.suggestion").prev()
 end, { desc = "Copilot: previous suggestion" })
 
 map("i", "<C-e>", function()
-  require("copilot.suggestion").dismiss()
+	require("copilot.suggestion").dismiss()
 end, { desc = "Copilot: dismiss suggestion" })
 
 map("n", "<leader>cc", "<cmd>CopilotChatOpen<cr>", { desc = "Copilot Open Chat" })
@@ -61,7 +61,7 @@ map("n", "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", { desc = "Tog
 
 -- Custom theme picker (all colorschemes: NvChad + plugins)
 map("n", "<leader>ta", function()
-  require("configs.telescope-themes").pick_colorscheme()
+	require("configs.telescope-themes").pick_colorscheme()
 end, { desc = "All Colorschemes (NvChad + Plugins)" })
 
 -- nvim blame
@@ -70,4 +70,4 @@ map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })
 -- LspSaga keymaps
 map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
-
+-- map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "Lspsaga hover doc" })
