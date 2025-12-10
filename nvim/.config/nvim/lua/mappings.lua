@@ -18,10 +18,10 @@ map("n", "<C-Right>", ":vertical resize +2<CR>", { noremap = true, desc = "Resiz
 map("n", "<C-d>", "<C-d>zz", { noremap = true, desc = "Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { noremap = true, desc = "Scroll up and center" })
 
-map("i", "<M-l>", "<Plug>(copilot-accept)", { desc = "Copilot: Accept suggestion" })
-map("i", "<M-]>", "<Plug>(copilot-next)", { desc = "Copilot: Next suggestion" })
-map("i", "<M-[>", "<Plug>(copilot-previous)", { desc = "Copilot: Previous suggestion" })
-map("i", "<C-]>", "<Plug>(copilot-dismiss)", { desc = "Copilot: Dismiss suggestion" })
+-- map("i", "<M-l>", "<Plug>(copilot-accept)", { desc = "Copilot: Accept suggestion" })
+-- map("i", "<M-]>", "<Plug>(copilot-next)", { desc = "Copilot: Next suggestion" })
+-- map("i", "<M-[>", "<Plug>(copilot-previous)", { desc = "Copilot: Previous suggestion" })
+-- map("i", "<C-]>", "<Plug>(copilot-dismiss)", { desc = "Copilot: Dismiss suggestion" })
 
 -- Trouble nvim
 map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
@@ -59,15 +59,9 @@ map("n", "<leader>cx", "<cmd>CopilotChatClose<cr>", { desc = "Copilot Close Chat
 
 map("n", "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", { desc = "Toggle Undo Tree" })
 
--- Custom theme picker (all colorschemes: NvChad + plugins)
-map("n", "<leader>ta", function()
-	require("configs.telescope-themes").pick_colorscheme()
-end, { desc = "All Colorschemes (NvChad + Plugins)" })
-
 -- nvim blame
 map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })
 
 -- LspSaga keymaps
 map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
--- map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "Lspsaga hover doc" })

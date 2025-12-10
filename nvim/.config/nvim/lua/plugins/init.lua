@@ -64,10 +64,19 @@ return {
 					documentation = {
 						auto_show = true,
 						auto_show_delay_ms = 200,
+						window = {
+							border = "rounded",
+						},
+					},
+					menu = {
+						border = "rounded",
 					},
 				},
 				signature = {
 					enabled = true,
+					window = {
+						border = "rounded",
+					},
 				},
 			})
 		end,
@@ -83,12 +92,6 @@ return {
 		end,
 	},
 
-	{
-		"folke/tokyonight.nvim",
-		lazy = false,
-		priority = 1000,
-		config = function() end,
-	},
 	{
 		"akinsho/bufferline.nvim",
 		event = "VeryLazy",

@@ -3,7 +3,7 @@ local M = {}
 M.setup = function()
 	require("lspsaga").setup({
 		ui = {
-			border = "single",
+			border = "rounded",
 			beacon = { enable = false },
 			lightbulb = { enable = false },
 		},
