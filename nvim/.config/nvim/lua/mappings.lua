@@ -65,3 +65,7 @@ map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })
 -- LspSaga keymaps
 map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
+
+map("n", "<leader>Z", function()
+	require("zen-mode").open()
+end, {desc = "Open Zen Mode"})
