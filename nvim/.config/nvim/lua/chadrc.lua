@@ -4,7 +4,7 @@
 -- This table is used to override the default NvChad configuration.
 local M = {
 	base46 = {
-		theme = "github_dark", -- default NvChad theme if none saved
+		theme = "tokyonight", -- default NvChad theme if none saved
 
 		hl_add = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
@@ -77,7 +77,7 @@ local M = {
 			["@include"] = { italic = true },
 		},
 
-		theme_toggle = { "github_dark", "github_dark" },
+		theme_toggle = { "tokyonight", "tokyonight" },
 	},
 
 	ui = {
@@ -92,7 +92,7 @@ local M = {
 			hl_override = {},
 			hl_add = {},
 			border = "rounded",
-			theme = "github_dark",
+			theme = "tokyonight",
 		},
 
 		telescope = { style = "bordered" }, -- borderless / bordered
@@ -130,7 +130,7 @@ local M = {
 			modules = nil,
 		},
 
-		theme = "github_dark",
+		theme = "tokyonight",
 	},
 
 	term = {
