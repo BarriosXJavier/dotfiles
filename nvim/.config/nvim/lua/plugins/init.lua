@@ -92,14 +92,6 @@ return {
 		end,
 	},
 
-	{
-		"akinsho/bufferline.nvim",
-		event = "VeryLazy",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		config = function()
-			require("configs.bufferline")
-		end,
-	},
 
 	{
 		"nvimdev/lspsaga.nvim",

@@ -4,7 +4,7 @@
 -- This table is used to override the default NvChad configuration.
 local M = {
 	base46 = {
-		theme = "tokyonight", -- default NvChad theme if none saved
+		theme = "catppuccin", -- default NvChad theme if none saved
 
 		hl_add = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
@@ -35,29 +35,29 @@ local M = {
 			-- Other common list highlights
 			FloatBorder = { fg = "blue" },
 			-- Keywords and language constructs
-			Keyword = { italic = true },
-			["@keyword"] = { italic = true },
-			["@keyword.function"] = { italic = true },
-			["@keyword.return"] = { italic = true },
-			["@keyword.operator"] = {},
+			Keyword = { bold = true },
+			["@keyword"] = { bold = true },
+			["@keyword.function"] = { bold = true },
+			["@keyword.return"] = { bold = true },
+			["@keyword.operator"] = { bold = true },
 
 			-- Conditionals and loops
-			Conditional = { italic = true },
-			Repeat = { italic = true },
-			["@keyword.conditional"] = { italic = true },
-			["@keyword.repeat"] = { italic = true },
+			Conditional = { bold = true },
+			Repeat = { bold = true },
+			["@keyword.conditional"] = { bold = true },
+			["@keyword.repeat"] = { bold = true },
 
 			-- Functions and methods
-			Function = {},
-			["@function"] = {},
-			["@function.builtin"] = {},
-			["@method"] = {},
+			Function = { bold = true },
+			["@function"] = { bold = true },
+			["@function.builtin"] = { bold = true },
+			["@method"] = { bold = true },
 
 			-- Types and classes
-			Type = {},
-			["@type"] = {},
-			["@type.builtin"] = {},
-			["@class"] = {},
+			Type = { bold = true },
+			["@type"] = { bold = true },
+			["@type.builtin"] = { bold = true },
+			["@class"] = { bold = true },
 
 			-- Constants and variables
 			Constant = {},
@@ -70,14 +70,14 @@ local M = {
 			["@string"] = {},
 			["@string.escape"] = {},
 
-			-- Other useful highlights
-			Statement = {},
-			Exception = {},
-			Include = { italic = true },
-			["@include"] = { italic = true },
+			-- Other
+			Statement = { bold = true },
+			Exception = { bold = true },
+			Include = { bold = true },
+			["@include"] = { bold = true },
 		},
 
-		theme_toggle = { "tokyonight", "tokyonight" },
+		theme_toggle = { "catppuccin", "tokyonight" },
 	},
 
 	ui = {
@@ -92,7 +92,7 @@ local M = {
 			hl_override = {},
 			hl_add = {},
 			border = "rounded",
-			theme = "tokyonight",
+			theme = "catppuccin",
 		},
 
 		telescope = { style = "bordered" }, -- borderless / bordered
@@ -129,8 +129,7 @@ local M = {
 			order = { "treeOffset", "buffers", "tabs", "btns" },
 			modules = nil,
 		},
-
-		theme = "tokyonight",
+		theme = "catppuccin",
 	},
 
 	term = {
