@@ -6,27 +6,28 @@ window_border_width 0
 background_opacity 1.0
 hide_window_decorations yes
 
+# BEGIN_KITTY_FONTS
+font_family      family="Iosevka Nerd Font"
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+
 # --- Font ---
-# font_family Iosevka Nerd Font Propo
 font_size 12.0
-# bold_font      Iosevka Nerd Font Propo
-# italic_font    Iosevka Nerd Font Propo
-# bold_italic_font Iosevka Nerd Font Propo
 disable_ligatures never
 adjust_line_height 100%
 adjust_column_width 100%
-force_ltr yes
 bold_font_weight normal
-
+text_composition_strategy legacy
+text_antialising true
 # --- Cursor ---
 cursor_shape beam
-cursor_beam_thickness 0.15
+cursor_beam_thickness 0.10
 cursor_blink_interval 0.5
 cursor_stop_blinking_after 0
 
 # --- Scrolling ---
 scrollback_lines 10000
-scroll_speed 3.0
 
 # --- Clipboard ---
 map ctrl+shift+c copy_to_clipboard
@@ -37,19 +38,8 @@ copy_on_select yes
 
 # --- Mouse ---
 mouse_hide_wait 0.01
-map middle_button paste_from_selection
-
-
 
 # BEGIN_KITTY_THEME
 # GitHub Dark
 include current-theme.conf
 # END_KITTY_THEME
-
-
-# BEGIN_KITTY_FONTS
-font_family      family="Iosevka Nerd Font Mono Propo"
-bold_font        auto
-italic_font      auto
-bold_italic_font auto
-# END_KITTY_FONTS
