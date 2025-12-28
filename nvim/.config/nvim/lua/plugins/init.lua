@@ -4,6 +4,24 @@ return {
 		cmd = "ConformInfo",
 		opts = require("configs.conform"),
 	},
+	{
+		"stevearc/oil.nvim",
+		---@module 'oil'
+		---@type oil.SetupOpts
+		opts = {},
+		-- Optional dependencies
+		dependencies = { { "nvim-tree/nvim-web-devicons", opts = {} } },
+		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+		lazy = false,
+	},
+
+	{
+		"windwp/nvim-ts-autotag",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
+	},
 
 	{
 		"williamboman/mason-lspconfig.nvim",
@@ -91,7 +109,6 @@ return {
 			vim.diagnostic.config({ virtual_text = false, underline = true }) -- Disable Neovim's default virtual text diagnostics
 		end,
 	},
-
 
 	{
 		"nvimdev/lspsaga.nvim",
