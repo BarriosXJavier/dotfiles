@@ -4,7 +4,7 @@ ZSH_THEME=""   # Starship handles prompt
 plugins=(
   git
   zsh-autosuggestions
-  fast-syntax-highlighting  # Faster than zsh-syntax-highlighting
+  fast-syntax-highlighting
   zsh-vi-mode
 )
 source $ZSH/oh-my-zsh.sh
@@ -17,11 +17,33 @@ export GIT_EDITOR=nvim
 export MANPAGER="nvim +Man!"
 
 # --- Environment Variables ---
+export BUN_INSTALL="$HOME/.bun"
 export NVM_DIR="$HOME/.nvm"
+export GOPATH="$HOME/go"
 
-# --- PATH ---
-export PATH="/opt/bin:/opt/nvim-linux-x86_64/bin:$HOME/.bun/bin:/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.nvm/versions/node/v22.16.0/bin:$HOME/.zvm/bin:$HOME/.zvm/self:$HOME/bin:/usr/local/bin:/usr/sbin:/sbin:$PATH"
+# --- PATH (safe) ---
+# Always start with system defaults
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin"
+
+# Add custom tool paths
+export PATH="$PATH:/opt/bin"
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+export PATH="$PATH:$BUN_INSTALL/bin"
+export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin"
+export PATH="$PATH:$NVM_DIR/versions/node/v22.16.0/bin"
+export PATH="$PATH:$HOME/.zvm/bin:$HOME/.zvm/self"
 export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
+export PATH="$PATH:$HOME/.local/kitty.app/bin"
+export PATH="$PATH:$HOME/.opencode/bin"
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+# Bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
 # --- Prompt ---
 eval "$(starship init zsh)"
 
@@ -58,20 +80,10 @@ alias reload="source ~/.zshrc"
 [[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 [[ -s ~/.luaver/luaver ]] && source ~/.luaver/luaver
 [[ -s ~/.luaver/completions/luaver.bash ]] && source ~/.luaver/completions/luaver.bash
-
-if [[ -f "$HOME/.config/geminicli/secrets.env" ]]; then
-  source "$HOME/.config/geminicli/secrets.env"
-fi
-
+[[ -f "$HOME/.config/geminicli/secrets.env" ]] && source "$HOME/.config/geminicli/secrets.env"
 
 # --- Atuin (better shell history) ---
-if [[ -f "$HOME/.atuin/bin/env" ]]; then
-  . "$HOME/.atuin/bin/env"
-  eval "$(atuin init zsh)"
-fi
-
-# --- Bun ---
-[[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
+[[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env" && eval "$(atuin init zsh)"
 
 # --- Terminal Title ---
 case "$TERM" in
@@ -81,9 +93,7 @@ case "$TERM" in
 esac
 
 # --- Custom Functions ---
-mkcd() {
-  mkdir -p "$1" && cd "$1"
-}
+mkcd() { mkdir -p "$1" && cd "$1"; }
 
 extract() {
   if [[ -f "$1" ]]; then
@@ -112,20 +122,10 @@ zvm_after_init_commands+=('bindkey "^R" history-incremental-search-backward')
 # Always use a steady block cursor
 echo -ne "\e[1 q"
 
-
-# pnpm
-export PNPM_HOME="/home/maksim/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-# bun completions
-[ -s "/home/maksim/.bun/_bun" ] && source "/home/maksim/.bun/_bun"
-
+# --- SSH Agent ---
 eval "$(ssh-agent -s)" > /dev/null
 ssh-add ~/.ssh/id_ed25519 2>/dev/null
 
-# opencode
-export PATH=/home/maksim/.opencode/bin:$PATH
+
+# bun completions
+[ -s "/home/maksim/.bun/_bun" ] && source "/home/maksim/.bun/_bun"

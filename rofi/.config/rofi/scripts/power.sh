@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-theme="$HOME/.config/polybar/forest/scripts/rofi/launcher.rasi"
+@theme "/usr/share/rofi/themes/gruvbox-dark-soft.rasi"
 
 options="
   Lock
