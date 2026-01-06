@@ -8,6 +8,7 @@ tmux/.tmux/
 
 # Emacs - auto-generated/package directories
 emacs/.emacs.d/straight/
+emacs/.emacs.d/elpa/
 emacs/.emacs.d/eln-cache/
 emacs/.emacs.d/auto-save-list/
 emacs/.emacs.d/.cache/
@@ -20,3 +21,4 @@ emacs/.emacs.d/bookmarks
 emacs/.emacs.d/history
 emacs/.emacs.d/places
 emacs/.emacs.d/projectile-bookmarks.eld
+emacs/.emacs.d/.lsp-session-v1
