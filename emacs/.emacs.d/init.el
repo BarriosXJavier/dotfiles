@@ -23,7 +23,7 @@
   (load bootstrap-file nil 'nomessage))
 
 ;; Syntax: (set-frame-font "FONT-NAME-SIZE" KEEP-SIZE ALL-FRAMES)
-(set-frame-font "Iosevka Nerd Font-12" nil t)
+(set-frame-font "JetbrainsMono Nerd Font-12" nil t)
 
 (setq package-enable-at-startup nil)
 
@@ -88,11 +88,16 @@
     (setq display-line-numbers 'relative))
   (add-hook 'prog-mode-hook #'ab/enable-line-numbers))
 
+(use-package nerd-icons
+  :demand)
+
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1))
-
-(use-package nerd-icons)
+  :after nerd-icons
+  :init
+  (setq doom-modeline-icon t)
+  :hook
+  (after-init . doom-modeline-mode))
 
 ;; which-key: shows available keybindings in popup
 (use-package which-key
@@ -172,6 +177,11 @@
         treemacs-follow-mode t
         treemacs-filewatch-mode t
         treemacs-is-never-other-window t))
+
+(use-package treemacs-nerd-icons
+  :after (treemacs nerd-icons)
+  :config
+  (treemacs-load-theme "nerd-icons"))
 
 (use-package treemacs-projectile
   :after (treemacs projectile))

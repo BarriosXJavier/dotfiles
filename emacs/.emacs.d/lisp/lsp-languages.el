@@ -27,13 +27,12 @@
   (global-company-mode 1))                  ;; Enable globally
 
 ;; Icons for completion items
-(use-package all-the-icons
-  :if (display-graphic-p))
-
 (use-package company-box
+  :after (company nerd-icons)
   :hook (company-mode . company-box-mode)
   :config
-  (setq company-box-icons-alist 'company-box-icons-all-the-icons
+  (setq company-box-enable-icon t
+        company-box-icons-alist 'company-box-icons-nerd-icons
         company-box-max-candidates 50
         company-box-doc-enable t))
 
