@@ -76,10 +76,10 @@ alias reload="source ~/.zshrc"
 # --- Conditional Environment Sources ---
 [[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
-[[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+# [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
 [[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 [[ -s ~/.luaver/luaver ]] && source ~/.luaver/luaver
-[[ -s ~/.luaver/completions/luaver.bash ]] && source ~/.luaver/completions/luaver.bash
+# [[ -s ~/.luaver/completions/luaver.bash ]] && source ~/.luaver/completions/luaver.bash
 [[ -f "$HOME/.config/geminicli/secrets.env" ]] && source "$HOME/.config/geminicli/secrets.env"
 
 # --- Atuin (better shell history) ---

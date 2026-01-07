@@ -1,0 +1,15 @@
+theme = dark:Catppuccin Mocha, light:Catppuccin Latte
+font-family = Iosevka Nerd Font
+font-size = 13
+
+# Look and Feel
+cursor-style-blink             = true
+adjust-underline-position      = 3
+bold-is-bright                 = true
+link-url                       = true
+mouse-hide-while-typing        = true
+clipboard-paste-protection     = true
+clipboard-trim-trailing-spaces = true
+copy-on-select                 = true
+shell-integration              = zsh
+window-decoration              = false
