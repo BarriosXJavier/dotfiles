@@ -34,47 +34,41 @@ local M = {
 
 			-- Other common list highlights
 			FloatBorder = { fg = "blue" },
-			-- Keywords and language constructs
-			Keyword = { bold = true },
-			["@keyword"] = { bold = true },
-			["@keyword.function"] = { bold = true },
-			["@keyword.return"] = { bold = true },
-			["@keyword.operator"] = { bold = true },
 
+			Keyword = {},
+			["@keyword"] = {},
+			["@keyword.function"] = {},
+			["@keyword.return"] = {},
+			["@keyword.operator"] = {},
 			-- Conditionals and loops
-			Conditional = { bold = true },
-			Repeat = { bold = true },
-			["@keyword.conditional"] = { bold = true },
-			["@keyword.repeat"] = { bold = true },
-
+			Conditional = {},
+			Repeat = {},
+			["@keyword.conditional"] = {},
+			["@keyword.repeat"] = {},
 			-- Functions and methods
-			Function = { bold = true },
-			["@function"] = { bold = true },
-			["@function.builtin"] = { bold = true },
-			["@method"] = { bold = true },
-
+			Function = {},
+			["@function"] = {},
+			["@function.builtin"] = { italic = true },
+			["@method"] = {},
 			-- Types and classes
-			Type = { bold = true },
-			["@type"] = { bold = true },
-			["@type.builtin"] = { bold = true },
-			["@class"] = { bold = true },
-
+			Type = { italic = true },
+			["@type"] = { italic = false },
+			["@type.builtin"] = { italic = true },
+			["@class"] = { italic = true },
 			-- Constants and variables
 			Constant = {},
 			["@constant"] = {},
 			["@constant.builtin"] = {},
 			["@variable.builtin"] = {},
-
 			-- Strings and special chars
 			String = {},
 			["@string"] = {},
-			["@string.escape"] = {},
-
+			["@string.escape"] = { italic = true },
 			-- Other
-			Statement = { bold = true },
+			Statement = {},
 			Exception = { bold = true },
-			Include = { bold = true },
-			["@include"] = { bold = true },
+			Include = {},
+			["@include"] = {},
 		},
 
 		theme_toggle = { "catppuccin", "tokyonight" },
