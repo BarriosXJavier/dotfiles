@@ -123,21 +123,6 @@ return {
 	},
 
 	{
-		"folke/zen-mode.nvim",
-		opts = {
-			window = {
-				width = 0.85,
-			},
-			plugins = {
-				kitty = {
-					enabled = true,
-				},
-			},
-		},
-		lazy = false,
-	},
-
-	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = {
 			ensure_installed = {
