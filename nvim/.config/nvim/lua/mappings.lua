@@ -18,11 +18,6 @@ map("n", "<C-Right>", ":vertical resize +2<CR>", { noremap = true, desc = "Resiz
 map("n", "<C-d>", "<C-d>zz", { noremap = true, desc = "Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { noremap = true, desc = "Scroll up and center" })
 
--- map("i", "<M-l>", "<Plug>(copilot-accept)", { desc = "Copilot: Accept suggestion" })
--- map("i", "<M-]>", "<Plug>(copilot-next)", { desc = "Copilot: Next suggestion" })
--- map("i", "<M-[>", "<Plug>(copilot-previous)", { desc = "Copilot: Previous suggestion" })
--- map("i", "<C-]>", "<Plug>(copilot-dismiss)", { desc = "Copilot: Dismiss suggestion" })
-
 -- Trouble nvim
 map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
 map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
@@ -65,7 +60,3 @@ map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })
 -- LspSaga keymaps
 map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
-
-map("n", "<leader>Z", function()
-	require("zen-mode").open()
-end, {desc = "Open Zen Mode"})
