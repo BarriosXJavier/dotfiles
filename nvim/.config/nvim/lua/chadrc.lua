@@ -7,12 +7,17 @@ local M = {
 		theme = "catppuccin", -- default NvChad theme if none saved
 
 		hl_add = {
-			WinSeparator = { fg = "#565f89", bg = "none" },
-			NvimTreeWinSeparator = { fg = "#565f89", bg = "none" },
-			CursorLineNr = { fg = "#7aa2f7", bold = true },
+			-- WinSeparator = { fg = "#565f89", bg = "none" },
+			-- NvimTreeWinSeparator = { fg = "#565f89", bg = "none" },
+			-- CursorLineNr = { fg = "#7aa2f7", bold = true },
 		},
 
 		hl_override = {
+			WinSeparator = { fg = "#565f89", bg = "none" },
+			NvimTreeWinSeparator = { fg = "#565f89", bg = "none" },
+			LineNr = { fg = "#565f89" },
+			CursorLineNr = { fg = "#7aa2f7", bold = true },
+
 			Comment = { fg = "#bcc0cc", italic = true },
 			["@comment"] = { italic = true },
 
@@ -37,7 +42,7 @@ local M = {
 
 			Keyword = {},
 			["@keyword"] = {},
-			["@keyword.function"] = {},
+			["@keyword.function"] = { bold = true },
 			["@keyword.return"] = {},
 			["@keyword.operator"] = {},
 			-- Conditionals and loops
