@@ -130,3 +130,4 @@ ssh-add ~/.ssh/id_ed25519 2>/dev/null
 [[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
 [[ -f "$HOME/.config/geminicli/secrets.env" ]] && source "$HOME/.config/geminicli/secrets.env"
 
+. "/home/maksim/.deno/env"

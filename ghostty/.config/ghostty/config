@@ -13,3 +13,4 @@ clipboard-trim-trailing-spaces = true
 copy-on-select                 = true
 shell-integration              = zsh
 window-decoration              = false
+background-opacity             = 0.8

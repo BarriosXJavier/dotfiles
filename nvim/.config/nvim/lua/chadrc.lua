@@ -5,18 +5,33 @@
 local M = {
 	base46 = {
 		theme = "catppuccin", -- default NvChad theme if none saved
-
-		hl_add = {
-			-- WinSeparator = { fg = "#565f89", bg = "none" },
-			-- NvimTreeWinSeparator = { fg = "#565f89", bg = "none" },
-			-- CursorLineNr = { fg = "#7aa2f7", bold = true },
-		},
+		hl_add = {},
 
 		hl_override = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
 			NvimTreeWinSeparator = { fg = "#565f89", bg = "none" },
 			LineNr = { fg = "#565f89" },
 			CursorLineNr = { fg = "#7aa2f7", bold = true },
+
+			-- Core editor
+			Normal = { bg = "none" },
+			NormalFloat = { bg = "none" },
+			SignColumn = { bg = "none" },
+			EndOfBuffer = { bg = "none" },
+			MsgArea = { bg = "none" },
+
+			-- Completion menu (LSP / cmp)
+			Pmenu = { bg = "none" },
+			PmenuSbar = { bg = "none" },
+			PmenuThumb = { bg = "none" },
+
+			-- Floating docs / hover
+			FloatBorder = { bg = "none" },
+
+			-- NvimTree
+			NvimTreeNormal = { bg = "none" },
+			NvimTreeNormalNC = { bg = "none" },
+			NvimTreeEndOfBuffer = { bg = "none" },
 
 			Comment = { fg = "#bcc0cc", italic = true },
 			["@comment"] = { italic = true },
@@ -36,9 +51,6 @@ local M = {
 			NvimTreeCursorLine = { bg = "one_bg2", bold = true },
 			NvimTreeOpenedFile = { fg = "green", bold = true, underline = true, italic = true },
 			NvimTreeSpecialFile = { fg = "yellow", underline = true, bold = true, italic = true },
-
-			-- Other common list highlights
-			FloatBorder = { fg = "blue" },
 
 			Keyword = {},
 			["@keyword"] = {},

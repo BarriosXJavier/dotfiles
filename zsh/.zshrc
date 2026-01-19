@@ -129,3 +129,4 @@ ssh-add ~/.ssh/id_ed25519 2>/dev/null
 
 # bun completions
 [ -s "/home/maksim/.bun/_bun" ] && source "/home/maksim/.bun/_bun"
+. "/home/maksim/.deno/env"
