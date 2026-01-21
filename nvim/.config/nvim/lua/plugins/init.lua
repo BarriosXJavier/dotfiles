@@ -57,7 +57,7 @@ return {
 					sources = { "cmdline", "path", "buffer" },
 				},
 				sources = {
-					default = { "lsp", "copilot", "path", "snippets", "buffer" },
+					default = { "lsp", "path", "snippets", "buffer" },
 					providers = {
 						lsp = {
 							min_keyword_length = 0,
@@ -66,12 +66,6 @@ return {
 						snippets = {
 							min_keyword_length = 2,
 							score_offset = 5,
-						},
-						copilot = {
-							name = "copilot",
-							module = "blink-cmp-copilot",
-							score_offset = 8,
-							async = true,
 						},
 					},
 				},
@@ -220,8 +214,6 @@ return {
 
 	{ "tpope/vim-dadbod" },
 
-	{ "ThePrimeagen/vim-be-good", cmd = "VimBeGood" },
-
 	{
 		"jiaoshijie/undotree",
 		dependencies = "nvim-lua/plenary.nvim",
@@ -251,37 +243,6 @@ return {
 			-- sqls.nvim provides additional commands and features for sqls
 			require("sqls").setup({})
 		end,
-	},
-
-	-- Copilot core (auth + backend)
-	{
-		"zbirenbaum/copilot.lua",
-		event = "InsertEnter",
-		config = function()
-			require("copilot").setup({
-				suggestion = {
-					enabled = false,
-					auto_trigger = true,
-					debounce = 75,
-					keymap = {},
-				},
-				panel = { enabled = true },
-			})
-		end,
-	},
-
-	-- Copilot Chat
-	{
-		"CopilotC-Nvim/CopilotChat.nvim",
-		event = "VeryLazy",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		build = "make tiktoken",
-		opts = {},
-	},
-
-	{
-		"giuxtaposition/blink-cmp-copilot",
-		dependencies = { "zbirenbaum/copilot.lua" },
 	},
 
 	{

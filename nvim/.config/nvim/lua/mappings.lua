@@ -31,27 +31,6 @@ map(
 map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List" })
 map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List" })
 
--- Copilot mappings
--- Copilot inline suggestions
-map("i", "<M-l>", function()
-	require("copilot.suggestion").accept()
-end, { desc = "Copilot: accept suggestion" })
-
-map("i", "<M-]>", function()
-	require("copilot.suggestion").next()
-end, { desc = "Copilot: next suggestion" })
-
-map("i", "<M-[>", function()
-	require("copilot.suggestion").prev()
-end, { desc = "Copilot: previous suggestion" })
-
-map("i", "<C-e>", function()
-	require("copilot.suggestion").dismiss()
-end, { desc = "Copilot: dismiss suggestion" })
-
-map("n", "<leader>cc", "<cmd>CopilotChatOpen<cr>", { desc = "Copilot Open Chat" })
-map("n", "<leader>cx", "<cmd>CopilotChatClose<cr>", { desc = "Copilot Close Chat" })
-
 map("n", "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", { desc = "Toggle Undo Tree" })
 
 -- nvim blame
@@ -60,3 +39,5 @@ map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })
 -- LspSaga keymaps
 map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
+
+map("n", "<leader>o", "<cmd>Oil<CR>", { desc = "Oil File Manager" })
