@@ -1,17 +1,32 @@
-theme = dark:Catppuccin Mocha, light:Catppuccin Latte
-font-family = JetbrainsMono Nerd Font 
+adjust-cell-height = 10%
+background-blur-radius = 60
+background-opacity = 1.00
+bold-is-bright = false
+confirm-close-surface = false
+cursor-style = bar
+font-family = Iosevka Nerd Font
 font-size = 12
+font-thicken = true
+gtk-single-instance = true
+mouse-hide-while-typing = true
+quick-terminal-position = center
+selection-background = #2d3f76
+selection-foreground = #c8d3f5
+shell-integration = detect
+shell-integration-features = cursor,sudo
+term = xterm-256color
+title = GhosTTY
+unfocused-split-opacity = 0.5
+wait-after-command = false
+window-height = 32
+window-save-state = always
+window-theme = dark
+window-width = 110
+theme = catppuccin mocha
 
-# Look and Feel
-cursor-style-blink             = true
-adjust-underline-position      = 3
-bold-is-bright                 = true
-link-url                       = true
-mouse-hide-while-typing        = true
-clipboard-paste-protection     = true
-clipboard-trim-trailing-spaces = true
-copy-on-select                 = true
-shell-integration              = zsh
-window-decoration              = false
-background-opacity             = 1.0
-fullscreen                     = true
+
+# Theme switching (optional): managed by your theme changer (symlink or generated file).
+# config-file = ?~/.config/ghostty/theme.conf
+
+# Wallust (optional): wallust template should write Ghostty colors here; it will override theme colors.
+# config-file = ?~/.config/ghostty/wallust.conf
