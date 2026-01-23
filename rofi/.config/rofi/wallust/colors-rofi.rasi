@@ -2,6 +2,7 @@
  /* wallust template - colors-rofi */
 
 * {
+
 active-background: #5A4649;
 active-foreground: #FCF3F0;
 normal-background: #151415;
