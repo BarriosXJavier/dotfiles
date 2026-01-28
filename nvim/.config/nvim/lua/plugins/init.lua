@@ -170,6 +170,7 @@ return {
 	{
 		"FabijanZulj/blame.nvim",
 		lazy = true,
+    event = "BufReadPre",
 		config = function()
 			require("blame").setup({})
 		end,
