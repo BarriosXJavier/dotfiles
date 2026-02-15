@@ -10,6 +10,10 @@ require("mason-lspconfig").setup({
 	automatic_installation = true,
 	handlers = {
 		function(server_name)
+			-- Temporarily skip css_variables for debugging
+			if server_name == "css_variables" then
+				return
+			end
 			-- Enable each server installed by Mason
 			vim.lsp.enable(server_name)
 		end,

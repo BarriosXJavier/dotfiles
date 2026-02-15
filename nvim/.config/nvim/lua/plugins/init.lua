@@ -240,10 +240,6 @@ return {
 	{
 		"nanotee/sqls.nvim",
 		ft = { "sql", "mysql", "plsql" },
-		config = function()
-			-- sqls.nvim provides additional commands and features for sqls
-			require("sqls").setup({})
-		end,
 	},
 
 	{
