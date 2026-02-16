@@ -32,8 +32,8 @@ rm -f "$RUNTIME_DIR"/waybar-cava.*.conf 2>/dev/null || true
 # Use a fixed config file path (not mktemp) for reliable cleanup
 cat >"$config_file" <<EOF
 [general]
-framerate = 30
-bars = 10
+framerate = 15
+bars = 8
 
 [input]
 method = pulse
