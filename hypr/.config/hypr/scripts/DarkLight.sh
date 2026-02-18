@@ -25,10 +25,9 @@ qt5ct_light="$HOME/.config/qt5ct/colors/Catppuccin-Latte.conf"
 qt6ct_dark="$HOME/.config/qt6ct/colors/Catppuccin-Mocha.conf"
 qt6ct_light="$HOME/.config/qt6ct/colors/Catppuccin-Latte.conf"
 
-# intial kill process
-for pid in waybar rofi swaync ags swaybg; do
-    killall -SIGUSR1 "$pid"
-done
+# Note: Removed premature SIGUSR1 loop that was causing apps to reload
+# before theme changes were fully applied. Processes are properly
+# killed and restarted at the end of the script via Refresh.sh
 
 
 # Initialize swww if needed
@@ -90,8 +89,9 @@ set_waybar_style() {
     fi
 }
 
-# Call the function after determining the mode
-set_waybar_style "$next_mode"
+# Note: Waybar style switching disabled to preserve user's current style
+# The wallust color templates will still update waybar colors dynamically
+# set_waybar_style "$next_mode"
 notify_user "$next_mode"
 
 
@@ -243,6 +243,15 @@ set_custom_gtk_theme() {
 
 # Call the function to set GTK theme and icon theme based on mode
 set_custom_gtk_theme "$next_mode"
+
+# Send DBus signal to notify GTK apps of theme change
+# This helps apps like Nautilus, etc. pick up the new theme without restart
+if command -v dbus-send &> /dev/null; then
+    dbus-send --session --dest=org.freedesktop.DBus \
+        --type=signal /org/freedesktop/DBus \
+        org.freedesktop.DBus.NameOwnerChanged \
+        string:"org.gnome.SettingsDaemon.Color" string:"" string:"" 2>/dev/null || true
+fi
 
 # Update theme mode for the next cycle
 update_theme_mode

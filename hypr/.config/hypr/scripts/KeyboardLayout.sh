@@ -9,8 +9,7 @@ SCRIPTSDIR="$HOME/.config/hypr/scripts"
 ignore_patterns=(
   "--(avrcp)"
   "Bluetooth Speaker"
-  "Other Device 
-  Name"
+  "Other Device Name"
 )
 
 # Function to get keyboard names

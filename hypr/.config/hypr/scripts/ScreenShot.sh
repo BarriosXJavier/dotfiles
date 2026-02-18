@@ -82,28 +82,28 @@ countdown() {
 
 # take shots
 shotnow() {
-	cd ${dir} && grim - | tee "$file" | wl-copy
-	sleep 2
+	cd "${dir}" && grim - | tee "$file" | wl-copy
+	sleep 0.5
 	notify_view
 }
 
 shot5() {
 	countdown '5'
-	sleep 1 && cd ${dir} && grim - | tee "$file" | wl-copy
-	sleep 1
+	sleep 1 && cd "${dir}" && grim - | tee "$file" | wl-copy
+	sleep 0.5
 	notify_view
 }
 
 shot10() {
 	countdown '10'
-	sleep 1 && cd ${dir} && grim - | tee "$file" | wl-copy
+	sleep 1 && cd "${dir}" && grim - | tee "$file" | wl-copy
 	notify_view
 }
 
 shotwin() {
 	w_pos=$(hyprctl activewindow | grep 'at:' | cut -d':' -f2 | tr -d ' ' | tail -n1)
 	w_size=$(hyprctl activewindow | grep 'size:' | cut -d':' -f2 | tr -d ' ' | tail -n1 | sed s/,/x/g)
-	cd ${dir} && grim -g "$w_pos $w_size" - | tee "$file" | wl-copy
+	cd "${dir}" && grim -g "$w_pos $w_size" - | tee "$file" | wl-copy
 	notify_view
 }
 
@@ -125,7 +125,7 @@ shotactive() {
     active_window_path="${dir}/${active_window_file}"
 
     hyprctl -j activewindow | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' | grim -g - "${active_window_path}"
-	sleep 1
+	sleep 0.5
     notify_view "active"
 }
 

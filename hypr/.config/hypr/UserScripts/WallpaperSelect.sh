@@ -69,7 +69,7 @@ RANDOM_PIC="${PICS[$((RANDOM % ${#PICS[@]}))]}"
 RANDOM_PIC_NAME=". random"
 
 # Rofi command
-rofi_command="rofi -i -show -dmenu -config $rofi_theme -theme-str $rofi_override"
+rofi_command=(rofi -i -show -dmenu -config "$rofi_theme" -theme-str "$rofi_override")
 
 # Sorting Wallpapers
 menu() {
@@ -140,9 +140,9 @@ apply_image_wallpaper() {
 
   # Run additional scripts (pass the image path to avoid cache race conditions)
   "$SCRIPTSDIR/WallustSwww.sh" "$image_path"
-  sleep 2
-  "$SCRIPTSDIR/Refresh.sh"
   sleep 1
+  "$SCRIPTSDIR/Refresh.sh"
+  sleep 0.5
 
 }
 
@@ -162,7 +162,7 @@ apply_video_wallpaper() {
 
 # Main function
 main() {
-  choice=$(menu | $rofi_command)
+  choice=$(menu | "${rofi_command[@]}")
   choice=$(echo "$choice" | xargs)
   RANDOM_PIC_NAME=$(echo "$RANDOM_PIC_NAME" | xargs)
 
