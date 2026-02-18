@@ -1,6 +1,3 @@
-(tool-bar-mode -1)             ; Hide the outdated icons
-(scroll-bar-mode -1)           ; Hide the always-visible scrollbar
-(menu-bar-mode -1)             ; Hide the menu bar
 (setq inhibit-splash-screen t) ; Remove the "Welcome to GNU Emacs" splash screen
 (setq use-file-dialog nil)     ; Ask for textual confirmation instead of GUI
 (setq frame-resize-pixelwise t) ; Allow pixel-level resizing
@@ -23,9 +20,7 @@
   (load bootstrap-file nil 'nomessage))
 
 ;; Syntax: (set-frame-font "FONT-NAME-SIZE" KEEP-SIZE ALL-FRAMES)
-(set-frame-font "JetbrainsMono Nerd Font-12" nil t)
-
-(setq package-enable-at-startup nil)
+(set-frame-font "Iosevka Nerd Font Mono-12" nil t)
 
 (straight-use-package 'use-package)
 
@@ -202,3 +197,7 @@
 
 (add-to-list 'load-path (file-name-concat user-emacs-directory "lisp"))
 (require 'lsp-languages)
+
+;; Reset GC threshold after init for better runtime performance
+(add-hook 'emacs-startup-hook
+          (lambda () (setq gc-cons-threshold (* 16 1024 1024))))

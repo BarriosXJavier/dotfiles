@@ -1,23 +1,34 @@
 -- lua/configs/dap/node.lua
 local dap = require("dap")
 
-dap.adapters.node2 = {
-  type = "executable",
-  command = "node",
-  args = {
-    os.getenv("HOME") .. "/.local/share/nvim/mason/packages/node-debug2-adapter/out/src/nodeDebug.js",
+-- Use js-debug-adapter (modern replacement for node-debug2)
+dap.adapters["pwa-node"] = {
+  type = "server",
+  host = "localhost",
+  port = "${port}",
+  executable = {
+    command = "node",
+    args = {
+      vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+      "${port}",
+    },
   },
 }
 
 dap.configurations.javascript = {
   {
     name = "Launch file",
-    type = "node2",
+    type = "pwa-node",
     request = "launch",
     program = "${file}",
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
-    protocol = "inspector",
-    console = "integratedTerminal",
+  },
+  {
+    name = "Attach",
+    type = "pwa-node",
+    request = "attach",
+    processId = require("dap.utils").pick_process,
+    cwd = vim.fn.getcwd(),
   },
 }

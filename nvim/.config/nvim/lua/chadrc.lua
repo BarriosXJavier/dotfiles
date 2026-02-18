@@ -4,14 +4,13 @@
 -- This table is used to override the default NvChad configuration.
 local M = {
 	base46 = {
-		theme = "catppuccin", -- default NvChad theme if none saved
+		theme = "github_dark", -- default NvChad theme if none saved
 		hl_add = {},
 
 		hl_override = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
 			NvimTreeWinSeparator = { fg = "#565f89", bg = "none" },
 			LineNr = { fg = "#565f89" },
-			CursorLineNr = { fg = "#7aa2f7", bold = true },
 
 			-- Core editor
 			Normal = { bg = "none" },
@@ -33,9 +32,6 @@ local M = {
 			NvimTreeNormalNC = { bg = "none" },
 			NvimTreeEndOfBuffer = { bg = "none" },
 
-			Comment = { fg = "#bcc0cc", italic = true },
-			["@comment"] = { italic = true },
-
 			-- Diagnostics: use underline instead of undercurl (squiggly)
 			DiagnosticUnderlineError = { underline = true, sp = "red" },
 			DiagnosticUnderlineWarn = { underline = false, sp = "yellow" },
@@ -52,43 +48,38 @@ local M = {
 			NvimTreeOpenedFile = { fg = "green", bold = true, underline = true, italic = true },
 			NvimTreeSpecialFile = { fg = "yellow", underline = true, bold = true, italic = true },
 
-			Keyword = {},
-			["@keyword"] = {},
+			Keyword = { bold = true },
+			["@keyword"] = { bold = true },
 			["@keyword.function"] = { bold = true },
-			["@keyword.return"] = {},
-			["@keyword.operator"] = {},
-			-- Conditionals and loops
-			Conditional = {},
-			Repeat = {},
-			["@keyword.conditional"] = {},
-			["@keyword.repeat"] = {},
-			-- Functions and methods
-			Function = {},
-			["@function"] = {},
-			["@function.builtin"] = { italic = true },
-			["@method"] = {},
-			-- Types and classes
-			Type = { italic = true },
-			["@type"] = { italic = false },
-			["@type.builtin"] = { italic = true },
-			["@class"] = { italic = true },
-			-- Constants and variables
-			Constant = {},
-			["@constant"] = {},
-			["@constant.builtin"] = {},
-			["@variable.builtin"] = {},
-			-- Strings and special chars
-			String = {},
-			["@string"] = {},
-			["@string.escape"] = { italic = true },
-			-- Other
-			Statement = {},
+			["@keyword.return"] = { bold = true },
+			["@keyword.operator"] = { bold = true },
+
+			Conditional = { bold = true },
+			Repeat = { bold = true },
+			["@keyword.conditional"] = { bold = true },
+			["@keyword.repeat"] = { bold = true },
+
+			Function = { bold = true },
+			["@function.builtin"] = { bold = true },
+
+			["@type.builtin"] = { bold = true },
+
+			["@constant.builtin"] = { bold = true },
+			["@variable.builtin"] = { bold = true },
+
+			["@string.escape"] = { bold = true },
+
+			Statement = { bold = true },
 			Exception = { bold = true },
-			Include = {},
-			["@include"] = {},
+			Include = { bold = true },
+
+			Comment = { fg = "#858585", italic = true },
+			["@comment"] = { italic = true },
+			["@comment.documentation"] = { italic = true },
+			["@include"] = { bold = true },
 		},
 
-		theme_toggle = { "catppuccin", "tokyonight" },
+		theme_toggle = { "github_dark", "github_dark" },
 	},
 
 	ui = {
@@ -103,7 +94,7 @@ local M = {
 			hl_override = {},
 			hl_add = {},
 			border = "rounded",
-			theme = "catppuccin",
+			theme = "github_dark",
 		},
 
 		telescope = { style = "bordered" }, -- borderless / bordered
@@ -140,7 +131,7 @@ local M = {
 			order = { "treeOffset", "buffers", "tabs", "btns" },
 			modules = nil,
 		},
-		theme = "catppuccin",
+		theme = "github_dark",
 	},
 
 	term = {
@@ -148,8 +139,8 @@ local M = {
 		sizes = {
 			sp = 0.35,
 			vsp = 0.35,
-			["bo sp"] = 0.3,
-			["bo vsp"] = 0.5,
+			["bo sp"] = 0.2,
+			["bo vsp"] = 0.2,
 		},
 
 		float = {
@@ -169,7 +160,13 @@ local M = {
 		excluded_groups = { "terminal (t)", "autopairs", "Nvim", "Opens" }, -- can add group name or with mode
 	},
 
-	mason = { pkgs = {} },
+	mason = {
+		pkgs = {
+			"pyright",
+			"black",
+			"debugpy",
+		},
+	},
 
 	colorify = {
 		enabled = true,

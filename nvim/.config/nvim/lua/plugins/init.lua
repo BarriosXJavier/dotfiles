@@ -118,28 +118,29 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		opts = {
-			ensure_installed = {
-				"vim",
-				"lua",
-				"vimdoc",
-				"html",
-				"css",
-				"python",
-				"typescript",
-				"javascript",
-				"json",
-				"markdown",
-				"markdown_inline",
-				"bash",
-				"c",
-				"cpp",
-				"rust",
-				"go",
-				"yaml",
-				"toml",
-			},
-		},
+		event = { 'BufRead', 'BufNewFile' },
+		build = ":TSUpdate",
+		config = function()
+			-- Load base46 treesitter highlights
+			pcall(function()
+				dofile(vim.g.base46_cache .. "syntax")
+				dofile(vim.g.base46_cache .. "treesitter")
+			end)
+
+			-- Register bash parser for zsh files
+			vim.treesitter.language.register('bash', 'zsh')
+
+			-- Enable treesitter highlighting for all buffers
+			vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', 'BufEnter' }, {
+				callback = function(args)
+					local buf = args.buf
+					local ft = vim.bo[buf].filetype
+					if ft ~= '' then
+						pcall(vim.treesitter.start, buf)
+					end
+				end,
+			})
+		end,
 	},
 
 	{ "chentoast/marks.nvim", event = "VeryLazy", opts = {} },
@@ -170,7 +171,7 @@ return {
 	{
 		"FabijanZulj/blame.nvim",
 		lazy = true,
-    event = "BufReadPre",
+		event = "BufReadPre",
 		config = function()
 			require("blame").setup({})
 		end,
@@ -251,5 +252,9 @@ return {
 			completions = { lsp = { enabled = true } },
 		},
 		event = "VeryLazy",
+	},
+	{
+		"esmuellert/codediff.nvim",
+		cmd = "CodeDiff",
 	},
 }

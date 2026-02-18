@@ -1,5 +1,15 @@
 -- Neovim 0.11+ LSP Configuration using vim.lsp.config() and vim.lsp.enable()
 
+-- Disable LSP semantic tokens (they override treesitter but have no colors defined)
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if client then
+			client.server_capabilities.semanticTokensProvider = nil
+		end
+	end,
+})
+
 -- Set global defaults for ALL LSP servers
 vim.lsp.config("*", {
 	root_markers = { ".git" },
@@ -87,4 +97,14 @@ vim.lsp.config("ts_ls", {
 vim.lsp.config("sqls", {
 	root_markers = { ".git" },
 	filetypes = { "sql", "mysql", "plsql" },
+})
+
+-- Make bashls work for .zshrc/.zsh files too
+vim.lsp.config("bashls", {
+	filetypes = { "bash", "sh", "zsh" },
+	settings = {
+		bashIde = {
+			globPattern = vim.env.GLOB_PATTERN or "*@(.sh|.inc|.bash|.command|.zsh|.zshrc)",
+		},
+	},
 })

@@ -12,18 +12,17 @@
 ;; Completion framework
 (use-package company
   :demand
-  :hook (prog-mode . company-mode)
-  :bind (:map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
-              ("<tab>" . company-complete-selection)
-              ("TAB" . company-complete-selection))
   :config
   (setq company-idle-delay 0.1              ;; Show suggestions quickly
         company-minimum-prefix-length 1     ;; Start completing after 1 char
         company-selection-wrap-around t
         company-tooltip-align-annotations t ;; Align annotations to the right
         company-backends '(company-capf))   ;; Use completion-at-point (LSP)
+  ;; Keybindings for completion menu
+  (define-key company-active-map (kbd "C-n") #'company-select-next)
+  (define-key company-active-map (kbd "C-p") #'company-select-previous)
+  (define-key company-active-map (kbd "<tab>") #'company-complete-selection)
+  (define-key company-active-map (kbd "TAB") #'company-complete-selection)
   (global-company-mode 1))                  ;; Enable globally
 
 ;; Icons for completion items
@@ -95,7 +94,7 @@
 
 ;; Optional: ivy integration for workspace symbols
 (use-package lsp-ivy
-  :after lsp
+  :after lsp-mode
   :commands lsp-ivy-workspace-symbol)
 
 ;; === Language-specific hooks ===
