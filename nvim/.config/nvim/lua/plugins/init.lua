@@ -118,28 +118,27 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		event = { 'BufRead', 'BufNewFile' },
-		build = ":TSUpdate",
-		config = function()
-			-- Load base46 treesitter highlights
-			pcall(function()
-				dofile(vim.g.base46_cache .. "syntax")
-				dofile(vim.g.base46_cache .. "treesitter")
-			end)
-
-			-- Register bash parser for zsh files
-			vim.treesitter.language.register('bash', 'zsh')
-
-			-- Enable treesitter highlighting for all buffers
-			vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', 'BufEnter' }, {
-				callback = function(args)
-					local buf = args.buf
-					local ft = vim.bo[buf].filetype
-					if ft ~= '' then
-						pcall(vim.treesitter.start, buf)
-					end
-				end,
-			})
+		opts = function()
+			local opts = require("nvchad.configs.treesitter")
+			opts.ensure_installed = {
+				"vim",
+				"lua",
+				"vimdoc",
+				"html",
+				"css",
+				"javascript",
+				"typescript",
+				"tsx",
+				"go",
+				"gomod",
+				"gosum",
+				"gowork",
+			}
+			opts.highlight = {
+				enable = true,
+				use_languagetree = true,
+			}
+			return opts
 		end,
 	},
 

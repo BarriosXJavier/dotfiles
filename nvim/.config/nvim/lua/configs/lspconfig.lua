@@ -4,7 +4,7 @@
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		if client then
+		if client and client.name ~= "gopls" then
 			client.server_capabilities.semanticTokensProvider = nil
 		end
 	end,
@@ -108,3 +108,15 @@ vim.lsp.config("bashls", {
 		},
 	},
 })
+
+-- Explicit configuration for gopls to enable semantic tokens
+vim.lsp.config("gopls", {
+	settings = {
+		gopls = {
+			["ui.semanticTokens"] = true,
+		},
+	},
+})
+
+-- Enable gopls manually if not handled by Mason (mason-lspconfig handles it, but this won't hurt)
+vim.lsp.enable("gopls")
