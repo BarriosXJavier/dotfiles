@@ -118,6 +118,8 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPost", "BufNewFile" },
+		build = ":TSUpdate",
 		opts = function()
 			local opts = require("nvchad.configs.treesitter")
 			opts.ensure_installed = {
@@ -133,6 +135,18 @@ return {
 				"gomod",
 				"gosum",
 				"gowork",
+				"python",
+				"rust",
+				"c",
+				"cpp",
+				"sql",
+				"json",
+				"yaml",
+				"toml",
+				"bash",
+				"dockerfile",
+				"markdown",
+				"markdown_inline",
 			}
 			opts.highlight = {
 				enable = true,
