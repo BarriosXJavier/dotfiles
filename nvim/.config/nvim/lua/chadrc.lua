@@ -149,7 +149,7 @@ local M = {
 			col = 0.5 - (0.95 / 2), -- Centers horizontally
 			width = 0.98,
 			height = 0.90,
-			border = "single",
+			border = "rounded",
 		},
 	},
 
