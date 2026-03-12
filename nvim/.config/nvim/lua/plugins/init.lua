@@ -270,4 +270,17 @@ return {
 		"esmuellert/codediff.nvim",
 		cmd = "CodeDiff",
 	},
+
+	{
+		"supermaven-inc/supermaven-nvim",
+		event = "BufReadPre",
+		config = function()
+			require("supermaven-nvim").setup({
+				indicator = {
+					enabled = true,
+					icon = "󱓻 ",
+				},
+			})
+		end,
+	},
 }
