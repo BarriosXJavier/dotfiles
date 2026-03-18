@@ -22,7 +22,7 @@
 	"on-click-right": "$HOME/.config/hypr/scripts/WaybarScripts.sh --nvtop"
 },
 
-"backlight": {
+/*"backlight": {
 	"interval": 2,
 	"align": 0,
 	"rotate": 0,
@@ -54,6 +54,7 @@
   "format": "{icon} {percent}%",
   "format-icons": ["", ""]
 },
+*/
 
 "battery": {
 	//"interval": 5,
@@ -210,19 +211,6 @@
 		"activated": " ",
 		"deactivated": " ",
 	}
-},
-
-"keyboard-state": {
-	//"numlock": true,
-	"capslock": true,
-	"format": {
-		"numlock": "N {icon}",
-		"capslock": "󰪛 {icon}",
-	},
-	"format-icons": {
-		"locked": "",
-		"unlocked": ""
-	},
 },
 
 "memory": {

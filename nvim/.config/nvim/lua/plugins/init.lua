@@ -1,286 +1,303 @@
 return {
-	{
-		"stevearc/conform.nvim",
-		cmd = "ConformInfo",
-		opts = require("configs.conform"),
-	},
-	{
-		"stevearc/oil.nvim",
-		---@module 'oil'
-		---@type oil.SetupOpts
-		opts = {},
-		-- Optional dependencies
-		dependencies = { { "nvim-tree/nvim-web-devicons", opts = {} } },
-		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-		lazy = false,
-	},
+  {
+    "stevearc/conform.nvim",
+    cmd = "ConformInfo",
+    opts = require("configs.conform"),
+  },
+  {
+    "stevearc/oil.nvim",
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { "nvim-tree/nvim-web-devicons", opts = {} } },
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
+  },
 
-	{
-		"windwp/nvim-ts-autotag",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			require("nvim-ts-autotag").setup()
-		end,
-	},
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
 
-	{
-		"williamboman/mason-lspconfig.nvim",
-		dependencies = { "williamboman/mason.nvim" },
-		opts = {
-			automatic_installation = true,
-		},
-	},
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    opts = {
+      automatic_installation = true,
+    },
+  },
 
-	{
-		"neovim/nvim-lspconfig",
-		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "williamboman/mason-lspconfig.nvim" },
-		config = function()
-			require("configs.lspconfig")
-		end,
-	},
+  {
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "williamboman/mason-lspconfig.nvim" },
+    config = function()
+      require("configs.lspconfig")
+    end,
+  },
 
-	{
-		"okuuva/auto-save.nvim",
-		version = "*", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
-		cmd = "ASToggle", -- optional for lazy loading on command
-		event = { "InsertLeave" }, -- optional for lazy loading on trigger events
-		opts = {},
-	},
-	{
-		import = "nvchad.blink.lazyspec",
-		opts = function()
-			local base_opts = require("nvchad.blink.config")
-			return vim.tbl_deep_extend("force", base_opts, {
-				cmdline = {
-					enabled = true,
-					sources = { "cmdline", "path", "buffer" },
-				},
-				sources = {
-					default = { "lsp", "path", "snippets", "buffer" },
-					providers = {
-						lsp = {
-							min_keyword_length = 0,
-							score_offset = 10,
-						},
-						snippets = {
-							min_keyword_length = 2,
-							score_offset = 5,
-						},
-					},
-				},
-				completion = {
-					trigger = {
-						show_on_insert_on_trigger_character = true,
-					},
-					documentation = {
-						auto_show = true,
-						auto_show_delay_ms = 200,
-						window = {
-							border = "rounded",
-						},
-					},
-					menu = {
-						border = "rounded",
-					},
-				},
-				signature = {
-					enabled = true,
-					window = {
-						border = "rounded",
-					},
-				},
-			})
-		end,
-	},
+  {
+    "okuuva/auto-save.nvim",
+    version = "*",             -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
+    cmd = "ASToggle",          -- optional for lazy loading on command
+    event = { "InsertLeave" }, -- optional for lazy loading on trigger events
+    opts = {},
+  },
+  {
+    import = "nvchad.blink.lazyspec",
+    opts = function()
+      local base_opts = require("nvchad.blink.config")
+      return vim.tbl_deep_extend("force", base_opts, {
+        cmdline = {
+          enabled = true,
+          sources = { "cmdline", "path", "buffer" },
+        },
+        sources = {
+          default = { "lsp", "path", "snippets", "buffer" },
+          providers = {
+            lsp = {
+              min_keyword_length = 0,
+              score_offset = 10,
+            },
+            snippets = {
+              min_keyword_length = 2,
+              score_offset = 5,
+            },
+          },
+        },
+        completion = {
+          auto_brackets = { enabled = false },
+          trigger = {
+            show_on_insert_on_trigger_character = true,
+          },
+          documentation = {
+            auto_show = true,
+            auto_show_delay_ms = 200,
+            window = {
+              border = "rounded",
+            },
+          },
+          menu = {
+            border = "rounded",
+          },
+        },
+        signature = {
+          enabled = true,
+          window = {
+            border = "rounded",
+          },
+        },
+      })
+    end,
+  },
 
-	{
-		"rachartier/tiny-inline-diagnostic.nvim",
-		event = "VeryLazy",
-		priority = 1000,
-		config = function()
-			require("tiny-inline-diagnostic").setup()
-			vim.diagnostic.config({ virtual_text = false, underline = true }) -- Disable Neovim's default virtual text diagnostics
-		end,
-	},
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup()
+      vim.diagnostic.config({ virtual_text = false, underline = true }) -- Disable Neovim's default virtual text diagnostics
+    end,
+  },
 
-	{
-		"nvimdev/lspsaga.nvim",
-		event = "LspAttach",
-		config = function()
-			require("configs.lspsaga").setup()
-		end,
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-tree/nvim-web-devicons",
-		},
-	},
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    config = function()
+      require("configs.lspsaga").setup()
+    end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
 
-	{
-		"nvim-treesitter/nvim-treesitter",
-		event = { "BufReadPost", "BufNewFile" },
-		build = ":TSUpdate",
-		opts = function()
-			local opts = require("nvchad.configs.treesitter")
-			opts.ensure_installed = {
-				"vim",
-				"lua",
-				"vimdoc",
-				"html",
-				"css",
-				"javascript",
-				"typescript",
-				"tsx",
-				"go",
-				"gomod",
-				"gosum",
-				"gowork",
-				"python",
-				"rust",
-				"c",
-				"cpp",
-				"sql",
-				"json",
-				"yaml",
-				"toml",
-				"bash",
-				"dockerfile",
-				"markdown",
-				"markdown_inline",
-			}
-			opts.highlight = {
-				enable = true,
-				use_languagetree = true,
-			}
-			return opts
-		end,
-	},
+  {
+    "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
+    build = ":TSUpdate",
+    opts = function()
+      local opts = require("nvchad.configs.treesitter")
+      opts.ensure_installed = {
+        "vim",
+        "lua",
+        "vimdoc",
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "tsx",
+        "go",
+        "gomod",
+        "gosum",
+        "gowork",
+        "python",
+        "rust",
+        "c",
+        "cpp",
+        "sql",
+        "json",
+        "yaml",
+        "toml",
+        "bash",
+        "dockerfile",
+        "markdown",
+        "markdown_inline",
+      }
+      opts.highlight = {
+        enable = true,
+        use_languagetree = true,
+      }
+      return opts
+    end,
+  },
 
-	{ "chentoast/marks.nvim", event = "VeryLazy", opts = {} },
+  { "chentoast/marks.nvim",  event = "VeryLazy", opts = {} },
 
-	{
-		"rachartier/tiny-glimmer.nvim",
-		event = "VeryLazy",
-		priority = 10,
-		opts = {},
-	},
+  {
+    "rachartier/tiny-glimmer.nvim",
+    event = "VeryLazy",
+    priority = 10,
+    opts = {},
+  },
 
-	{
-		"kdheepak/lazygit.nvim",
-		lazy = true,
-		cmd = {
-			"LazyGit",
-			"LazyGitConfig",
-			"LazyGitCurrentFile",
-			"LazyGitFilter",
-			"LazyGitFilterCurrentFile",
-		},
-		dependencies = { "nvim-lua/plenary.nvim" },
-		keys = {
-			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
-		},
-	},
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    },
+  },
 
-	{
-		"FabijanZulj/blame.nvim",
-		lazy = true,
-		event = "BufReadPre",
-		config = function()
-			require("blame").setup({})
-		end,
-	},
+  {
+    "FabijanZulj/blame.nvim",
+    lazy = true,
+    event = "BufReadPre",
+    config = function()
+      require("blame").setup({})
+    end,
+  },
 
-	{
-		"folke/trouble.nvim",
-		cmd = "Trouble",
-		opts = {
-			focus = true,
-			modes = {
-				diagnostics = {
-					decorators = {
-						line = true,
-						indent = true,
-					},
-				},
-			},
-		},
-		focus = true,
-	},
+  {
+    "folke/trouble.nvim",
+    cmd = "Trouble",
+    opts = {
+      focus = true,
+      modes = {
+        diagnostics = {
+          decorators = {
+            line = true,
+            indent = true,
+          },
+        },
+      },
+    },
+    focus = true,
+  },
 
-	{ "wakatime/vim-wakatime", lazy = false },
+  { "wakatime/vim-wakatime", lazy = false },
 
-	{
-		"kristijanhusak/vim-dadbod-ui",
-		dependencies = {
-			{ "tpope/vim-dadbod", lazy = true },
-			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true }, -- Optional
-		},
-		cmd = {
-			"DBUI",
-			"DBUIToggle",
-			"DBUIAddConnection",
-			"DBUIFindBuffer",
-		},
-		init = function()
-			-- Your DBUI configuration
-			vim.g.db_ui_use_nerd_fonts = 1
-		end,
-	},
+  {
+    "kristijanhusak/vim-dadbod-ui",
+    dependencies = {
+      { "tpope/vim-dadbod",                     lazy = true },
+      { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true }, -- Optional
+    },
+    cmd = {
+      "DBUI",
+      "DBUIToggle",
+      "DBUIAddConnection",
+      "DBUIFindBuffer",
+    },
+    init = function()
+      -- Your DBUI configuration
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
+  },
 
-	{ "tpope/vim-dadbod" },
+  { "tpope/vim-dadbod" },
 
-	{
-		"jiaoshijie/undotree",
-		dependencies = "nvim-lua/plenary.nvim",
-		config = true,
-	},
+  {
+    "jiaoshijie/undotree",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = true,
+  },
 
-	-- debugger
-	{
-		"mfussenegger/nvim-dap",
-		event = "VeryLazy",
-		dependencies = {
-			"rcarriga/nvim-dap-ui",
-			"nvim-neotest/nvim-nio",
-			"jay-babu/mason-nvim-dap.nvim",
-			"theHamsta/nvim-dap-virtual-text",
-		},
-		config = function()
-			require("configs.dap")
-		end,
-	},
+  -- debugger
+  {
+    "mfussenegger/nvim-dap",
+    event = "VeryLazy",
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
+      "jay-babu/mason-nvim-dap.nvim",
+      "theHamsta/nvim-dap-virtual-text",
+    },
+    config = function()
+      require("configs.dap")
+    end,
+  },
 
-	-- sqls plugin for SQL LSP enhancements
-	{
-		"nanotee/sqls.nvim",
-		ft = { "sql", "mysql", "plsql" },
-	},
+  -- sqls plugin for SQL LSP enhancements
+  {
+    "nanotee/sqls.nvim",
+    ft = { "sql", "mysql", "plsql" },
+  },
 
-	{
-		"MeanderingProgrammer/render-markdown.nvim",
-		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-		---@module 'render-markdown'
-		---@type render.md.UserConfig
-		opts = {
-			completions = { lsp = { enabled = true } },
-		},
-		event = "VeryLazy",
-	},
-	{
-		"esmuellert/codediff.nvim",
-		cmd = "CodeDiff",
-	},
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {
+      completions = { lsp = { enabled = true } },
+    },
+    event = "VeryLazy",
+  },
+  {
+    "esmuellert/codediff.nvim",
+    cmd = "CodeDiff",
+  },
 
-	{
-		"supermaven-inc/supermaven-nvim",
-		event = "BufReadPre",
-		config = function()
-			require("supermaven-nvim").setup({
-				indicator = {
-					enabled = true,
-					icon = "󱓻 ",
-				},
-			})
-		end,
-	},
+  {
+    "supermaven-inc/supermaven-nvim",
+    event = "BufReadPre",
+    config = function()
+      require("supermaven-nvim").setup({
+        indicator = {
+          enabled = true,
+          icon = "󱓻 ",
+        },
+      })
+    end,
+  },
+
+  {
+    "michaelb/sniprun",
+    event = "BufReadPost",
+    branch = "master",
+
+    build = "sh install.sh 1",
+    -- do 'sh install.sh 1' if you want to force compile locally
+    -- (instead of fetching a binary from the github release). Requires Rust >= 1.65
+
+    config = function()
+      require("sniprun").setup({
+        -- your options
+      })
+    end,
+  },
 }

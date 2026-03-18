@@ -55,5 +55,7 @@
 		"group/audio",
 		"custom/separator#dot-line", 
 		"group/status",
+		"custom/separator#dot-line",
+		"keyboard-state",
 		],
 	}

@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			"pyright",
 			"ruff",
 			"rust_analyzer",
-			"ts_ls",
+			-- "ts_ls",
 			"vtsls",
 			"cssls",
 			"tailwindcss",
@@ -80,36 +80,74 @@ vim.lsp.config("emmet_language_server", {
 vim.lsp.enable("emmet_language_server")
 
 -- Custom configuration for TypeScript servers
-vim.lsp.config("ts_ls", {
+-- vim.lsp.config("ts_ls", {
+-- 	root_markers = { "package.json", "tsconfig.json", ".git" },
+-- 	settings = {
+-- 		completions = {
+-- 			completeFunctionCalls = false,
+-- 		},
+-- 		typescript = {
+-- 			inlayHints = {
+-- 				includeInlayParameterNameHints = "all",
+-- 				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+-- 				includeInlayFunctionParameterTypeHints = true,
+-- 				includeInlayVariableTypeHints = true,
+-- 				includeInlayPropertyDeclarationTypeHints = true,
+-- 				includeInlayFunctionLikeReturnTypeHints = true,
+-- 				includeInlayEnumMemberValueHints = true,
+-- 			},
+-- 		},
+-- 		javascript = {
+-- 			inlayHints = {
+-- 				includeInlayParameterNameHints = "all",
+-- 				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+-- 				includeInlayFunctionParameterTypeHints = true,
+-- 				includeInlayVariableTypeHints = true,
+-- 				includeInlayPropertyDeclarationTypeHints = true,
+-- 				includeInlayFunctionLikeReturnTypeHints = true,
+-- 				includeInlayEnumMemberValueHints = true,
+-- 			},
+-- 		},
+-- 	},
+-- })
+
+vim.lsp.config("vtsls", {
 	root_markers = { "package.json", "tsconfig.json", ".git" },
 	settings = {
-		completions = {
-			completeFunctionCalls = true,
-		},
 		typescript = {
 			inlayHints = {
-				includeInlayParameterNameHints = "all",
-				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-				includeInlayFunctionParameterTypeHints = true,
-				includeInlayVariableTypeHints = true,
-				includeInlayPropertyDeclarationTypeHints = true,
-				includeInlayFunctionLikeReturnTypeHints = true,
-				includeInlayEnumMemberValueHints = true,
+				parameterNames = { enabled = "all" },
+				parameterTypes = { enabled = true },
+				variableTypes = { enabled = true },
+				propertyDeclarationTypes = { enabled = true },
+				functionLikeReturnTypes = { enabled = true },
+				enumMemberValues = { enabled = true },
 			},
 		},
 		javascript = {
 			inlayHints = {
-				includeInlayParameterNameHints = "all",
-				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-				includeInlayFunctionParameterTypeHints = true,
-				includeInlayVariableTypeHints = true,
-				includeInlayPropertyDeclarationTypeHints = true,
-				includeInlayFunctionLikeReturnTypeHints = true,
-				includeInlayEnumMemberValueHints = true,
+				parameterNames = { enabled = "all" },
+				parameterTypes = { enabled = true },
+				variableTypes = { enabled = true },
+				propertyDeclarationTypes = { enabled = true },
+				functionLikeReturnTypes = { enabled = true },
+				enumMemberValues = { enabled = true },
+			},
+		},
+		vtsls = {
+			enableMoveToFileCodeAction = true,
+			autoUseWorkspaceTsdk = true,
+			experimental = {
+				completion = {
+					enableServerSideFuzzyMatch = true,
+					entriesLimit = 50,
+				},
 			},
 		},
 	},
 })
+vim.lsp.enable("vtsls")
+
 
 -- Custom configuration for sqls (SQL language server)
 vim.lsp.config("sqls", {

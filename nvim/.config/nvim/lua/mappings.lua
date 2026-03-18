@@ -41,3 +41,9 @@ map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
 
 map("n", "<leader>o", "<cmd>Oil<CR>", { desc = "Oil File Manager" })
+
+-- Sniprun keymaps
+map("n", "<leader>r", "<Plug>SnipRun", { desc = "Run SnipRun" })
+map("v", "<leader>r", "<Plug>SnipRun", { desc = "Run SnipRun" })
+map("n", "<leader>rc", "<cmd>SnipClose<cr>", { desc = "Close SnipRun results" })
+map("n", "<leader>rs", "<cmd>SnipReset<cr>", { desc = "Stop SnipRun" })
