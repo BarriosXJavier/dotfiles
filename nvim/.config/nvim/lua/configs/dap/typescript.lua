@@ -1,18 +1,19 @@
 local dap = require("dap")
 
--- Use js-debug-adapter (modern replacement for node-debug2)
-dap.adapters["pwa-node"] = {
-  type = "server",
-  host = "localhost",
-  port = "${port}",
-  executable = {
-    command = "node",
-    args = {
-      vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
-      "${port}",
+if not dap.adapters["pwa-node"] then
+  dap.adapters["pwa-node"] = {
+    type = "server",
+    host = "localhost",
+    port = "${port}",
+    executable = {
+      command = "node",
+      args = {
+        vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+        "${port}",
+      },
     },
-  },
-}
+  }
+end
 
 dap.configurations.typescript = {
   {
@@ -20,7 +21,7 @@ dap.configurations.typescript = {
     type = "pwa-node",
     request = "launch",
     program = "${file}",
-    cwd = vim.fn.getcwd(),
+    cwd = "${workspaceFolder}",
     runtimeExecutable = "ts-node",
     runtimeArgs = { "--transpile-only" },
     sourceMaps = true,
@@ -32,6 +33,6 @@ dap.configurations.typescript = {
     type = "pwa-node",
     request = "attach",
     processId = require("dap.utils").pick_process,
-    cwd = vim.fn.getcwd(),
+    cwd = "${workspaceFolder}",
   },
 }

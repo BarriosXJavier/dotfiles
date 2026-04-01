@@ -31,19 +31,6 @@ map(
 map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List" })
 map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List" })
 
-map("n", "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", { desc = "Toggle Undo Tree" })
-
--- nvim blame
-map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Toggle Git Blame" })
-
 -- LspSaga keymaps
 map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
-
-map("n", "<leader>o", "<cmd>Oil<CR>", { desc = "Oil File Manager" })
-
--- Sniprun keymaps
-map("n", "<leader>r", "<Plug>SnipRun", { desc = "Run SnipRun" })
-map("v", "<leader>r", "<Plug>SnipRun", { desc = "Run SnipRun" })
-map("n", "<leader>rc", "<cmd>SnipClose<cr>", { desc = "Close SnipRun results" })
-map("n", "<leader>rs", "<cmd>SnipReset<cr>", { desc = "Stop SnipRun" })

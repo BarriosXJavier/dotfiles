@@ -35,7 +35,7 @@ vim.lsp.config("*", {
 
 -- Auto-setup for all Mason-installed servers
 require("mason-lspconfig").setup({
-	automatic_installation = true,
+	automatic_installation = false,
 	handlers = {
 		function(server_name)
 			-- Temporarily skip css_variables for debugging

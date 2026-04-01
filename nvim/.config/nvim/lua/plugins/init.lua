@@ -8,16 +8,18 @@ return {
     "stevearc/oil.nvim",
     ---@module 'oil'
     ---@type oil.SetupOpts
+    cmd = { "Oil" },
+    keys = {
+      { "<leader>o", "<cmd>Oil<CR>", desc = "Oil File Manager" },
+    },
     opts = {},
     -- Optional dependencies
     dependencies = { { "nvim-tree/nvim-web-devicons", opts = {} } },
-    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-    lazy = false,
   },
 
   {
     "windwp/nvim-ts-autotag",
-    event = { "BufReadPre", "BufNewFile" },
+    ft = { "html", "javascriptreact", "typescriptreact", "vue", "svelte", "xml" },
     config = function()
       require("nvim-ts-autotag").setup()
     end,
@@ -27,7 +29,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim" },
     opts = {
-      automatic_installation = true,
+      automatic_installation = false,
     },
   },
 
@@ -121,39 +123,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
     build = ":TSUpdate",
-    opts = function()
-      local opts = require("nvchad.configs.treesitter")
-      opts.ensure_installed = {
-        "vim",
-        "lua",
-        "vimdoc",
-        "html",
-        "css",
-        "javascript",
-        "typescript",
-        "tsx",
-        "go",
-        "gomod",
-        "gosum",
-        "gowork",
-        "python",
-        "rust",
-        "c",
-        "cpp",
-        "sql",
-        "json",
-        "yaml",
-        "toml",
-        "bash",
-        "dockerfile",
-        "markdown",
-        "markdown_inline",
-      }
-      opts.highlight = {
-        enable = true,
-        use_languagetree = true,
-      }
-      return opts
+    config = function()
+      require("configs.treesitter").setup()
     end,
   },
 
@@ -184,8 +155,10 @@ return {
 
   {
     "FabijanZulj/blame.nvim",
-    lazy = true,
-    event = "BufReadPre",
+    cmd = { "BlameToggle", "BlameEnable", "BlameDisable" },
+    keys = {
+      { "<leader>gb", "<cmd>BlameToggle<cr>", desc = "Toggle Git Blame" },
+    },
     config = function()
       require("blame").setup({})
     end,
@@ -233,6 +206,10 @@ return {
   {
     "jiaoshijie/undotree",
     dependencies = "nvim-lua/plenary.nvim",
+    cmd = { "UndotreeToggle" },
+    keys = {
+      { "<leader>u", function() require("undotree").toggle() end, desc = "Toggle Undo Tree" },
+    },
     config = true,
   },
 
@@ -243,7 +220,12 @@ return {
     dependencies = {
       "rcarriga/nvim-dap-ui",
       "nvim-neotest/nvim-nio",
-      "jay-babu/mason-nvim-dap.nvim",
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        opts = {
+          automatic_installation = false,
+        },
+      },
       "theHamsta/nvim-dap-virtual-text",
     },
     config = function()
@@ -274,7 +256,7 @@ return {
 
   {
     "supermaven-inc/supermaven-nvim",
-    event = "BufReadPre",
+    event = "InsertEnter",
     config = function()
       require("supermaven-nvim").setup({
         indicator = {
@@ -287,7 +269,12 @@ return {
 
   {
     "michaelb/sniprun",
-    event = "BufReadPost",
+    cmd = { "SnipRun", "SnipClose", "SnipReset" },
+    keys = {
+      { "<leader>r", "<Plug>SnipRun", mode = { "n", "v" }, desc = "Run SnipRun" },
+      { "<leader>rc", "<cmd>SnipClose<cr>", desc = "Close SnipRun results" },
+      { "<leader>rs", "<cmd>SnipReset<cr>", desc = "Stop SnipRun" },
+    },
     branch = "master",
 
     build = "sh install.sh 1",
