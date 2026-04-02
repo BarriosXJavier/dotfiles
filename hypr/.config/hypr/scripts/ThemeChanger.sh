@@ -112,6 +112,10 @@ if wallust theme -- "${choice}"; then
     fi
   fi
 
+  if [ -x "$HOME/.config/hypr/scripts/WallustContrast.sh" ]; then
+    "$HOME/.config/hypr/scripts/WallustContrast.sh" || true
+  fi
+
   # Reload Hyprland so new border colors from wallust-hyprland.conf take effect
   if command -v hyprctl >/dev/null 2>&1; then
     hyprctl reload >/dev/null 2>&1 || true

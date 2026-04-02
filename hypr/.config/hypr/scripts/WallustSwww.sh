@@ -114,6 +114,10 @@ wallust_targets=(
 )
 wait_for_templates "$start_ts" "${wallust_targets[@]}" || true
 
+if [ -x "$HOME/.config/hypr/scripts/WallustContrast.sh" ]; then
+  "$HOME/.config/hypr/scripts/WallustContrast.sh" || true
+fi
+
 # Normalize Ghostty palette syntax in case ':' was used by older files
 if [ -f "$HOME/.config/ghostty/wallust.conf" ]; then
   sed -i -E 's/^(\s*palette\s*=\s*)([0-9]{1,2}):/\1\2=/' "$HOME/.config/ghostty/wallust.conf" 2>/dev/null || true
