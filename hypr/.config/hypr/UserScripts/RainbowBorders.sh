@@ -4,10 +4,17 @@
 
 # Possible values: "wallust_random", "rainbow", "gradient_flow"
 EFFECT_TYPE="wallust_random"
+FRAME_DELAY="${FRAME_DELAY:0.45}"
+LOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/hypr-rainbow-borders.lock"
 
 WALLUST_COLORS_SOURCE="$HOME/.config/hypr/wallust/wallust-hyprland.conf"
 
 WALLUST_COLORS=()
+
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+    exit 0
+fi
 
 # ---------- LOAD WALLUST COLORS ----------
 if [[ "$EFFECT_TYPE" == "wallust_random" || "$EFFECT_TYPE" == "gradient_flow" ]]; then
@@ -82,8 +89,16 @@ function get_color() {
     fi
 }
 
-# border effect for ACTIVE window
-hyprctl keyword general:col.active_border $(get_color 0) $(get_color 1) $(get_color 2) $(get_color 3) $(get_color 4) $(get_color 5) $(get_color 6) $(get_color 7) $(get_color 8) $(get_color 9) 270deg
+while true; do
+    active_border=()
+    for pos in {0..9}; do
+        active_border+=("$(get_color "$pos")")
+    done
 
-# border effect for INACTIVE windows
-#hyprctl keyword general:col.inactive_border $(get_color 0) $(get_color 1) $(get_color 2) $(get_color 3) $(get_color 4) $(get_color 5) $(get_color 6) $(get_color 7) $(get_color 8) $(get_color 9) 270deg
+    hyprctl keyword general:col.active_border "${active_border[@]}" 270deg >/dev/null
+
+    # border effect for INACTIVE windows
+    #hyprctl keyword general:col.inactive_border "${active_border[@]}" 270deg
+
+    sleep "$FRAME_DELAY"
+done

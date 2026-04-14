@@ -9,7 +9,7 @@ local M = {
 
 		hl_override = {
 			WinSeparator = { fg = "#565f89", bg = "none" },
-			NvimTreeWinSeparator = { fg = "#565f89", bg = "none" },
+			-- NvimTreeWinSeparator = { fg = "#565f89", bg = "none" }, -- gruber-darker handles this
 			LineNr = { fg = "#565f89" },
 
 			-- Core editor
@@ -27,10 +27,10 @@ local M = {
 			-- Floating docs / hover
 			FloatBorder = { bg = "none" },
 
-			-- NvimTree
-			NvimTreeNormal = { bg = "none" },
-			NvimTreeNormalNC = { bg = "none" },
-			NvimTreeEndOfBuffer = { bg = "none" },
+			-- NvimTree -- gruber-darker handles these
+			-- NvimTreeNormal = { bg = "none" },
+			-- NvimTreeNormalNC = { bg = "none" },
+			-- NvimTreeEndOfBuffer = { bg = "none" },
 
 			-- Diagnostics: use underline instead of undercurl (squiggly)
 			DiagnosticUnderlineError = { underline = true, sp = "red" },
@@ -43,10 +43,10 @@ local M = {
 			TelescopeSelection = { bg = "one_bg2", fg = "blue", bold = true },
 			TelescopeSelectionCaret = { fg = "yellow", bg = "one_bg2", bold = true },
 
-			-- NvimTree highlights
-			NvimTreeCursorLine = { bg = "one_bg2", bold = true },
-			NvimTreeOpenedFile = { fg = "green", bold = true, underline = true, italic = true },
-			NvimTreeSpecialFile = { fg = "yellow", underline = true, bold = true, italic = true },
+			-- NvimTree highlights -- gruber-darker handles these
+			-- NvimTreeCursorLine = { bg = "one_bg2", bold = true },
+			-- NvimTreeOpenedFile = { fg = "green", bold = true, underline = true, italic = true },
+			-- NvimTreeSpecialFile = { fg = "yellow", underline = true, bold = true, italic = true },
 
 			-- Emacs-like minimal syntax styling: restrained emphasis, mostly carried by color only.
 			Keyword = { fg = "#c678dd", bold = false, italic = false },
@@ -109,7 +109,7 @@ local M = {
 
 		statusline = {
 			enabled = true,
-			separator_style = "arrow",
+			separator_style = "block",
 			order = nil,
 			modules = {
 				lsp = function()

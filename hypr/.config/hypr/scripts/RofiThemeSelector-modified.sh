@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
-# A modified version of Rofi-Theme-Selector, concentrating only on ~/.local and also, applying only 10 @themes in ~/.config/rofi/config.rasi
-# as opposed to continous adding of //@theme
+# A modified version of Rofi-Theme-Selector, concentrating only on ~/.local
+# and keeping a single active @theme entry in ~/.config/rofi/config.rasi.
 
 # This code is released in public domain by Dave Davenport <qball@gmpclient.org>
 
@@ -96,26 +96,21 @@ add_theme_to_config() {
     # Convert path to use ~ for home directory
     theme_path_with_tilde="~${theme_path#$HOME}"
 
-    # Add or update @theme line in config
-    if ! grep -q '^\s*@theme' "$rofi_config_file"; then
-        echo -e "\n\n@theme \"$theme_path_with_tilde\"" >> "$rofi_config_file"
-        echo "Added @theme \"$theme_path_with_tilde\" to $rofi_config_file"
+    if grep -q '^\s*@theme' "$rofi_config_file"; then
+        $SED -i "0,/^\s*@theme/s|^\s*@theme.*|@theme \"$theme_path_with_tilde\"|" "$rofi_config_file"
+        $SED -i '/^\s*@theme/{
+            x
+            /seen/{
+                x
+                d
+            }
+            s/.*/seen/
+            x
+        }' "$rofi_config_file"
+        echo "Updated active @theme line to $theme_path_with_tilde"
     else
-        $SED -i "s/^\(\s*@theme.*\)/\/\/\1/" "$rofi_config_file"
-        echo -e "@theme \"$theme_path_with_tilde\"" >> "$rofi_config_file"
-        echo "Updated @theme line to $theme_path_with_tilde"
-    fi
-
-    # Limit the number of @theme lines to a maximum of 9
-    max_lines=9
-    total_lines=$(grep -c '^\s*//@theme' "$rofi_config_file")
-
-    if [ "$total_lines" -gt "$max_lines" ]; then
-        excess=$((total_lines - max_lines))
-        for i in $(seq 1 "$excess"); do
-            $SED -i '0,/^\s*\/\/@theme/ { /^\s*\/\/@theme/ {d; q; }}' "$rofi_config_file"
-        done
-        echo "Removed excess //@theme lines"
+        printf '\n@theme "%s"\n' "$theme_path_with_tilde" >> "$rofi_config_file"
+        echo "Added @theme \"$theme_path_with_tilde\" to $rofi_config_file"
     fi
 }
 

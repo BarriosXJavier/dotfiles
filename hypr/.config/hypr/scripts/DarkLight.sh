@@ -74,59 +74,53 @@ else
     sed -i 's/^palette = .*/palette = "'"$pallete_light"'"/' "$wallust_config" 
 fi
 
-# Function to set Waybar style
-set_waybar_style() {
-    theme="$1"
-    waybar_styles="$HOME/.config/waybar/style"
-    waybar_style_link="$HOME/.config/waybar/style.css"
-    style_prefix="\\[${theme}\\].*\\.css$"
-
-    style_file=$(find -L "$waybar_styles" -maxdepth 1 -type f -regex ".*$style_prefix" | shuf -n 1)
-
-    if [ -n "$style_file" ]; then
-        ln -sf "$style_file" "$waybar_style_link"
-    else
-        echo "Style file not found for $theme theme."
-    fi
-}
-
-# Call the function after determining the mode
-set_waybar_style "$next_mode"
 notify_user "$next_mode"
 
 
-# swaync color change
-if [ "$next_mode" = "Dark" ]; then
-    sed -i '/@define-color noti-bg/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/rgba(0, 0, 0, 0.8);/' "${swaync_style}"
-	#sed -i '/@define-color noti-bg-alt/s/#.*;/#111111;/' "${swaync_style}"
-else
-    sed -i '/@define-color noti-bg/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/rgba(255, 255, 255, 0.9);/' "${swaync_style}"
-	#sed -i '/@define-color noti-bg-alt/s/#.*;/#F0F0F0;/' "${swaync_style}"
-fi
+set_surface_overlays() {
+    mode="$1"
 
-# ags color change
-if command -v ags >/dev/null 2>&1; then    
-    if [ "$next_mode" = "Dark" ]; then
-        sed -i '/@define-color noti-bg/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/rgba(0, 0, 0, 0.4);/' "${ags_style}"
-	    sed -i '/@define-color text-color/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/rgba(255, 255, 255, 0.7);/' "${ags_style}" 
-	    sed -i '/@define-color noti-bg-alt/s/#.*;/#111111;/' "${ags_style}"
+    if [ "$mode" = "Dark" ]; then
+        swaync_bg='rgba(0, 0, 0, 0.8);'
+        ags_bg='rgba(0, 0, 0, 0.4);'
+        ags_text='rgba(255, 255, 255, 0.7);'
+        neutral_bg='#111111;'
+        rofi_bg='rgba(0,0,0,0.7);'
     else
-        sed -i '/@define-color noti-bg/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/rgba(255, 255, 255, 0.4);/' "${ags_style}"
-        sed -i '/@define-color text-color/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/rgba(0, 0, 0, 0.7);/' "${ags_style}"
-	    sed -i '/@define-color noti-bg-alt/s/#.*;/#F0F0F0;/' "${ags_style}"
+        swaync_bg='rgba(255, 255, 255, 0.9);'
+        ags_bg='rgba(255, 255, 255, 0.4);'
+        ags_text='rgba(0, 0, 0, 0.7);'
+        neutral_bg='#F0F0F0;'
+        rofi_bg='rgba(255,255,255,0.9);'
     fi
-fi
 
-# kitty background color change
-if [ "$next_mode" = "Dark" ]; then
-    sed -i '/^foreground /s/^foreground .*/foreground #dddddd/' "${kitty_conf}"
-	sed -i '/^background /s/^background .*/background #000000/' "${kitty_conf}"
-	sed -i '/^cursor /s/^cursor .*/cursor #dddddd/' "${kitty_conf}"
-else
-	sed -i '/^foreground /s/^foreground .*/foreground #000000/' "${kitty_conf}"
-	sed -i '/^background /s/^background .*/background #dddddd/' "${kitty_conf}"
-	sed -i '/^cursor /s/^cursor .*/cursor #000000/' "${kitty_conf}"
-fi
+    if [ -f "$swaync_style" ]; then
+        sed -i "/@define-color noti-bg/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/$swaync_bg/" "${swaync_style}"
+    fi
+
+    if command -v ags >/dev/null 2>&1 && [ -f "$ags_style" ]; then
+        sed -i "/@define-color noti-bg/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/$ags_bg/" "${ags_style}"
+        sed -i "/@define-color text-color/s/rgba([0-9]*,\s*[0-9]*,\s*[0-9]*,\s*[0-9.]*);/$ags_text/" "${ags_style}"
+        sed -i "/@define-color noti-bg-alt/s/#.*;/$neutral_bg/" "${ags_style}"
+    fi
+
+    if [ -f "$wallust_rofi" ]; then
+        sed -i "/^background:/s/.*/background: $rofi_bg/" "$wallust_rofi"
+    fi
+}
+
+set_kitty_theme_source() {
+    [ -f "$kitty_conf" ] || return 0
+
+    if grep -q -E '^[#[:space:]]*include\s+\./kitty-themes/.*\.conf' "$kitty_conf"; then
+        sed -i -E 's|^[#[:space:]]*include\s+\./kitty-themes/.*\.conf|include ./kitty-themes/01-Wallust.conf|' "$kitty_conf"
+    else
+        printf '\ninclude ./kitty-themes/01-Wallust.conf\n' >> "$kitty_conf"
+    fi
+}
+
+set_surface_overlays "$next_mode"
+set_kitty_theme_source
 
 for pid_kitty in $(pidof kitty); do
     kill -SIGUSR1 "$pid_kitty"
@@ -159,86 +153,95 @@ sed -i "s|^color_scheme_path=.*$|color_scheme_path=$qt6ct_color_scheme|" "$HOME/
 kvantummanager --set "$kvantum_theme"
 
 
-# set the rofi color for background
-if [ "$next_mode" = "Dark" ]; then
-    sed -i '/^background:/s/.*/background: rgba(0,0,0,0.7);/' $wallust_rofi
-else
-    sed -i '/^background:/s/.*/background: rgba(255,255,255,0.9);/' $wallust_rofi
-fi
-
-
 # GTK themes and icons switching
+swap_mode_variant() {
+    current_value="$1"
+    mode="$2"
+
+    if [ -z "$current_value" ]; then
+        return 1
+    fi
+
+    candidate="$current_value"
+    if [ "$mode" = "Light" ]; then
+        candidate=$(printf '%s' "$candidate" | sed \
+            -e 's/Dark/Light/g' \
+            -e 's/dark/light/g' \
+            -e 's/Mocha/Latte/g' \
+            -e 's/mocha/latte/g')
+    else
+        candidate=$(printf '%s' "$candidate" | sed \
+            -e 's/Light/Dark/g' \
+            -e 's/light/dark/g' \
+            -e 's/Latte/Mocha/g' \
+            -e 's/latte/mocha/g')
+    fi
+
+    if [ "$candidate" = "$current_value" ]; then
+        return 1
+    fi
+
+    printf '%s\n' "$candidate"
+}
+
+apply_paired_variant() {
+    mode="$1"
+    current_value="$2"
+    search_dir="$3"
+    gsettings_key="$4"
+    flatpak_env="$5"
+    qt_conf_key="$6"
+
+    [ -n "$current_value" ] || return 0
+
+    candidate="$(swap_mode_variant "$current_value" "$mode")" || return 0
+    if [ -n "$search_dir" ] && [ -d "$search_dir" ] && [ ! -d "$search_dir/$candidate" ]; then
+        echo "Paired variant not found for $current_value"
+        return 0
+    fi
+
+    echo "Switching $gsettings_key: $current_value -> $candidate"
+    gsettings set org.gnome.desktop.interface "$gsettings_key" "$candidate"
+
+    if [ -n "$qt_conf_key" ]; then
+        sed -i "s|^$qt_conf_key=.*$|$qt_conf_key=$candidate|" "$HOME/.config/qt5ct/qt5ct.conf"
+        sed -i "s|^$qt_conf_key=.*$|$qt_conf_key=$candidate|" "$HOME/.config/qt6ct/qt6ct.conf"
+    fi
+
+    if command -v flatpak >/dev/null 2>&1; then
+        if [ -n "$search_dir" ]; then
+            flatpak --user override --filesystem="$search_dir"
+            sleep 0.5
+        fi
+        if [ -n "$flatpak_env" ]; then
+            flatpak --user override --env="$flatpak_env=$candidate"
+        fi
+    fi
+}
+
 set_custom_gtk_theme() {
     mode=$1
     gtk_themes_directory="$HOME/.themes"
     icon_directory="$HOME/.icons"
-    color_setting="org.gnome.desktop.interface color-scheme"
-    theme_setting="org.gnome.desktop.interface gtk-theme"
-    icon_setting="org.gnome.desktop.interface icon-theme"
 
-    if [ "$mode" == "Light" ]; then
-        search_keywords="*Light*"
-        gsettings set $color_setting 'prefer-light'
-    elif [ "$mode" == "Dark" ]; then
-        search_keywords="*Dark*"
-        gsettings set $color_setting 'prefer-dark'
-    else
-        echo "Invalid mode provided."
-        return 1
-    fi
+    case "$mode" in
+        Light)
+            gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+            ;;
+        Dark)
+            gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+            ;;
+        *)
+            echo "Invalid mode provided."
+            return 1
+            ;;
+    esac
 
-    themes=()
-    icons=()
+    current_theme="$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null | tr -d "'")"
+    current_icon="$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | tr -d "'")"
 
-    while IFS= read -r -d '' theme_search; do
-        themes+=("$(basename "$theme_search")")
-    done < <(find "$gtk_themes_directory" -maxdepth 1 -type d -iname "$search_keywords" -print0)
-
-    while IFS= read -r -d '' icon_search; do
-        icons+=("$(basename "$icon_search")")
-    done < <(find "$icon_directory" -maxdepth 1 -type d -iname "$search_keywords" -print0)
-
-    if [ ${#themes[@]} -gt 0 ]; then
-        if [ "$mode" == "Dark" ]; then
-            selected_theme=${themes[RANDOM % ${#themes[@]}]}
-        else
-            selected_theme=${themes[$RANDOM % ${#themes[@]}]}
-        fi
-        echo "Selected GTK theme for $mode mode: $selected_theme"
-        gsettings set $theme_setting "$selected_theme"
-
-        # Flatpak GTK apps (themes)
-        if command -v flatpak &> /dev/null; then
-            flatpak --user override --filesystem=$HOME/.themes
-            sleep 0.5
-            flatpak --user override --env=GTK_THEME="$selected_theme"
-        fi
-    else
-        echo "No $mode GTK theme found"
-    fi
-
-    if [ ${#icons[@]} -gt 0 ]; then
-        if [ "$mode" == "Dark" ]; then
-            selected_icon=${icons[RANDOM % ${#icons[@]}]}
-        else
-            selected_icon=${icons[$RANDOM % ${#icons[@]}]}
-        fi
-        echo "Selected icon theme for $mode mode: $selected_icon"
-        gsettings set $icon_setting "$selected_icon"
-        
-        ## QT5ct icon_theme
-        sed -i "s|^icon_theme=.*$|icon_theme=$selected_icon|" "$HOME/.config/qt5ct/qt5ct.conf"
-        sed -i "s|^icon_theme=.*$|icon_theme=$selected_icon|" "$HOME/.config/qt6ct/qt6ct.conf"
-
-        # Flatpak GTK apps (icons)
-        if command -v flatpak &> /dev/null; then
-            flatpak --user override --filesystem=$HOME/.icons
-            sleep 0.5
-            flatpak --user override --env=ICON_THEME="$selected_icon"
-        fi
-    else
-        echo "No $mode icon theme found"
-    fi
+    apply_paired_variant "$mode" "$current_theme" "$gtk_themes_directory" "gtk-theme" "GTK_THEME" ""
+    apply_paired_variant "$mode" "$current_icon" "$icon_directory" "icon-theme" "ICON_THEME" "icon_theme"
 }
 
 # Call the function to set GTK theme and icon theme based on mode
@@ -264,4 +267,3 @@ sleep 0.5
 notify-send -u low -i "$notif" " Themes switched to:" " $next_mode Mode"
 
 exit 0
-
