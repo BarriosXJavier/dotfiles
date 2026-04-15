@@ -174,5 +174,4 @@ vim.lsp.config("gopls", {
 	},
 })
 
--- Enable gopls manually if not handled by Mason (mason-lspconfig handles it, but this won't hurt)
-vim.lsp.enable("gopls")
+

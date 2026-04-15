@@ -62,7 +62,7 @@ return {
           default = { "lsp", "path", "snippets", "buffer" },
           providers = {
             lsp = {
-              min_keyword_length = 0,
+              min_keyword_length = 2,
               score_offset = 10,
             },
             snippets = {
@@ -80,7 +80,7 @@ return {
             auto_show = true,
             auto_show_delay_ms = 200,
             window = {
-              border = "rounded",
+              -- border = "rounded",
             },
           },
           menu = {
@@ -287,10 +287,10 @@ return {
       })
     end,
   },
+
   {
     "blazkowolf/gruber-darker.nvim",
     lazy = false,
-    priority = 1000,
     config = function()
       require("gruber-darker").setup({
         bold = true,
@@ -300,42 +300,33 @@ return {
         },
         invert = {
           signs = false,
-          tabline = false,
+          tabline = true,
           visual = false,
         },
       })
       vim.cmd.colorscheme("gruber-darker")
-      vim.api.nvim_set_hl(0, "GruberDarkerDarkNiagara", { fg = "#b0bce0" })
 
-      local gruber_darker_group = vim.api.nvim_create_augroup("GruberDarkerNvimtree", { clear = true })
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        group = gruber_darker_group,
-        pattern = "gruber-darker",
-        callback = function()
-          local c = require("gruber-darker.palette")
-          local hl = vim.api.nvim_set_hl
+      local c = require("gruber-darker.palette")
+      local hl = vim.api.nvim_set_hl
 
-          hl(0, "NvimTreeNormal", { bg = c["bg-1"].hex })
-          hl(0, "NvimTreeNormalNC", { bg = c["bg-1"].hex })
-          hl(0, "NvimTreeEndOfBuffer", { fg = c["bg-1"].hex })
-          hl(0, "NvimTreeFolderIcon", { fg = c.green.hex })
-          hl(0, "NvimTreeFolderName", { fg = c.green.hex })
-          hl(0, "NvimTreeOpenedFolderName", { fg = c.green.hex })
-          hl(0, "NvimTreeFolderArrowOpen", { fg = c.quartz.hex })
-          hl(0, "NvimTreeFolderArrowClosed", { fg = c.quartz.hex })
-          hl(0, "NvimTreeIndentMarker", { fg = c["bg+2"].hex })
-          hl(0, "NvimTreeRootFolder", { fg = c.red.hex, bold = true })
-          hl(0, "NvimTreeWinSeparator", { fg = c["bg-1"].hex, bg = c["bg-1"].hex })
-          hl(0, "NvimTreeCursorLine", { bg = c["bg+1"].hex })
-          hl(0, "NvimTreeSpecialFile", { fg = c.yellow.hex, bold = true, underline = true })
-          hl(0, "NvimTreeGitNew", { fg = c.yellow.hex })
-          hl(0, "NvimTreeGitDeleted", { fg = c.red.hex })
-          hl(0, "NvimTreeGitDirty", { fg = c.red.hex })
-          hl(0, "NvimTreeGitIgnored", { fg = c.quartz.hex })
-          hl(0, "NvimTreeEmptyFolderName", { fg = c.quartz.hex })
-        end,
-      })
-      vim.cmd([[doautocmd ColorScheme gruber-darker]])
+      hl(0, "NvimTreeNormal", { bg = c["bg-1"].hex })
+      hl(0, "NvimTreeNormalNC", { bg = c["bg-1"].hex })
+      hl(0, "NvimTreeEndOfBuffer", { fg = c["bg-1"].hex })
+      hl(0, "NvimTreeFolderIcon", { fg = c.green.hex })
+      hl(0, "NvimTreeFolderName", { fg = c.green.hex })
+      hl(0, "NvimTreeOpenedFolderName", { fg = c.green.hex })
+      hl(0, "NvimTreeFolderArrowOpen", { fg = c.quartz.hex })
+      hl(0, "NvimTreeFolderArrowClosed", { fg = c.quartz.hex })
+      hl(0, "NvimTreeIndentMarker", { fg = c["bg+2"].hex })
+      hl(0, "NvimTreeRootFolder", { fg = c.red.hex, bold = true })
+      hl(0, "NvimTreeWinSeparator", { fg = c["bg-1"].hex, bg = c["bg-1"].hex })
+      hl(0, "NvimTreeCursorLine", { bg = c["bg+1"].hex })
+      hl(0, "NvimTreeSpecialFile", { fg = c.yellow.hex, bold = true, underline = true })
+      hl(0, "NvimTreeGitNew", { fg = c.yellow.hex })
+      hl(0, "NvimTreeGitDeleted", { fg = c.red.hex })
+      hl(0, "NvimTreeGitDirty", { fg = c.red.hex })
+      hl(0, "NvimTreeGitIgnored", { fg = c.quartz.hex })
+      hl(0, "NvimTreeEmptyFolderName", { fg = c.quartz.hex })
     end,
   }
 }

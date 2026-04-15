@@ -77,12 +77,6 @@ function M.setup()
     group = group,
     callback = start_highlighting,
   })
-
-  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_loaded(bufnr) then
-      start_highlighting({ buf = bufnr })
-    end
-  end
 end
 
 return M
