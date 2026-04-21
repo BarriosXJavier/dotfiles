@@ -6,8 +6,12 @@ vim.api.nvim_create_autocmd("User", {
   once = true,
   callback = function()
     vim.cmd.colorscheme("gruber-darker")
+    local c = require("gruber-darker.palette")
+    local hl = vim.api.nvim_set_hl
+    hl(0, "String", { fg = c.green.value, italic = false })
   end,
 })
+
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)

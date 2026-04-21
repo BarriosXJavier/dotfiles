@@ -4,6 +4,7 @@ return {
     cmd = "ConformInfo",
     opts = require("configs.conform"),
   },
+
   {
     "stevearc/oil.nvim",
     ---@module 'oil'
@@ -201,8 +202,6 @@ return {
     end,
   },
 
-  { "tpope/vim-dadbod" },
-
   {
     "jiaoshijie/undotree",
     dependencies = "nvim-lua/plenary.nvim",
@@ -289,44 +288,85 @@ return {
   },
 
   {
-    "blazkowolf/gruber-darker.nvim",
-    lazy = false,
+    "akinsho/bufferline.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      { "blazkowolf/gruber-darker.nvim",
+      },
+    },
     config = function()
-      require("gruber-darker").setup({
-        bold = true,
-        italic = {
-          comments = true,
-          strings = true,
+      local c = require("gruber-darker.palette")
+      require("bufferline").setup({
+        highlights = {
+          fill                        = { bg = c["bg-1"].value },
+          background                  = { fg = c.quartz.value, bg = c["bg-1"].value },
+          buffer_selected             = { fg = c.fg.value, bg = c.bg.value, bold = true, italic = true },
+          buffer_visible              = { fg = c.quartz.value, bg = c["bg-1"].value },
+          close_button                = { fg = c.quartz.value, bg = c["bg-1"].value },
+          close_button_selected       = { fg = c.red.value, bg = c.bg.value },
+          close_button_visible        = { fg = c.quartz.value, bg = c["bg-1"].value },
+          separator                   = { fg = c["bg-1"].value, bg = c["bg-1"].value },
+          separator_selected          = { fg = c["bg-1"].value, bg = c.bg.value },
+          separator_visible           = { fg = c["bg-1"].value, bg = c["bg-1"].value },
+          indicator_selected          = { fg = c.yellow.value, bg = c.bg.value },
+          indicator_visible           = { fg = c["bg-1"].value, bg = c["bg-1"].value },
+          modified                    = { fg = c.yellow.value, bg = c["bg-1"].value },
+          modified_selected           = { fg = c.yellow.value, bg = c.bg.value },
+          modified_visible            = { fg = c.yellow.value, bg = c["bg-1"].value },
+          duplicate                   = { fg = c.quartz.value, bg = c["bg-1"].value, italic = true },
+          duplicate_selected          = { fg = c.fg.value, bg = c.bg.value, italic = true },
+          duplicate_visible           = { fg = c.quartz.value, bg = c["bg-1"].value, italic = true },
+          numbers                     = { fg = c.quartz.value, bg = c["bg-1"].value },
+          numbers_selected            = { fg = c.fg.value, bg = c.bg.value, bold = true },
+          numbers_visible             = { fg = c.quartz.value, bg = c["bg-1"].value },
+          diagnostic                  = { fg = c.quartz.value, bg = c["bg-1"].value },
+          diagnostic_selected         = { fg = c.fg.value, bg = c.bg.value },
+          diagnostic_visible          = { fg = c.quartz.value, bg = c["bg-1"].value },
+          error                       = { fg = c.red.value, bg = c["bg-1"].value },
+          error_selected              = { fg = c.red.value, bg = c.bg.value, bold = true },
+          error_visible               = { fg = c.red.value, bg = c["bg-1"].value },
+          error_diagnostic            = { fg = c.red.value, bg = c["bg-1"].value },
+          error_diagnostic_selected   = { fg = c.red.value, bg = c.bg.value },
+          warning                     = { fg = c.yellow.value, bg = c["bg-1"].value },
+          warning_selected            = { fg = c.yellow.value, bg = c.bg.value, bold = true },
+          warning_visible             = { fg = c.yellow.value, bg = c["bg-1"].value },
+          warning_diagnostic          = { fg = c.yellow.value, bg = c["bg-1"].value },
+          warning_diagnostic_selected = { fg = c.yellow.value, bg = c.bg.value },
+          info                        = { fg = c.quartz.value, bg = c["bg-1"].value },
+          info_selected               = { fg = c.fg.value, bg = c.bg.value, bold = true },
+          info_visible                = { fg = c.quartz.value, bg = c["bg-1"].value },
+          hint                        = { fg = c.quartz.value, bg = c["bg-1"].value },
+          hint_selected               = { fg = c.fg.value, bg = c.bg.value, bold = true },
+          hint_visible                = { fg = c.quartz.value, bg = c["bg-1"].value },
+          tab                         = { fg = c.quartz.value, bg = c["bg-1"].value },
+          tab_selected                = { fg = c.fg.value, bg = c.bg.value, bold = true },
+          tab_close                   = { fg = c.red.value, bg = c["bg-1"].value },
+          tab_separator               = { fg = c["bg-1"].value, bg = c["bg-1"].value },
+          tab_separator_selected      = { fg = c["bg-1"].value, bg = c.bg.value },
+          offset_separator            = { fg = c["bg-1"].value, bg = c["bg-1"].value },
         },
-        invert = {
-          signs = false,
-          tabline = true,
-          visual = false,
+        options = {
+          separator_style         = { "", "" },
+          show_close_icon         = true,
+          bold                    = true,
+          show_buffer_close_icons = true,
+          offsets                 = {
+            {
+              filetype   = "NvimTree",
+              text       = "NvimTree",
+              highlight  = "Directory",
+              text_align = "center",
+              separator  = true,
+            },
+          },
         },
       })
-      vim.cmd.colorscheme("gruber-darker")
-
-      local c = require("gruber-darker.palette")
-      local hl = vim.api.nvim_set_hl
-
-      hl(0, "NvimTreeNormal", { bg = c["bg-1"].hex })
-      hl(0, "NvimTreeNormalNC", { bg = c["bg-1"].hex })
-      hl(0, "NvimTreeEndOfBuffer", { fg = c["bg-1"].hex })
-      hl(0, "NvimTreeFolderIcon", { fg = c.green.hex })
-      hl(0, "NvimTreeFolderName", { fg = c.green.hex })
-      hl(0, "NvimTreeOpenedFolderName", { fg = c.green.hex })
-      hl(0, "NvimTreeFolderArrowOpen", { fg = c.quartz.hex })
-      hl(0, "NvimTreeFolderArrowClosed", { fg = c.quartz.hex })
-      hl(0, "NvimTreeIndentMarker", { fg = c["bg+2"].hex })
-      hl(0, "NvimTreeRootFolder", { fg = c.red.hex, bold = true })
-      hl(0, "NvimTreeWinSeparator", { fg = c["bg-1"].hex, bg = c["bg-1"].hex })
-      hl(0, "NvimTreeCursorLine", { bg = c["bg+1"].hex })
-      hl(0, "NvimTreeSpecialFile", { fg = c.yellow.hex, bold = true, underline = true })
-      hl(0, "NvimTreeGitNew", { fg = c.yellow.hex })
-      hl(0, "NvimTreeGitDeleted", { fg = c.red.hex })
-      hl(0, "NvimTreeGitDirty", { fg = c.red.hex })
-      hl(0, "NvimTreeGitIgnored", { fg = c.quartz.hex })
-      hl(0, "NvimTreeEmptyFolderName", { fg = c.quartz.hex })
     end,
+  },
+
+  {
+    "echasnovski/mini.bufremove",
+    version = false,
   }
 }

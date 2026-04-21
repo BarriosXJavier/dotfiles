@@ -23,10 +23,10 @@ map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnost
 map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
 map("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
 map(
-	"n",
-	"<leader>cl",
-	"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-	{ desc = "LSP Definitions/References" }
+  "n",
+  "<leader>cl",
+  "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+  { desc = "LSP Definitions/References" }
 )
 map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List" })
 map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List" })
@@ -34,3 +34,29 @@ map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List
 -- LspSaga keymaps
 map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition" })
 map("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition" })
+
+-- close buffer (safe, keeps layout)
+map("n", "<leader>x", function()
+  require("mini.bufremove").delete(0, false)
+end, { desc = "Close buffer" })
+
+-- cycle buffers
+map("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+map("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
+
+-- move buffers
+map("n", "<leader>bh", "<cmd>BufferLineMovePrev<CR>", { desc = "Move buffer left" })
+map("n", "<leader>bl", "<cmd>BufferLineMoveNext<CR>", { desc = "Move buffer right" })
+
+-- jump to buffer index
+for i = 1, 9 do
+  map("n", "<leader>" .. i, "<cmd>BufferLineGoToBuffer " .. i .. "<CR>", {
+    desc = "Go to buffer " .. i,
+  })
+end
+
+-- pick buffer visually
+map("n", "<leader>bp", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
+
+-- close others
+map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<CR>", { desc = "Close other buffers" })
